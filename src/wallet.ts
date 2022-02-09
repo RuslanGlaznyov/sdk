@@ -1,19 +1,43 @@
-import { DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
-import { KYVE_WALLET_OPTIONS } from "./utils/constants";
+import {
+  DirectSecp256k1HdWallet,
+  OfflineDirectSigner,
+  OfflineSigner,
+} from "@cosmjs/proto-signing";
+import { Window as KeplrWindow } from "@keplr-wallet/types";
+import { KYVE_KEPLR_CONFIG, KYVE_WALLET_OPTIONS } from "./utils/constants";
+
+declare global {
+  interface Window extends KeplrWindow {}
+}
+
+type Signer = DirectSecp256k1HdWallet | (OfflineSigner & OfflineDirectSigner);
 
 export class KyveWallet {
-  private signer?: DirectSecp256k1HdWallet;
+  private signer?: Signer;
   private address?: string;
 
-  // TODO: Implement Keplr support.
-  constructor(private readonly mnemonic: string) {}
+  constructor(private readonly mnemonic?: string) {}
 
-  async getSigner(): Promise<DirectSecp256k1HdWallet> {
+  async getSigner(): Promise<Signer> {
     if (!this.signer) {
-      this.signer = await DirectSecp256k1HdWallet.fromMnemonic(
-        this.mnemonic,
-        KYVE_WALLET_OPTIONS
-      );
+      if (this.mnemonic) {
+        this.signer = await DirectSecp256k1HdWallet.fromMnemonic(
+          this.mnemonic,
+          KYVE_WALLET_OPTIONS
+        );
+      } else {
+        if (window) {
+          if (window.keplr) {
+            await window.keplr.experimentalSuggestChain(KYVE_KEPLR_CONFIG);
+            await window.keplr.enable("kyve");
+            this.signer = window.keplr.getOfflineSigner("kyve");
+          } else {
+            throw new Error("Please install Keplr.");
+          }
+        } else {
+          throw new Error("Unsupported.");
+        }
+      }
     }
 
     return this.signer;

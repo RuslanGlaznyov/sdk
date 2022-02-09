@@ -40,7 +40,6 @@ exports.KyveWallet = void 0;
 var proto_signing_1 = require("@cosmjs/proto-signing");
 var constants_1 = require("./utils/constants");
 var KyveWallet = /** @class */ (function () {
-    // TODO: Implement Keplr support.
     function KyveWallet(mnemonic) {
         this.mnemonic = mnemonic;
     }
@@ -50,13 +49,28 @@ var KyveWallet = /** @class */ (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        if (!!this.signer) return [3 /*break*/, 2];
+                        if (!!this.signer) return [3 /*break*/, 8];
+                        if (!this.mnemonic) return [3 /*break*/, 2];
                         _a = this;
                         return [4 /*yield*/, proto_signing_1.DirectSecp256k1HdWallet.fromMnemonic(this.mnemonic, constants_1.KYVE_WALLET_OPTIONS)];
                     case 1:
                         _a.signer = _b.sent();
-                        _b.label = 2;
-                    case 2: return [2 /*return*/, this.signer];
+                        return [3 /*break*/, 8];
+                    case 2:
+                        if (!window) return [3 /*break*/, 7];
+                        if (!window.keplr) return [3 /*break*/, 5];
+                        return [4 /*yield*/, window.keplr.experimentalSuggestChain(constants_1.KYVE_KEPLR_CONFIG)];
+                    case 3:
+                        _b.sent();
+                        return [4 /*yield*/, window.keplr.enable("kyve")];
+                    case 4:
+                        _b.sent();
+                        this.signer = window.keplr.getOfflineSigner("kyve");
+                        return [3 /*break*/, 6];
+                    case 5: throw new Error("Please install Keplr.");
+                    case 6: return [3 /*break*/, 8];
+                    case 7: throw new Error("Unsupported.");
+                    case 8: return [2 /*return*/, this.signer];
                 }
             });
         });
