@@ -54,6 +54,15 @@ export class KyveWallet {
     return this.address;
   }
 
+  async getName(): Promise<string> {
+    if (window && window.keplr) {
+      const { name } = await window.keplr.getKey("kyve");
+      return name;
+    } else {
+      throw new Error("Unsupported.");
+    }
+  }
+
   static async generate(): Promise<KyveWallet> {
     const { mnemonic } = await DirectSecp256k1HdWallet.generate(
       24,

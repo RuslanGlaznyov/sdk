@@ -95,6 +95,22 @@ var KyveWallet = /** @class */ (function () {
             });
         });
     };
+    KyveWallet.prototype.getName = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var name_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!(window && window.keplr)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, window.keplr.getKey("kyve")];
+                    case 1:
+                        name_1 = (_a.sent()).name;
+                        return [2 /*return*/, name_1];
+                    case 2: throw new Error("Unsupported.");
+                }
+            });
+        });
+    };
     KyveWallet.generate = function () {
         return __awaiter(this, void 0, void 0, function () {
             var mnemonic;

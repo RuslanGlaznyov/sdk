@@ -12,6 +12,7 @@ export declare class KyveWallet {
     constructor(mnemonic?: string | undefined);
     getSigner(): Promise<Signer>;
     getAddress(): Promise<string>;
+    getName(): Promise<string>;
     static generate(): Promise<KyveWallet>;
 }
 export {};
