@@ -1,7 +1,7 @@
 import { DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { KYVE_WALLET_OPTIONS } from "./utils/constants";
 
-export default class KyveWallet {
+export class KyveWallet {
   private signer?: DirectSecp256k1HdWallet;
   private address?: string;
 
@@ -28,5 +28,13 @@ export default class KyveWallet {
     }
 
     return this.address;
+  }
+
+  static async generate(): Promise<KyveWallet> {
+    const { mnemonic } = await DirectSecp256k1HdWallet.generate(
+      24,
+      KYVE_WALLET_OPTIONS
+    );
+    return new KyveWallet(mnemonic);
   }
 }

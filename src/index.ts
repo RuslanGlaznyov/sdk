@@ -1,6 +1,8 @@
 import { coins, SigningStargateClient } from "@cosmjs/stargate";
-import KyveWallet from "./wallet";
+import { KyveWallet } from "./wallet";
 import registry from "./utils/registry";
+
+export { KyveWallet } from "./wallet";
 
 export class KyveSDK {
   private client?: SigningStargateClient;
