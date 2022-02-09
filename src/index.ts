@@ -3,7 +3,7 @@ import KyveWallet from "./wallet";
 import registry from "./utils/registry";
 
 export class KyveSDK {
-  public client?: SigningStargateClient;
+  private client?: SigningStargateClient;
 
   constructor(
     public readonly endpoint: string,
