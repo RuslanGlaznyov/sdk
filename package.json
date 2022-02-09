@@ -1,0 +1,19 @@
+{
+  "name": "@kyve/sdk",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "build": "rimraf dist && tsc",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@cosmjs/proto-signing": "^0.27.1",
+    "@cosmjs/stargate": "^0.27.1",
+    "protobufjs": "^6.11.2"
+  },
+  "devDependencies": {
+    "prettier": "^2.5.1",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.5.5"
+  }
+}
