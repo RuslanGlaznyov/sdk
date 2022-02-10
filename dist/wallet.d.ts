@@ -4,15 +4,21 @@ declare global {
     interface Window extends KeplrWindow {
     }
 }
+declare type Endpoints = {
+    rpc: string;
+    rest: string;
+};
 declare type Signer = DirectSecp256k1HdWallet | (OfflineSigner & OfflineDirectSigner);
 export declare class KyveWallet {
     private readonly mnemonic?;
+    private readonly endpoints;
     private signer?;
     private address?;
-    constructor(mnemonic?: string | undefined);
+    constructor(mnemonic?: string | undefined, endpoints?: Endpoints);
     getSigner(): Promise<Signer>;
     getAddress(): Promise<string>;
     getName(): Promise<string>;
+    getBalance(): Promise<string>;
     static generate(): Promise<KyveWallet>;
 }
 export {};

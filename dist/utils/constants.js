@@ -1,11 +1,14 @@
 "use strict";
 exports.__esModule = true;
-exports.KYVE_WALLET_OPTIONS = exports.KYVE_KEPLR_CONFIG = void 0;
+exports.KYVE_WALLET_OPTIONS = exports.KYVE_KEPLR_CONFIG = exports.KYVE_ENDPOINTS = void 0;
 var cosmos_1 = require("@keplr-wallet/cosmos");
-// TODO: Think about how to make endpoints configurable.
+exports.KYVE_ENDPOINTS = {
+    rpc: "http://localhost:26657",
+    rest: "http://localhost:1317"
+};
 exports.KYVE_KEPLR_CONFIG = {
-    rpc: "http://0.0.0.0:26657",
-    rest: "http://0.0.0.0:1317",
+    rpc: exports.KYVE_ENDPOINTS.rpc,
+    rest: exports.KYVE_ENDPOINTS.rest,
     chainId: "kyve",
     chainName: "KYVE",
     stakeCurrency: {
@@ -23,8 +26,7 @@ exports.KYVE_KEPLR_CONFIG = {
     feeCurrencies: [
         { coinDenom: "KYVE", coinMinimalDenom: "ukyve", coinDecimals: 0 },
     ],
-    coinType: 118,
-    features: ["stargate", "ibc-transfer"]
+    features: ["stargate"]
 };
 exports.KYVE_WALLET_OPTIONS = {
     prefix: "kyve"

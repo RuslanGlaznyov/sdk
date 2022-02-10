@@ -1,22 +1,35 @@
 import {
+  Coin,
   DirectSecp256k1HdWallet,
   OfflineDirectSigner,
   OfflineSigner,
 } from "@cosmjs/proto-signing";
 import { Window as KeplrWindow } from "@keplr-wallet/types";
-import { KYVE_KEPLR_CONFIG, KYVE_WALLET_OPTIONS } from "./utils/constants";
+import axios from "axios";
+import {
+  KYVE_ENDPOINTS,
+  KYVE_KEPLR_CONFIG,
+  KYVE_WALLET_OPTIONS,
+} from "./utils/constants";
 
 declare global {
   interface Window extends KeplrWindow {}
 }
 
+type Endpoints = {
+  rpc: string;
+  rest: string;
+};
 type Signer = DirectSecp256k1HdWallet | (OfflineSigner & OfflineDirectSigner);
 
 export class KyveWallet {
   private signer?: Signer;
   private address?: string;
 
-  constructor(private readonly mnemonic?: string) {}
+  constructor(
+    private readonly mnemonic?: string,
+    private readonly endpoints: Endpoints = KYVE_ENDPOINTS
+  ) {}
 
   async getSigner(): Promise<Signer> {
     if (!this.signer) {
@@ -28,7 +41,10 @@ export class KyveWallet {
       } else {
         if (window) {
           if (window.keplr) {
-            await window.keplr.experimentalSuggestChain(KYVE_KEPLR_CONFIG);
+            await window.keplr.experimentalSuggestChain({
+              ...KYVE_KEPLR_CONFIG,
+              ...this.endpoints,
+            });
             await window.keplr.enable("kyve");
             this.signer = window.keplr.getOfflineSigner("kyve");
           } else {
@@ -61,6 +77,17 @@ export class KyveWallet {
     } else {
       throw new Error("Unsupported.");
     }
+  }
+
+  async getBalance(): Promise<string> {
+    const address = await this.getAddress();
+
+    const { data } = await axios.get<Coin[]>(
+      `${this.endpoints.rest}/bank/balances/${address}`
+    );
+    const coin = data.find((coin) => coin.denom === "kyve");
+
+    return coin ? coin.amount : "0";
   }
 
   static async generate(): Promise<KyveWallet> {
