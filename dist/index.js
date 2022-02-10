@@ -48,9 +48,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 exports.__esModule = true;
 exports.KyveSDK = exports.KyveWallet = exports.KYVE_DECIMALS = void 0;
 var stargate_1 = require("@cosmjs/stargate");
+var constants_1 = require("./utils/constants");
 var registry_1 = __importDefault(require("./utils/registry"));
 var axios_1 = __importDefault(require("axios"));
-var constants_1 = require("./utils/constants");
 var constants_2 = require("./utils/constants");
 __createBinding(exports, constants_2, "KYVE_DECIMALS");
 var wallet_1 = require("./wallet");

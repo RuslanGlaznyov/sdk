@@ -18,8 +18,8 @@ exports.KYVE_KEPLR_CONFIG = {
     chainId: "kyve",
     chainName: "KYVE",
     stakeCurrency: {
-        coinDenom: "KYVE",
-        coinMinimalDenom: "ukyve",
+        coinDenom: "kyve",
+        coinMinimalDenom: "kyve",
         coinDecimals: exports.KYVE_DECIMALS
     },
     bip44: {
@@ -28,15 +28,15 @@ exports.KYVE_KEPLR_CONFIG = {
     bech32Config: cosmos_1.Bech32Address.defaultBech32Config("kyve"),
     currencies: [
         {
-            coinDenom: "KYVE",
-            coinMinimalDenom: "ukyve",
+            coinDenom: "kyve",
+            coinMinimalDenom: "kyve",
             coinDecimals: exports.KYVE_DECIMALS
         },
     ],
     feeCurrencies: [
         {
-            coinDenom: "KYVE",
-            coinMinimalDenom: "ukyve",
+            coinDenom: "kyve",
+            coinMinimalDenom: "kyve",
             coinDecimals: exports.KYVE_DECIMALS
         },
     ],

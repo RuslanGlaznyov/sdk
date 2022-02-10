@@ -20,8 +20,8 @@ export const KYVE_KEPLR_CONFIG: ChainInfo = {
   chainId: "kyve",
   chainName: "KYVE",
   stakeCurrency: {
-    coinDenom: "KYVE",
-    coinMinimalDenom: "ukyve",
+    coinDenom: "kyve",
+    coinMinimalDenom: "kyve",
     coinDecimals: KYVE_DECIMALS,
   },
   bip44: {
@@ -30,15 +30,15 @@ export const KYVE_KEPLR_CONFIG: ChainInfo = {
   bech32Config: Bech32Address.defaultBech32Config("kyve"),
   currencies: [
     {
-      coinDenom: "KYVE",
-      coinMinimalDenom: "ukyve",
+      coinDenom: "kyve",
+      coinMinimalDenom: "kyve",
       coinDecimals: KYVE_DECIMALS,
     },
   ],
   feeCurrencies: [
     {
-      coinDenom: "KYVE",
-      coinMinimalDenom: "ukyve",
+      coinDenom: "kyve",
+      coinMinimalDenom: "kyve",
       coinDecimals: KYVE_DECIMALS,
     },
   ],
