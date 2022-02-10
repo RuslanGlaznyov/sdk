@@ -4,10 +4,10 @@ declare global {
     interface Window extends KeplrWindow {
     }
 }
-declare type Endpoints = {
+interface Endpoints {
     rpc: string;
     rest: string;
-};
+}
 declare type Signer = DirectSecp256k1HdWallet | (OfflineSigner & OfflineDirectSigner);
 export declare class KyveWallet {
     private readonly mnemonic?;

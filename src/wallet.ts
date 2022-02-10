@@ -16,10 +16,14 @@ declare global {
   interface Window extends KeplrWindow {}
 }
 
-type Endpoints = {
+interface BalanceResponse {
+  height: string;
+  result: Coin[];
+}
+interface Endpoints {
   rpc: string;
   rest: string;
-};
+}
 type Signer = DirectSecp256k1HdWallet | (OfflineSigner & OfflineDirectSigner);
 
 export class KyveWallet {
@@ -82,10 +86,10 @@ export class KyveWallet {
   async getBalance(): Promise<string> {
     const address = await this.getAddress();
 
-    const { data } = await axios.get<Coin[]>(
+    const { data } = await axios.get<BalanceResponse>(
       `${this.endpoints.rest}/bank/balances/${address}`
     );
-    const coin = data.find((coin) => coin.denom === "kyve");
+    const coin = data.result.find((coin) => coin.denom === "kyve");
 
     return coin ? coin.amount : "0";
   }

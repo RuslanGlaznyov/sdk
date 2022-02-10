@@ -139,7 +139,7 @@ var KyveWallet = /** @class */ (function () {
                         return [4 /*yield*/, axios_1["default"].get("".concat(this.endpoints.rest, "/bank/balances/").concat(address))];
                     case 2:
                         data = (_a.sent()).data;
-                        coin = data.find(function (coin) { return coin.denom === "kyve"; });
+                        coin = data.result.find(function (coin) { return coin.denom === "kyve"; });
                         return [2 /*return*/, coin ? coin.amount : "0"];
                 }
             });
