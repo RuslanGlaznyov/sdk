@@ -44,7 +44,7 @@ export const KYVE_KEPLR_CONFIG: ChainInfo = {
   ],
   coinType: 118,
   gasPriceStep: { low: 0, average: 0, high: 0 },
-  features: ["stargate"],
+  features: ["stargate", "no-legacy-stdTx"],
 };
 
 export const KYVE_WALLET_OPTIONS: Partial<DirectSecp256k1HdWalletOptions> = {
