@@ -1,7 +1,13 @@
 "use strict";
 exports.__esModule = true;
-exports.KYVE_WALLET_OPTIONS = exports.KYVE_KEPLR_CONFIG = exports.KYVE_ENDPOINTS = void 0;
+exports.KYVE_WALLET_OPTIONS = exports.KYVE_KEPLR_CONFIG = exports.KYVE_ENDPOINTS = exports.KYVE_DEFAULT_FEE = exports.KYVE_DECIMALS = void 0;
+var proto_signing_1 = require("@cosmjs/proto-signing");
 var cosmos_1 = require("@keplr-wallet/cosmos");
+exports.KYVE_DECIMALS = 0;
+exports.KYVE_DEFAULT_FEE = {
+    amount: (0, proto_signing_1.coins)(0, "kyve"),
+    gas: "200000"
+};
 exports.KYVE_ENDPOINTS = {
     rpc: "http://localhost:26657",
     rest: "http://localhost:1317"
@@ -14,17 +20,25 @@ exports.KYVE_KEPLR_CONFIG = {
     stakeCurrency: {
         coinDenom: "KYVE",
         coinMinimalDenom: "ukyve",
-        coinDecimals: 0
+        coinDecimals: exports.KYVE_DECIMALS
     },
     bip44: {
         coinType: 118
     },
     bech32Config: cosmos_1.Bech32Address.defaultBech32Config("kyve"),
     currencies: [
-        { coinDenom: "KYVE", coinMinimalDenom: "ukyve", coinDecimals: 0 },
+        {
+            coinDenom: "KYVE",
+            coinMinimalDenom: "ukyve",
+            coinDecimals: exports.KYVE_DECIMALS
+        },
     ],
     feeCurrencies: [
-        { coinDenom: "KYVE", coinMinimalDenom: "ukyve", coinDecimals: 0 },
+        {
+            coinDenom: "KYVE",
+            coinMinimalDenom: "ukyve",
+            coinDecimals: exports.KYVE_DECIMALS
+        },
     ],
     features: ["stargate"]
 };

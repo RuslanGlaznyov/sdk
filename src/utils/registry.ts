@@ -8,8 +8,16 @@ const MsgFundPool = new Type("MsgFundPool")
   .add(new Field("id", 2, "uint64"))
   .add(new Field("amount", 3, "uint64"));
 
+const MsgStakePool = new Type("MsgStakePool")
+  .add(new Field("creator", 1, "string"))
+  .add(new Field("id", 2, "uint64"))
+  .add(new Field("amount", 3, "uint64"));
+
 //
 
 export default new Registry(
-  Array.from([[`/KYVENetwork.kyve.registry.${MsgFundPool.name}`, MsgFundPool]])
+  Array.from([
+    [`/KYVENetwork.kyve.registry.${MsgFundPool.name}`, MsgFundPool],
+    [`/KYVENetwork.kyve.registry.${MsgStakePool.name}`, MsgStakePool],
+  ])
 );

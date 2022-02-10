@@ -1,8 +1,16 @@
-import { coins, SigningStargateClient } from "@cosmjs/stargate";
+import { SigningStargateClient } from "@cosmjs/stargate";
 import { KyveWallet } from "./wallet";
+import { KYVE_DEFAULT_FEE } from "./utils/constants";
 import registry from "./utils/registry";
+import axios from "axios";
 
+export { KYVE_DECIMALS } from "./utils/constants";
 export { KyveWallet } from "./wallet";
+
+interface PoolResponse {
+  // TODO: Properly type this out ...
+  Pool: any;
+}
 
 export class KyveSDK {
   private client?: SigningStargateClient;
@@ -24,7 +32,18 @@ export class KyveSDK {
     return this.client;
   }
 
-  async fundPool(id: number, amount: number): Promise<string> {
+  async fetchPoolState(id: number): Promise<any> {
+    const { data } = await axios.get<PoolResponse>(
+      `${this.endpoint}/kyve/registry/pool/${id}`
+    );
+    return data.Pool;
+  }
+
+  async fund(
+    id: number,
+    amount: number,
+    fee = KYVE_DEFAULT_FEE
+  ): Promise<string> {
     const client = await this.getClient();
     const creator = await this.wallet.getAddress();
 
@@ -37,9 +56,25 @@ export class KyveSDK {
       },
     };
 
-    const fee = {
-      amount: coins(0, "kyve"),
-      gas: "200000",
+    const tx = await client.signAndBroadcast(creator, [msg], fee);
+    return tx.transactionHash;
+  }
+
+  async stake(
+    id: number,
+    amount: number,
+    fee = KYVE_DEFAULT_FEE
+  ): Promise<string> {
+    const client = await this.getClient();
+    const creator = await this.wallet.getAddress();
+
+    const msg = {
+      typeUrl: "/KYVENetwork.kyve.registry.MsgStakePool",
+      value: {
+        creator,
+        id,
+        amount,
+      },
     };
 
     const tx = await client.signAndBroadcast(creator, [msg], fee);

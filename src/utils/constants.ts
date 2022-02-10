@@ -1,6 +1,13 @@
-import { DirectSecp256k1HdWalletOptions } from "@cosmjs/proto-signing";
+import { coins, DirectSecp256k1HdWalletOptions } from "@cosmjs/proto-signing";
 import { Bech32Address } from "@keplr-wallet/cosmos";
 import { ChainInfo } from "@keplr-wallet/types";
+
+export const KYVE_DECIMALS = 0;
+
+export const KYVE_DEFAULT_FEE = {
+  amount: coins(0, "kyve"),
+  gas: "200000",
+};
 
 export const KYVE_ENDPOINTS = {
   rpc: "http://localhost:26657",
@@ -15,17 +22,25 @@ export const KYVE_KEPLR_CONFIG: ChainInfo = {
   stakeCurrency: {
     coinDenom: "KYVE",
     coinMinimalDenom: "ukyve",
-    coinDecimals: 0,
+    coinDecimals: KYVE_DECIMALS,
   },
   bip44: {
     coinType: 118,
   },
   bech32Config: Bech32Address.defaultBech32Config("kyve"),
   currencies: [
-    { coinDenom: "KYVE", coinMinimalDenom: "ukyve", coinDecimals: 0 },
+    {
+      coinDenom: "KYVE",
+      coinMinimalDenom: "ukyve",
+      coinDecimals: KYVE_DECIMALS,
+    },
   ],
   feeCurrencies: [
-    { coinDenom: "KYVE", coinMinimalDenom: "ukyve", coinDecimals: 0 },
+    {
+      coinDenom: "KYVE",
+      coinMinimalDenom: "ukyve",
+      coinDecimals: KYVE_DECIMALS,
+    },
   ],
   features: ["stargate"],
 };

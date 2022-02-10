@@ -46,9 +46,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.KyveSDK = exports.KyveWallet = void 0;
+exports.KyveSDK = exports.KyveWallet = exports.KYVE_DECIMALS = void 0;
 var stargate_1 = require("@cosmjs/stargate");
 var registry_1 = __importDefault(require("./utils/registry"));
+var axios_1 = __importDefault(require("axios"));
+var constants_1 = require("./utils/constants");
+var constants_2 = require("./utils/constants");
+__createBinding(exports, constants_2, "KYVE_DECIMALS");
 var wallet_1 = require("./wallet");
 __createBinding(exports, wallet_1, "KyveWallet");
 var KyveSDK = /** @class */ (function () {
@@ -76,9 +80,23 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
-    KyveSDK.prototype.fundPool = function (id, amount) {
+    KyveSDK.prototype.fetchPoolState = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var client, creator, msg, fee, tx;
+            var data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, axios_1["default"].get("".concat(this.endpoint, "/kyve/registry/pool/").concat(id))];
+                    case 1:
+                        data = (_a.sent()).data;
+                        return [2 /*return*/, data.Pool];
+                }
+            });
+        });
+    };
+    KyveSDK.prototype.fund = function (id, amount, fee) {
+        if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
+        return __awaiter(this, void 0, void 0, function () {
+            var client, creator, msg, tx;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getClient()];
@@ -95,9 +113,33 @@ var KyveSDK = /** @class */ (function () {
                                 amount: amount
                             }
                         };
-                        fee = {
-                            amount: (0, stargate_1.coins)(0, "kyve"),
-                            gas: "200000"
+                        return [4 /*yield*/, client.signAndBroadcast(creator, [msg], fee)];
+                    case 3:
+                        tx = _a.sent();
+                        return [2 /*return*/, tx.transactionHash];
+                }
+            });
+        });
+    };
+    KyveSDK.prototype.stake = function (id, amount, fee) {
+        if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
+        return __awaiter(this, void 0, void 0, function () {
+            var client, creator, msg, tx;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getClient()];
+                    case 1:
+                        client = _a.sent();
+                        return [4 /*yield*/, this.wallet.getAddress()];
+                    case 2:
+                        creator = _a.sent();
+                        msg = {
+                            typeUrl: "/KYVENetwork.kyve.registry.MsgStakePool",
+                            value: {
+                                creator: creator,
+                                id: id,
+                                amount: amount
+                            }
                         };
                         return [4 /*yield*/, client.signAndBroadcast(creator, [msg], fee)];
                     case 3:
