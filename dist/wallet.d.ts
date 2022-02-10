@@ -1,4 +1,4 @@
-import { DirectSecp256k1HdWallet, OfflineDirectSigner, OfflineSigner } from "@cosmjs/proto-signing";
+import { DirectSecp256k1HdWallet, OfflineDirectSigner } from "@cosmjs/proto-signing";
 import { Window as KeplrWindow } from "@keplr-wallet/types";
 declare global {
     interface Window extends KeplrWindow {
@@ -8,7 +8,7 @@ interface Endpoints {
     rpc: string;
     rest: string;
 }
-declare type Signer = DirectSecp256k1HdWallet | (OfflineSigner & OfflineDirectSigner);
+declare type Signer = DirectSecp256k1HdWallet | OfflineDirectSigner;
 export declare class KyveWallet {
     private readonly mnemonic?;
     private readonly endpoints;

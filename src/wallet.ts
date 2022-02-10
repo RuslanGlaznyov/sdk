@@ -2,7 +2,6 @@ import {
   Coin,
   DirectSecp256k1HdWallet,
   OfflineDirectSigner,
-  OfflineSigner,
 } from "@cosmjs/proto-signing";
 import { Window as KeplrWindow } from "@keplr-wallet/types";
 import axios from "axios";
@@ -24,7 +23,7 @@ interface Endpoints {
   rpc: string;
   rest: string;
 }
-type Signer = DirectSecp256k1HdWallet | (OfflineSigner & OfflineDirectSigner);
+type Signer = DirectSecp256k1HdWallet | OfflineDirectSigner;
 
 export class KyveWallet {
   private signer?: Signer;
