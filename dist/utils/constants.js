@@ -3,7 +3,7 @@ exports.__esModule = true;
 exports.KYVE_WALLET_OPTIONS = exports.KYVE_KEPLR_CONFIG = exports.KYVE_ENDPOINTS = exports.KYVE_DEFAULT_FEE = exports.KYVE_DECIMALS = void 0;
 var proto_signing_1 = require("@cosmjs/proto-signing");
 var cosmos_1 = require("@keplr-wallet/cosmos");
-exports.KYVE_DECIMALS = 0;
+exports.KYVE_DECIMALS = 9;
 exports.KYVE_DEFAULT_FEE = {
     amount: (0, proto_signing_1.coins)(0, "kyve"),
     gas: "200000"

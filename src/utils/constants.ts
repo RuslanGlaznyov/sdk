@@ -2,7 +2,7 @@ import { coins, DirectSecp256k1HdWalletOptions } from "@cosmjs/proto-signing";
 import { Bech32Address } from "@keplr-wallet/cosmos";
 import { ChainInfo } from "@keplr-wallet/types";
 
-export const KYVE_DECIMALS = 0;
+export const KYVE_DECIMALS = 9;
 
 export const KYVE_DEFAULT_FEE = {
   amount: coins(0, "kyve"),
