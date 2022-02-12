@@ -10,8 +10,8 @@ export const KYVE_DEFAULT_FEE = {
 };
 
 export const KYVE_ENDPOINTS = {
-  rpc: "http://node.kyve.network:26657",
-  rest: "http://node.kyve.network:1317",
+  rpc: "https://rpc.node.kyve.network",
+  rest: "https://api.node.kyve.network",
 };
 
 export const KYVE_KEPLR_CONFIG: ChainInfo = {
