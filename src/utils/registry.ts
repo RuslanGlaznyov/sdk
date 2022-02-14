@@ -1,23 +1,15 @@
 import { Registry } from "@cosmjs/proto-signing";
-import { Field, Type } from "protobufjs";
+import { join } from "path";
+import { loadSync } from "protobufjs";
 
-//
-
-const MsgFundPool = new Type("MsgFundPool")
-  .add(new Field("creator", 1, "string"))
-  .add(new Field("id", 2, "uint64"))
-  .add(new Field("amount", 3, "uint64"));
-
-const MsgStakePool = new Type("MsgStakePool")
-  .add(new Field("creator", 1, "string"))
-  .add(new Field("id", 2, "uint64"))
-  .add(new Field("amount", 3, "uint64"));
-
-//
+const root = loadSync(join(__dirname, "../proto/tx.proto"));
 
 export default new Registry(
   Array.from([
-    [`/KYVENetwork.kyve.registry.${MsgFundPool.name}`, MsgFundPool],
-    [`/KYVENetwork.kyve.registry.${MsgStakePool.name}`, MsgStakePool],
+    [
+      `/KYVENetwork.kyve.registry.MsgCreatePool`,
+      root.lookupType("MsgCreatePool"),
+    ],
+    [`/KYVENetwork.kyve.registry.MsgFundPool`, root.lookupType("MsgFundPool")],
   ])
 );

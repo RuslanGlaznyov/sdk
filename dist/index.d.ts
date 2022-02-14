@@ -9,11 +9,11 @@ export declare class KyveSDK {
     constructor(endpoint: string, wallet: KyveWallet);
     getClient(): Promise<SigningStargateClient>;
     fetchPoolState(id: number): Promise<any>;
-    fund(id: number, amount: number, fee?: {
+    create(metadata: string, startHeight: number, bundleDelay: number, operatingCost: number, storageCost: number, bundleProposal: any, fee?: {
         amount: import("@cosmjs/stargate").Coin[];
         gas: string;
     }): Promise<string>;
-    stake(id: number, amount: number, fee?: {
+    fund(id: number, amount: number, fee?: {
         amount: import("@cosmjs/stargate").Coin[];
         gas: string;
     }): Promise<string>;

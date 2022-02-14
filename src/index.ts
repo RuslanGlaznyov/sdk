@@ -39,6 +39,35 @@ export class KyveSDK {
     return data.Pool;
   }
 
+  async create(
+    metadata: string,
+    startHeight: number,
+    bundleDelay: number,
+    operatingCost: number,
+    storageCost: number,
+    bundleProposal: any,
+    fee = KYVE_DEFAULT_FEE
+  ): Promise<string> {
+    const client = await this.getClient();
+    const creator = await this.wallet.getAddress();
+
+    const msg = {
+      typeUrl: "/KYVENetwork.kyve.registry.MsgCreatePool",
+      value: {
+        creator,
+        metadata,
+        startHeight,
+        bundleDelay,
+        operatingCost,
+        storageCost,
+        bundleProposal,
+      },
+    };
+
+    const tx = await client.signAndBroadcast(creator, [msg], fee);
+    return tx.transactionHash;
+  }
+
   async fund(
     id: number,
     amount: number,
@@ -49,27 +78,6 @@ export class KyveSDK {
 
     const msg = {
       typeUrl: "/KYVENetwork.kyve.registry.MsgFundPool",
-      value: {
-        creator,
-        id,
-        amount,
-      },
-    };
-
-    const tx = await client.signAndBroadcast(creator, [msg], fee);
-    return tx.transactionHash;
-  }
-
-  async stake(
-    id: number,
-    amount: number,
-    fee = KYVE_DEFAULT_FEE
-  ): Promise<string> {
-    const client = await this.getClient();
-    const creator = await this.wallet.getAddress();
-
-    const msg = {
-      typeUrl: "/KYVENetwork.kyve.registry.MsgStakePool",
       value: {
         creator,
         id,

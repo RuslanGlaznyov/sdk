@@ -5,7 +5,7 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "rimraf dist && tsc",
+    "build": "rimraf dist && copyfiles -f ./src/proto/* ./dist/proto && tsc",
     "format": "prettier --write ."
   },
   "dependencies": {
@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@keplr-wallet/types": "^0.9.12",
+    "copyfiles": "^2.4.1",
     "prettier": "^2.5.1",
     "rimraf": "^3.0.2",
     "typescript": "^4.5.5"

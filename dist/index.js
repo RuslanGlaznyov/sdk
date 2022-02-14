@@ -93,6 +93,38 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
+    KyveSDK.prototype.create = function (metadata, startHeight, bundleDelay, operatingCost, storageCost, bundleProposal, fee) {
+        if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
+        return __awaiter(this, void 0, void 0, function () {
+            var client, creator, msg, tx;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getClient()];
+                    case 1:
+                        client = _a.sent();
+                        return [4 /*yield*/, this.wallet.getAddress()];
+                    case 2:
+                        creator = _a.sent();
+                        msg = {
+                            typeUrl: "/KYVENetwork.kyve.registry.MsgCreatePool",
+                            value: {
+                                creator: creator,
+                                metadata: metadata,
+                                startHeight: startHeight,
+                                bundleDelay: bundleDelay,
+                                operatingCost: operatingCost,
+                                storageCost: storageCost,
+                                bundleProposal: bundleProposal
+                            }
+                        };
+                        return [4 /*yield*/, client.signAndBroadcast(creator, [msg], fee)];
+                    case 3:
+                        tx = _a.sent();
+                        return [2 /*return*/, tx.transactionHash];
+                }
+            });
+        });
+    };
     KyveSDK.prototype.fund = function (id, amount, fee) {
         if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
         return __awaiter(this, void 0, void 0, function () {
@@ -107,34 +139,6 @@ var KyveSDK = /** @class */ (function () {
                         creator = _a.sent();
                         msg = {
                             typeUrl: "/KYVENetwork.kyve.registry.MsgFundPool",
-                            value: {
-                                creator: creator,
-                                id: id,
-                                amount: amount
-                            }
-                        };
-                        return [4 /*yield*/, client.signAndBroadcast(creator, [msg], fee)];
-                    case 3:
-                        tx = _a.sent();
-                        return [2 /*return*/, tx.transactionHash];
-                }
-            });
-        });
-    };
-    KyveSDK.prototype.stake = function (id, amount, fee) {
-        if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
-        return __awaiter(this, void 0, void 0, function () {
-            var client, creator, msg, tx;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getClient()];
-                    case 1:
-                        client = _a.sent();
-                        return [4 /*yield*/, this.wallet.getAddress()];
-                    case 2:
-                        creator = _a.sent();
-                        msg = {
-                            typeUrl: "/KYVENetwork.kyve.registry.MsgStakePool",
                             value: {
                                 creator: creator,
                                 id: id,
