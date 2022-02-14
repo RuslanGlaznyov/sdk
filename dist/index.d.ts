@@ -17,4 +17,8 @@ export declare class KyveSDK {
         amount: import("@cosmjs/stargate").Coin[];
         gas: string;
     }): Promise<string>;
+    transfer(recipient: string, amount: number, fee?: {
+        amount: import("@cosmjs/stargate").Coin[];
+        gas: string;
+    }): Promise<string>;
 }

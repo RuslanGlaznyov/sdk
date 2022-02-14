@@ -1,8 +1,9 @@
-import { SigningStargateClient } from "@cosmjs/stargate";
-import { KyveWallet } from "./wallet";
-import { KYVE_DEFAULT_FEE } from "./utils/constants";
-import registry from "./utils/registry";
+import { coins, SigningStargateClient } from "@cosmjs/stargate";
 import axios from "axios";
+import { BigNumber } from "bignumber.js";
+import { KYVE_DECIMALS, KYVE_DEFAULT_FEE } from "./utils/constants";
+import registry from "./utils/registry";
+import { KyveWallet } from "./wallet";
 
 export { KYVE_DECIMALS } from "./utils/constants";
 export { KyveWallet } from "./wallet";
@@ -86,6 +87,27 @@ export class KyveSDK {
     };
 
     const tx = await client.signAndBroadcast(creator, [msg], fee);
+    return tx.transactionHash;
+  }
+
+  async transfer(
+    recipient: string,
+    amount: number,
+    fee = KYVE_DEFAULT_FEE
+  ): Promise<string> {
+    const client = await this.getClient();
+    const creator = await this.wallet.getAddress();
+
+    const parsedAmount = new BigNumber(amount)
+      .multipliedBy(new BigNumber(10).pow(KYVE_DECIMALS))
+      .toNumber();
+
+    const tx = await client.sendTokens(
+      creator,
+      recipient,
+      coins(parsedAmount, "kyve"),
+      fee
+    );
     return tx.transactionHash;
   }
 }

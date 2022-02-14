@@ -48,9 +48,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 exports.__esModule = true;
 exports.KyveSDK = exports.KyveWallet = exports.KYVE_DECIMALS = void 0;
 var stargate_1 = require("@cosmjs/stargate");
+var axios_1 = __importDefault(require("axios"));
+var bignumber_js_1 = require("bignumber.js");
 var constants_1 = require("./utils/constants");
 var registry_1 = __importDefault(require("./utils/registry"));
-var axios_1 = __importDefault(require("axios"));
 var constants_2 = require("./utils/constants");
 __createBinding(exports, constants_2, "KYVE_DECIMALS");
 var wallet_1 = require("./wallet");
@@ -146,6 +147,29 @@ var KyveSDK = /** @class */ (function () {
                             }
                         };
                         return [4 /*yield*/, client.signAndBroadcast(creator, [msg], fee)];
+                    case 3:
+                        tx = _a.sent();
+                        return [2 /*return*/, tx.transactionHash];
+                }
+            });
+        });
+    };
+    KyveSDK.prototype.transfer = function (recipient, amount, fee) {
+        if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
+        return __awaiter(this, void 0, void 0, function () {
+            var client, creator, parsedAmount, tx;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getClient()];
+                    case 1:
+                        client = _a.sent();
+                        return [4 /*yield*/, this.wallet.getAddress()];
+                    case 2:
+                        creator = _a.sent();
+                        parsedAmount = new bignumber_js_1.BigNumber(amount)
+                            .multipliedBy(new bignumber_js_1.BigNumber(10).pow(constants_1.KYVE_DECIMALS))
+                            .toNumber();
+                        return [4 /*yield*/, client.sendTokens(creator, recipient, (0, stargate_1.coins)(parsedAmount, "kyve"), fee)];
                     case 3:
                         tx = _a.sent();
                         return [2 /*return*/, tx.transactionHash];
