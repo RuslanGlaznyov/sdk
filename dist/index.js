@@ -177,6 +177,29 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
+    KyveSDK.prototype.isValidAddress = function (address) {
+        return __awaiter(this, void 0, void 0, function () {
+            var client, account, e_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getClient()];
+                    case 1:
+                        client = _a.sent();
+                        _a.label = 2;
+                    case 2:
+                        _a.trys.push([2, 4, , 5]);
+                        return [4 /*yield*/, client.getAccount(address)];
+                    case 3:
+                        account = _a.sent();
+                        return [2 /*return*/, true];
+                    case 4:
+                        e_1 = _a.sent();
+                        return [2 /*return*/, false];
+                    case 5: return [2 /*return*/];
+                }
+            });
+        });
+    };
     return KyveSDK;
 }());
 exports.KyveSDK = KyveSDK;

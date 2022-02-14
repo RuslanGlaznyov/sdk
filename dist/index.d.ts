@@ -21,4 +21,5 @@ export declare class KyveSDK {
         amount: import("@cosmjs/stargate").Coin[];
         gas: string;
     }): Promise<string>;
+    isValidAddress(address: string): Promise<boolean>;
 }

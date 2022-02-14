@@ -23,7 +23,6 @@ export class KyveSDK {
 
   async getClient(): Promise<SigningStargateClient> {
     if (!this.client) {
-
       this.client = await SigningStargateClient.connectWithSigner(
         this.endpoint,
         await this.wallet.getSigner(),
@@ -117,9 +116,8 @@ export class KyveSDK {
     try {
       const account = await client.getAccount(address);
       return true;
-    }catch (e) {
+    } catch (e) {
       return false;
     }
   }
-
 }
