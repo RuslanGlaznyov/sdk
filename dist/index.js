@@ -51,7 +51,7 @@ var stargate_1 = require("@cosmjs/stargate");
 var axios_1 = __importDefault(require("axios"));
 var bignumber_js_1 = require("bignumber.js");
 var constants_1 = require("./utils/constants");
-var registry_1 = __importDefault(require("./utils/registry"));
+var registry_1 = require("./utils/registry");
 var constants_2 = require("./utils/constants");
 __createBinding(exports, constants_2, "KYVE_DECIMALS");
 var wallet_1 = require("./wallet");
@@ -64,19 +64,24 @@ var KyveSDK = /** @class */ (function () {
     KyveSDK.prototype.getClient = function () {
         return __awaiter(this, void 0, void 0, function () {
             var _a, _b, _c, _d;
-            return __generator(this, function (_e) {
-                switch (_e.label) {
+            var _e;
+            return __generator(this, function (_f) {
+                switch (_f.label) {
                     case 0:
-                        if (!!this.client) return [3 /*break*/, 3];
+                        if (!!this.client) return [3 /*break*/, 4];
                         _a = this;
                         _c = (_b = stargate_1.SigningStargateClient).connectWithSigner;
                         _d = [this.endpoint];
                         return [4 /*yield*/, this.wallet.getSigner()];
-                    case 1: return [4 /*yield*/, _c.apply(_b, _d.concat([_e.sent(), { registry: registry_1["default"] }]))];
-                    case 2:
-                        _a.client = _e.sent();
-                        _e.label = 3;
-                    case 3: return [2 /*return*/, this.client];
+                    case 1:
+                        _d = _d.concat([_f.sent()]);
+                        _e = {};
+                        return [4 /*yield*/, (0, registry_1.createRegistry)()];
+                    case 2: return [4 /*yield*/, _c.apply(_b, _d.concat([(_e.registry = _f.sent(), _e)]))];
+                    case 3:
+                        _a.client = _f.sent();
+                        _f.label = 4;
+                    case 4: return [2 /*return*/, this.client];
                 }
             });
         });

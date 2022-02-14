@@ -2,7 +2,7 @@ import { coins, SigningStargateClient } from "@cosmjs/stargate";
 import axios from "axios";
 import { BigNumber } from "bignumber.js";
 import { KYVE_DECIMALS, KYVE_DEFAULT_FEE } from "./utils/constants";
-import registry from "./utils/registry";
+import { createRegistry } from "./utils/registry";
 import { KyveWallet } from "./wallet";
 
 export { KYVE_DECIMALS } from "./utils/constants";
@@ -26,7 +26,7 @@ export class KyveSDK {
       this.client = await SigningStargateClient.connectWithSigner(
         this.endpoint,
         await this.wallet.getSigner(),
-        { registry }
+        { registry: await createRegistry() }
       );
     }
 
