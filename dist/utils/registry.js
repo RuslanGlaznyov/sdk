@@ -35,15 +35,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 exports.__esModule = true;
 exports.createRegistry = void 0;
 var proto_signing_1 = require("@cosmjs/proto-signing");
+var path_1 = __importDefault(require("path"));
 var protobufjs_1 = require("protobufjs");
 var createRegistry = function () { return __awaiter(void 0, void 0, void 0, function () {
     var root;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, (0, protobufjs_1.load)("./src/proto/tx.proto")];
+            case 0: return [4 /*yield*/, (0, protobufjs_1.load)(path_1["default"].join(__dirname, "../proto/tx.proto"))];
             case 1:
                 root = _a.sent();
                 return [2 /*return*/, new proto_signing_1.Registry(Array.from([
