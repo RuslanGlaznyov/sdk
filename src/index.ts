@@ -1,9 +1,11 @@
-import { coins, SigningStargateClient } from "@cosmjs/stargate";
+import { coins, IndexedTx, SigningStargateClient } from "@cosmjs/stargate";
 import axios from "axios";
 import { BigNumber } from "bignumber.js";
 import { KYVE_DECIMALS, KYVE_DEFAULT_FEE } from "./utils/constants";
 import { createRegistry } from "./utils/registry";
 import { KyveWallet } from "./wallet";
+import { sha256 } from "@cosmjs/crypto";
+import { toHex } from "@cosmjs/encoding";
 
 export { KYVE_DECIMALS } from "./utils/constants";
 export { KyveWallet } from "./wallet";
@@ -111,13 +113,37 @@ export class KyveSDK {
     return tx.transactionHash;
   }
 
-  async isValidAddress(address: string) {
-    const client = await this.getClient();
-    try {
-      const account = await client.getAccount(address);
-      return true;
-    } catch (e) {
-      return false;
+  /**
+   * getLogs from all blocks within the range "fromBlock" (inclusive) and "toBlock" (inclusive)
+   * @param fromBlock (inclusive)
+   * @param toBlock (inclusive)
+   */
+  async getLogs(fromBlock: number, toBlock: number): Promise<IndexedTx[]> {
+    const client = this.client ?? (await this.getClient());
+
+    const transactions: any[] = [];
+
+    for (let i = fromBlock; i <= toBlock; i++) {
+      const block = await client.getBlock(i);
+      // Iterate transaction headers
+      for (const encodedTransaction of block.txs) {
+        // Calculate tx hash
+        const id = toHex(sha256(encodedTransaction));
+
+        // Fetch full transaction
+        const indexedTx = await client.getTx(id);
+
+        // Extract event logs
+        if (indexedTx != null) {
+          for (const eventWrapper of JSON.parse(indexedTx.rawLog)) {
+            for (const event of eventWrapper.events) {
+              transactions.push(event);
+            }
+          }
+        }
+      }
     }
+
+    return transactions;
   }
 }

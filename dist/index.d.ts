@@ -1,4 +1,4 @@
-import { SigningStargateClient } from "@cosmjs/stargate";
+import { IndexedTx, SigningStargateClient } from "@cosmjs/stargate";
 import { KyveWallet } from "./wallet";
 export { KYVE_DECIMALS } from "./utils/constants";
 export { KyveWallet } from "./wallet";
@@ -21,5 +21,10 @@ export declare class KyveSDK {
         amount: import("@cosmjs/stargate").Coin[];
         gas: string;
     }): Promise<string>;
-    isValidAddress(address: string): Promise<boolean>;
+    /**
+     * getLogs from all blocks within the range "fromBlock" (inclusive) and "toBlock" (inclusive)
+     * @param fromBlock (inclusive)
+     * @param toBlock (inclusive)
+     */
+    getLogs(fromBlock: number, toBlock: number): Promise<IndexedTx[]>;
 }
