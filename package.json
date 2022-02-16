@@ -15,6 +15,7 @@
     "@cosmjs/stargate": "^0.27.1",
     "@keplr-wallet/cosmos": "^0.9.12",
     "axios": "^0.25.0",
+    "bech32": "^2.0.0",
     "bignumber.js": "^9.0.2",
     "protobufjs": "^6.11.2"
   },

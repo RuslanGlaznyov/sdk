@@ -6,6 +6,7 @@ import { createRegistry } from "./utils/registry";
 import { KyveWallet } from "./wallet";
 import { sha256 } from "@cosmjs/crypto";
 import { toHex } from "@cosmjs/encoding";
+import * as bech32 from "bech32";
 
 export { KYVE_DECIMALS } from "./utils/constants";
 export { KyveWallet } from "./wallet";
@@ -145,5 +146,13 @@ export class KyveSDK {
     }
 
     return transactions;
+  }
+
+  isValidAddress(address: string): boolean {
+    try {
+      bech32.bech32.decode(address);
+      return true;
+    } catch {}
+    return false;
   }
 }

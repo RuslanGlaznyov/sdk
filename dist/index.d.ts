@@ -27,4 +27,5 @@ export declare class KyveSDK {
      * @param toBlock (inclusive)
      */
     getLogs(fromBlock: number, toBlock: number): Promise<IndexedTx[]>;
+    isValidAddress(address: string): boolean;
 }
