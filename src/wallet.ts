@@ -6,6 +6,8 @@ import {
 import { Window as KeplrWindow } from "@keplr-wallet/types";
 import axios from "axios";
 import { BigNumber } from "bignumber.js";
+// @ts-ignore
+import humanize from "humanize-number";
 import {
   KYVE_DECIMALS,
   KYVE_ENDPOINTS,
@@ -96,9 +98,11 @@ export class KyveWallet {
   }
 
   formatBalance(balance: string, decimals: number = 2): string {
-    return new BigNumber(balance)
-      .dividedBy(new BigNumber(10).exponentiatedBy(KYVE_DECIMALS))
-      .toFixed(decimals);
+    return humanize(
+      new BigNumber(balance)
+        .dividedBy(new BigNumber(10).exponentiatedBy(KYVE_DECIMALS))
+        .toFixed(decimals)
+    );
   }
 
   static async generate(): Promise<KyveWallet> {

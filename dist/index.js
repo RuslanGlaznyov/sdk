@@ -6,18 +6,6 @@ var __createBinding = (this && this.__createBinding) || (Object.create ? (functi
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
 }));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -66,7 +54,7 @@ var constants_1 = require("./utils/constants");
 var registry_1 = require("./utils/registry");
 var crypto_1 = require("@cosmjs/crypto");
 var encoding_1 = require("@cosmjs/encoding");
-var bech32 = __importStar(require("bech32"));
+var bech32_1 = require("bech32");
 var proto_signing_1 = require("@cosmjs/proto-signing");
 var types_1 = require("./types");
 var constants_2 = require("./utils/constants");
@@ -277,7 +265,7 @@ var KyveSDK = /** @class */ (function () {
     };
     KyveSDK.prototype.isValidAddress = function (address) {
         try {
-            bech32.decode(address);
+            bech32_1.bech32.decode(address);
             return true;
         }
         catch (_a) { }
