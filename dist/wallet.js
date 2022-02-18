@@ -53,6 +53,7 @@ exports.__esModule = true;
 exports.KyveWallet = void 0;
 var proto_signing_1 = require("@cosmjs/proto-signing");
 var axios_1 = __importDefault(require("axios"));
+var bignumber_js_1 = require("bignumber.js");
 var constants_1 = require("./utils/constants");
 var KyveWallet = /** @class */ (function () {
     function KyveWallet(mnemonic, endpoints) {
@@ -144,6 +145,12 @@ var KyveWallet = /** @class */ (function () {
                 }
             });
         });
+    };
+    KyveWallet.prototype.formatBalance = function (balance, decimals) {
+        if (decimals === void 0) { decimals = 2; }
+        return new bignumber_js_1.BigNumber(balance)
+            .dividedBy(new bignumber_js_1.BigNumber(10).exponentiatedBy(constants_1.KYVE_DECIMALS))
+            .toFixed(decimals);
     };
     KyveWallet.generate = function () {
         return __awaiter(this, void 0, void 0, function () {

@@ -19,6 +19,7 @@ export declare class KyveWallet {
     getAddress(): Promise<string>;
     getName(): Promise<string>;
     getBalance(): Promise<string>;
+    formatBalance(balance: string, decimals?: number): string;
     static generate(): Promise<KyveWallet>;
 }
 export {};
