@@ -1,4 +1,4 @@
-import { coins, IndexedTx, SigningStargateClient } from "@cosmjs/stargate";
+import { coins, SigningStargateClient } from "@cosmjs/stargate";
 import axios from "axios";
 import { BigNumber } from "bignumber.js";
 import { KYVE_DECIMALS, KYVE_DEFAULT_FEE } from "./utils/constants";
@@ -6,11 +6,9 @@ import { createRegistry } from "./utils/registry";
 import { KyveWallet } from "./wallet";
 import { sha256 } from "@cosmjs/crypto";
 import { toHex } from "@cosmjs/encoding";
-import * as bech32 from "bech32";
+import { bech32 } from "bech32";
 import { decodeTxRaw } from "@cosmjs/proto-signing";
 import { FullDecodedTransaction } from "./types";
-import { util } from "protobufjs";
-import decode = util.base64.decode;
 
 export { KYVE_DECIMALS } from "./utils/constants";
 export { KyveWallet } from "./wallet";
@@ -177,7 +175,7 @@ export class KyveSDK {
 
   isValidAddress(address: string): boolean {
     try {
-      bech32.bech32.decode(address);
+      bech32.decode(address);
       return true;
     } catch {}
     return false;
