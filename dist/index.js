@@ -277,7 +277,7 @@ var KyveSDK = /** @class */ (function () {
     };
     KyveSDK.prototype.isValidAddress = function (address) {
         try {
-            bech32.bech32.decode(address);
+            bech32.decode(address);
             return true;
         }
         catch (_a) { }

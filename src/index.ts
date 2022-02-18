@@ -177,7 +177,7 @@ export class KyveSDK {
 
   isValidAddress(address: string): boolean {
     try {
-      bech32.bech32.decode(address);
+      bech32.decode(address);
       return true;
     } catch {}
     return false;
