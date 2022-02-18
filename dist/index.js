@@ -67,6 +67,8 @@ var registry_1 = require("./utils/registry");
 var crypto_1 = require("@cosmjs/crypto");
 var encoding_1 = require("@cosmjs/encoding");
 var bech32 = __importStar(require("bech32"));
+var proto_signing_1 = require("@cosmjs/proto-signing");
+var types_1 = require("./types");
 var constants_2 = require("./utils/constants");
 __createBinding(exports, constants_2, "KYVE_DECIMALS");
 var wallet_1 = require("./wallet");
@@ -205,47 +207,63 @@ var KyveSDK = /** @class */ (function () {
     KyveSDK.prototype.getLogs = function (fromBlock, toBlock) {
         var _a;
         return __awaiter(this, void 0, void 0, function () {
-            var client, _b, transactions, i, block, _i, _c, encodedTransaction, id, indexedTx, _d, _e, eventWrapper, _f, _g, event_1;
-            return __generator(this, function (_h) {
-                switch (_h.label) {
+            var client, _b, transactions, i, block, _i, _c, encodedTransaction, id, fullDecodedTransaction, indexedTx, decodedRaw, _d, _e, msg, _f, _g, eventWrapper, _h, _j, event_1;
+            return __generator(this, function (_k) {
+                switch (_k.label) {
                     case 0:
                         if (!((_a = this.client) !== null && _a !== void 0)) return [3 /*break*/, 1];
                         _b = _a;
                         return [3 /*break*/, 3];
                     case 1: return [4 /*yield*/, this.getClient()];
                     case 2:
-                        _b = (_h.sent());
-                        _h.label = 3;
+                        _b = (_k.sent());
+                        _k.label = 3;
                     case 3:
                         client = _b;
                         transactions = [];
                         i = fromBlock;
-                        _h.label = 4;
+                        _k.label = 4;
                     case 4:
                         if (!(i <= toBlock)) return [3 /*break*/, 10];
                         return [4 /*yield*/, client.getBlock(i)];
                     case 5:
-                        block = _h.sent();
+                        block = _k.sent();
                         _i = 0, _c = block.txs;
-                        _h.label = 6;
+                        _k.label = 6;
                     case 6:
                         if (!(_i < _c.length)) return [3 /*break*/, 9];
                         encodedTransaction = _c[_i];
                         id = (0, encoding_1.toHex)((0, crypto_1.sha256)(encodedTransaction));
+                        fullDecodedTransaction = new types_1.FullDecodedTransaction();
                         return [4 /*yield*/, client.getTx(id)];
                     case 7:
-                        indexedTx = _h.sent();
-                        // Extract event logs
+                        indexedTx = _k.sent();
                         if (indexedTx != null) {
-                            for (_d = 0, _e = JSON.parse(indexedTx.rawLog); _d < _e.length; _d++) {
-                                eventWrapper = _e[_d];
-                                for (_f = 0, _g = eventWrapper.events; _f < _g.length; _f++) {
-                                    event_1 = _g[_f];
-                                    transactions.push(event_1);
+                            fullDecodedTransaction.indexedTx = indexedTx;
+                            decodedRaw = (0, proto_signing_1.decodeTxRaw)(indexedTx.tx);
+                            fullDecodedTransaction.messages = [];
+                            for (_d = 0, _e = decodedRaw.body.messages; _d < _e.length; _d++) {
+                                msg = _e[_d];
+                                fullDecodedTransaction.messages.push({
+                                    typeUrl: msg.typeUrl,
+                                    value: client.registry.decode({
+                                        typeUrl: msg.typeUrl,
+                                        value: msg.value
+                                    })
+                                });
+                            }
+                            fullDecodedTransaction.events = [];
+                            // Extract event logs
+                            for (_f = 0, _g = JSON.parse(indexedTx.rawLog); _f < _g.length; _f++) {
+                                eventWrapper = _g[_f];
+                                for (_h = 0, _j = eventWrapper.events; _h < _j.length; _h++) {
+                                    event_1 = _j[_h];
+                                    fullDecodedTransaction.events.push(event_1);
                                 }
                             }
                         }
-                        _h.label = 8;
+                        transactions.push(fullDecodedTransaction);
+                        _k.label = 8;
                     case 8:
                         _i++;
                         return [3 /*break*/, 6];

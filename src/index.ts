@@ -7,6 +7,10 @@ import { KyveWallet } from "./wallet";
 import { sha256 } from "@cosmjs/crypto";
 import { toHex } from "@cosmjs/encoding";
 import * as bech32 from "bech32";
+import { decodeTxRaw } from "@cosmjs/proto-signing";
+import { FullDecodedTransaction } from "./types";
+import { util } from "protobufjs";
+import decode = util.base64.decode;
 
 export { KYVE_DECIMALS } from "./utils/constants";
 export { KyveWallet } from "./wallet";
@@ -119,10 +123,13 @@ export class KyveSDK {
    * @param fromBlock (inclusive)
    * @param toBlock (inclusive)
    */
-  async getLogs(fromBlock: number, toBlock: number): Promise<IndexedTx[]> {
+  async getLogs(
+    fromBlock: number,
+    toBlock: number
+  ): Promise<FullDecodedTransaction[]> {
     const client = this.client ?? (await this.getClient());
 
-    const transactions: any[] = [];
+    const transactions: FullDecodedTransaction[] = [];
 
     for (let i = fromBlock; i <= toBlock; i++) {
       const block = await client.getBlock(i);
@@ -131,17 +138,37 @@ export class KyveSDK {
         // Calculate tx hash
         const id = toHex(sha256(encodedTransaction));
 
+        const fullDecodedTransaction = new FullDecodedTransaction();
+
         // Fetch full transaction
         const indexedTx = await client.getTx(id);
 
-        // Extract event logs
         if (indexedTx != null) {
+          fullDecodedTransaction.indexedTx = indexedTx;
+
+          const decodedRaw = decodeTxRaw(indexedTx.tx);
+          fullDecodedTransaction.messages = [];
+
+          for (const msg of decodedRaw.body.messages) {
+            fullDecodedTransaction.messages.push({
+              typeUrl: msg.typeUrl,
+              value: client.registry.decode({
+                typeUrl: msg.typeUrl,
+                value: msg.value,
+              }),
+            });
+          }
+
+          fullDecodedTransaction.events = [];
+          // Extract event logs
           for (const eventWrapper of JSON.parse(indexedTx.rawLog)) {
             for (const event of eventWrapper.events) {
-              transactions.push(event);
+              fullDecodedTransaction.events.push(event);
             }
           }
         }
+
+        transactions.push(fullDecodedTransaction);
       }
     }
 
