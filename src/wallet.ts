@@ -5,7 +5,9 @@ import {
 } from "@cosmjs/proto-signing";
 import { Window as KeplrWindow } from "@keplr-wallet/types";
 import axios from "axios";
+import { BigNumber } from "bignumber.js";
 import {
+  KYVE_DECIMALS,
   KYVE_ENDPOINTS,
   KYVE_KEPLR_CONFIG,
   KYVE_WALLET_OPTIONS,
@@ -91,6 +93,12 @@ export class KyveWallet {
     const coin = data.result.find((coin) => coin.denom === "kyve");
 
     return coin ? coin.amount : "0";
+  }
+
+  formatBalance(balance: string, decimals: number = 2): string {
+    return new BigNumber(balance)
+      .dividedBy(new BigNumber(10).exponentiatedBy(KYVE_DECIMALS))
+      .toFixed(decimals);
   }
 
   static async generate(): Promise<KyveWallet> {
