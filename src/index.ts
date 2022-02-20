@@ -8,7 +8,8 @@ import { sha256 } from "@cosmjs/crypto";
 import { toHex } from "@cosmjs/encoding";
 import { bech32 } from "bech32";
 import { decodeTxRaw } from "@cosmjs/proto-signing";
-import { FullDecodedTransaction } from "./types";
+import { FullDecodedTransaction } from "./types/transactions";
+import { MessageEvent } from "./types/events";
 
 export { KYVE_DECIMALS } from "./utils/constants";
 export { KyveWallet } from "./wallet";
@@ -117,11 +118,11 @@ export class KyveSDK {
   }
 
   /**
-   * getLogs from all blocks within the range "fromBlock" (inclusive) and "toBlock" (inclusive)
+   * get message-logs from all blocks within the range "fromBlock" (inclusive) and "toBlock" (inclusive)
    * @param fromBlock (inclusive)
    * @param toBlock (inclusive)
    */
-  async getLogs(
+  async getDecodedTransactions(
     fromBlock: number,
     toBlock: number
   ): Promise<FullDecodedTransaction[]> {
@@ -131,6 +132,7 @@ export class KyveSDK {
 
     for (let i = fromBlock; i <= toBlock; i++) {
       const block = await client.getBlock(i);
+
       // Iterate transaction headers
       for (const encodedTransaction of block.txs) {
         // Calculate tx hash
@@ -143,6 +145,9 @@ export class KyveSDK {
 
         if (indexedTx != null) {
           fullDecodedTransaction.indexedTx = indexedTx;
+
+          fullDecodedTransaction.blockTime = new Date(block.header.time);
+          fullDecodedTransaction.blockNumber = block.header.height;
 
           const decodedRaw = decodeTxRaw(indexedTx.tx);
           fullDecodedTransaction.messages = [];
@@ -171,6 +176,29 @@ export class KyveSDK {
     }
 
     return transactions;
+  }
+
+  async getMessageEventLogs(
+    fromBlock: number,
+    toBlock: number
+  ): Promise<MessageEvent[]> {
+    const decodedTransactions = await this.getDecodedTransactions(
+      fromBlock,
+      toBlock
+    );
+
+    const events = [];
+
+    for (const tx of decodedTransactions) {
+      if (tx.events) {
+        const eventsArray = tx.events.find(
+          (value) => value.type == "message"
+        ).attributes;
+        events.push(new MessageEvent(eventsArray, tx));
+      }
+    }
+
+    return events;
   }
 
   isValidAddress(address: string): boolean {

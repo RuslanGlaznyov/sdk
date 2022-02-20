@@ -1,6 +1,7 @@
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { KyveWallet } from "./wallet";
-import { FullDecodedTransaction } from "./types";
+import { FullDecodedTransaction } from "./types/transactions";
+import { MessageEvent } from "./types/events";
 export { KYVE_DECIMALS } from "./utils/constants";
 export { KyveWallet } from "./wallet";
 export declare class KyveSDK {
@@ -23,10 +24,11 @@ export declare class KyveSDK {
         gas: string;
     }): Promise<string>;
     /**
-     * getLogs from all blocks within the range "fromBlock" (inclusive) and "toBlock" (inclusive)
+     * get message-logs from all blocks within the range "fromBlock" (inclusive) and "toBlock" (inclusive)
      * @param fromBlock (inclusive)
      * @param toBlock (inclusive)
      */
-    getLogs(fromBlock: number, toBlock: number): Promise<FullDecodedTransaction[]>;
+    getDecodedTransactions(fromBlock: number, toBlock: number): Promise<FullDecodedTransaction[]>;
+    getMessageEventLogs(fromBlock: number, toBlock: number): Promise<MessageEvent[]>;
     isValidAddress(address: string): boolean;
 }

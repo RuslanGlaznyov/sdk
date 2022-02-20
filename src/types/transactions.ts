@@ -6,4 +6,7 @@ export class FullDecodedTransaction {
   messages?: any[];
 
   events?: any[];
+
+  blockNumber?: number;
+  blockTime?: Date;
 }

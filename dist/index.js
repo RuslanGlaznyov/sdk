@@ -56,7 +56,8 @@ var crypto_1 = require("@cosmjs/crypto");
 var encoding_1 = require("@cosmjs/encoding");
 var bech32_1 = require("bech32");
 var proto_signing_1 = require("@cosmjs/proto-signing");
-var types_1 = require("./types");
+var transactions_1 = require("./types/transactions");
+var events_1 = require("./types/events");
 var constants_2 = require("./utils/constants");
 __createBinding(exports, constants_2, "KYVE_DECIMALS");
 var wallet_1 = require("./wallet");
@@ -188,11 +189,11 @@ var KyveSDK = /** @class */ (function () {
         });
     };
     /**
-     * getLogs from all blocks within the range "fromBlock" (inclusive) and "toBlock" (inclusive)
+     * get message-logs from all blocks within the range "fromBlock" (inclusive) and "toBlock" (inclusive)
      * @param fromBlock (inclusive)
      * @param toBlock (inclusive)
      */
-    KyveSDK.prototype.getLogs = function (fromBlock, toBlock) {
+    KyveSDK.prototype.getDecodedTransactions = function (fromBlock, toBlock) {
         var _a;
         return __awaiter(this, void 0, void 0, function () {
             var client, _b, transactions, i, block, _i, _c, encodedTransaction, id, fullDecodedTransaction, indexedTx, decodedRaw, _d, _e, msg, _f, _g, eventWrapper, _h, _j, event_1;
@@ -222,12 +223,14 @@ var KyveSDK = /** @class */ (function () {
                         if (!(_i < _c.length)) return [3 /*break*/, 9];
                         encodedTransaction = _c[_i];
                         id = (0, encoding_1.toHex)((0, crypto_1.sha256)(encodedTransaction));
-                        fullDecodedTransaction = new types_1.FullDecodedTransaction();
+                        fullDecodedTransaction = new transactions_1.FullDecodedTransaction();
                         return [4 /*yield*/, client.getTx(id)];
                     case 7:
                         indexedTx = _k.sent();
                         if (indexedTx != null) {
                             fullDecodedTransaction.indexedTx = indexedTx;
+                            fullDecodedTransaction.blockTime = new Date(block.header.time);
+                            fullDecodedTransaction.blockNumber = block.header.height;
                             decodedRaw = (0, proto_signing_1.decodeTxRaw)(indexedTx.tx);
                             fullDecodedTransaction.messages = [];
                             for (_d = 0, _e = decodedRaw.body.messages; _d < _e.length; _d++) {
@@ -259,6 +262,27 @@ var KyveSDK = /** @class */ (function () {
                         i++;
                         return [3 /*break*/, 4];
                     case 10: return [2 /*return*/, transactions];
+                }
+            });
+        });
+    };
+    KyveSDK.prototype.getMessageEventLogs = function (fromBlock, toBlock) {
+        return __awaiter(this, void 0, void 0, function () {
+            var decodedTransactions, events, _i, decodedTransactions_1, tx, eventsArray;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getDecodedTransactions(fromBlock, toBlock)];
+                    case 1:
+                        decodedTransactions = _a.sent();
+                        events = [];
+                        for (_i = 0, decodedTransactions_1 = decodedTransactions; _i < decodedTransactions_1.length; _i++) {
+                            tx = decodedTransactions_1[_i];
+                            if (tx.events) {
+                                eventsArray = tx.events.find(function (value) { return value.type == "message"; }).attributes;
+                                events.push(new events_1.MessageEvent(eventsArray, tx));
+                            }
+                        }
+                        return [2 /*return*/, events];
                 }
             });
         });
