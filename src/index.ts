@@ -153,22 +153,27 @@ export class KyveSDK {
           fullDecodedTransaction.messages = [];
 
           for (const msg of decodedRaw.body.messages) {
-            fullDecodedTransaction.messages.push({
-              typeUrl: msg.typeUrl,
-              value: client.registry.decode({
+            if (msg.typeUrl.startsWith("/kyve")) {
+              fullDecodedTransaction.messages.push({
                 typeUrl: msg.typeUrl,
-                value: msg.value,
-              }),
-            });
+                value: client.registry.decode({
+                  typeUrl: msg.typeUrl,
+                  value: msg.value,
+                }),
+              });
+            }
           }
 
           fullDecodedTransaction.events = [];
           // Extract event logs
-          for (const eventWrapper of JSON.parse(indexedTx.rawLog)) {
-            for (const event of eventWrapper.events) {
-              fullDecodedTransaction.events.push(event);
+
+          try {
+            for (const eventWrapper of JSON.parse(indexedTx.rawLog)) {
+              for (const event of eventWrapper.events) {
+                fullDecodedTransaction.events.push(event);
+              }
             }
-          }
+          } catch (e) {}
         }
 
         transactions.push(fullDecodedTransaction);
@@ -190,11 +195,17 @@ export class KyveSDK {
     const events = [];
 
     for (const tx of decodedTransactions) {
-      if (tx.events) {
-        const eventsArray = tx.events.find(
-          (value) => value.type == "message"
-        ).attributes;
-        events.push(new MessageEvent(eventsArray, tx));
+      if (tx.events && tx.events.length > 0) {
+        const eventsArray = tx.events.find((value) => value.type == "message")
+          .attributes as any[];
+
+        if (
+          eventsArray.find((value) => value.key == "module") &&
+          eventsArray.find((value) => value.key == "action") &&
+          eventsArray.find((value) => value.key == "sender")
+        ) {
+          events.push(new MessageEvent(eventsArray, tx));
+        }
       }
     }
 

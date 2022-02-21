@@ -59,6 +59,30 @@ var createRegistry = function () { return __awaiter(void 0, void 0, void 0, func
                             "/KYVENetwork.kyve.registry.MsgFundPool",
                             root.lookupType("MsgFundPool"),
                         ],
+                        [
+                            "/KYVENetwork.kyve.registry.MsgDefundPool",
+                            root.lookupType("MsgDefundPool"),
+                        ],
+                        [
+                            "/KYVENetwork.kyve.registry.MsgStakePool",
+                            root.lookupType("MsgStakePool"),
+                        ],
+                        [
+                            "/KYVENetwork.kyve.registry.MsgUnstakePool",
+                            root.lookupType("MsgUnstakePool"),
+                        ],
+                        [
+                            "/KYVENetwork.kyve.registry.MsgClaimUploaderRole",
+                            root.lookupType("MsgClaimUploaderRole"),
+                        ],
+                        [
+                            "/KYVENetwork.kyve.registry.MsgSubmitBundleProposal",
+                            root.lookupType("MsgSubmitBundleProposal"),
+                        ],
+                        [
+                            "/KYVENetwork.kyve.registry.MsgVoteProposal",
+                            root.lookupType("MsgVoteProposal"),
+                        ],
                     ]))];
         }
     });

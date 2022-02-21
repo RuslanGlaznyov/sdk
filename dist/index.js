@@ -235,23 +235,28 @@ var KyveSDK = /** @class */ (function () {
                             fullDecodedTransaction.messages = [];
                             for (_d = 0, _e = decodedRaw.body.messages; _d < _e.length; _d++) {
                                 msg = _e[_d];
-                                fullDecodedTransaction.messages.push({
-                                    typeUrl: msg.typeUrl,
-                                    value: client.registry.decode({
+                                if (msg.typeUrl.startsWith("/kyve")) {
+                                    fullDecodedTransaction.messages.push({
                                         typeUrl: msg.typeUrl,
-                                        value: msg.value
-                                    })
-                                });
+                                        value: client.registry.decode({
+                                            typeUrl: msg.typeUrl,
+                                            value: msg.value
+                                        })
+                                    });
+                                }
                             }
                             fullDecodedTransaction.events = [];
                             // Extract event logs
-                            for (_f = 0, _g = JSON.parse(indexedTx.rawLog); _f < _g.length; _f++) {
-                                eventWrapper = _g[_f];
-                                for (_h = 0, _j = eventWrapper.events; _h < _j.length; _h++) {
-                                    event_1 = _j[_h];
-                                    fullDecodedTransaction.events.push(event_1);
+                            try {
+                                for (_f = 0, _g = JSON.parse(indexedTx.rawLog); _f < _g.length; _f++) {
+                                    eventWrapper = _g[_f];
+                                    for (_h = 0, _j = eventWrapper.events; _h < _j.length; _h++) {
+                                        event_1 = _j[_h];
+                                        fullDecodedTransaction.events.push(event_1);
+                                    }
                                 }
                             }
+                            catch (e) { }
                         }
                         transactions.push(fullDecodedTransaction);
                         _k.label = 8;
@@ -277,9 +282,14 @@ var KyveSDK = /** @class */ (function () {
                         events = [];
                         for (_i = 0, decodedTransactions_1 = decodedTransactions; _i < decodedTransactions_1.length; _i++) {
                             tx = decodedTransactions_1[_i];
-                            if (tx.events) {
-                                eventsArray = tx.events.find(function (value) { return value.type == "message"; }).attributes;
-                                events.push(new events_1.MessageEvent(eventsArray, tx));
+                            if (tx.events && tx.events.length > 0) {
+                                eventsArray = tx.events.find(function (value) { return value.type == "message"; })
+                                    .attributes;
+                                if (eventsArray.find(function (value) { return value.key == "module"; }) &&
+                                    eventsArray.find(function (value) { return value.key == "action"; }) &&
+                                    eventsArray.find(function (value) { return value.key == "sender"; })) {
+                                    events.push(new events_1.MessageEvent(eventsArray, tx));
+                                }
                             }
                         }
                         return [2 /*return*/, events];
