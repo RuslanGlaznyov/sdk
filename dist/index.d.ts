@@ -2,6 +2,7 @@ import { SigningStargateClient } from "@cosmjs/stargate";
 import { KyveWallet } from "./wallet";
 import { FullDecodedTransaction } from "./types/transactions";
 import { MessageEvent } from "./types/events";
+import { StdSignature } from "@cosmjs/launchpad/build/types";
 export { KYVE_DECIMALS } from "./utils/constants";
 export { KyveWallet } from "./wallet";
 export declare class KyveSDK {
@@ -31,4 +32,7 @@ export declare class KyveSDK {
     getDecodedTransactions(fromBlock: number, toBlock: number): Promise<FullDecodedTransaction[]>;
     getMessageEventLogs(fromBlock: number, toBlock: number): Promise<MessageEvent[]>;
     isValidAddress(address: string): boolean;
+    signString(message: string): Promise<StdSignature>;
+    verifyString(signature: string, data: string, pubKey: string): Promise<boolean>;
+    getAddressFromPubKey(pubKey: string): string;
 }

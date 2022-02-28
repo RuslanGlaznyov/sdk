@@ -58,6 +58,8 @@ var bech32_1 = require("bech32");
 var proto_signing_1 = require("@cosmjs/proto-signing");
 var transactions_1 = require("./types/transactions");
 var events_1 = require("./types/events");
+var cosmos_1 = require("@keplr-wallet/cosmos");
+var addresses_1 = require("@cosmjs/amino/build/addresses");
 var constants_2 = require("./utils/constants");
 __createBinding(exports, constants_2, "KYVE_DECIMALS");
 var wallet_1 = require("./wallet");
@@ -304,6 +306,40 @@ var KyveSDK = /** @class */ (function () {
         }
         catch (_a) { }
         return false;
+    };
+    KyveSDK.prototype.signString = function (message) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, _b, _c, _d;
+            return __generator(this, function (_e) {
+                switch (_e.label) {
+                    case 0:
+                        if (!window.keplr) return [3 /*break*/, 5];
+                        if (!(window === null || window === void 0)) return [3 /*break*/, 1];
+                        _a = void 0;
+                        return [3 /*break*/, 3];
+                    case 1:
+                        _c = (_b = window.keplr).signArbitrary;
+                        _d = ["kyve"];
+                        return [4 /*yield*/, this.wallet.getAddress()];
+                    case 2:
+                        _a = _c.apply(_b, _d.concat([_e.sent(), message]));
+                        _e.label = 3;
+                    case 3: return [4 /*yield*/, (_a)];
+                    case 4: return [2 /*return*/, _e.sent()];
+                    case 5: throw new Error("Keplr wallet not installed.");
+                }
+            });
+        });
+    };
+    KyveSDK.prototype.verifyString = function (signature, data, pubKey) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, (0, cosmos_1.verifyADR36Amino)("kyve", this.getAddressFromPubKey(pubKey), new TextEncoder().encode(data), (0, encoding_1.fromBase64)(pubKey), (0, encoding_1.fromBase64)(signature))];
+            });
+        });
+    };
+    KyveSDK.prototype.getAddressFromPubKey = function (pubKey) {
+        return (0, addresses_1.pubkeyToAddress)({ type: "tendermint/PubKeySecp256k1", value: pubKey }, "kyve");
     };
     return KyveSDK;
 }());

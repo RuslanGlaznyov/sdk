@@ -31,14 +31,15 @@ export class MessageEvent {
     if (
       this.action == "Funded" ||
       this.action == "Defunded" ||
-      this.args == "Staked" ||
-      this.args == "Unstaked"
+      this.action == "Staked" ||
+      this.action == "Unstaked"
     ) {
       this.args.creator = this.get("Creator");
-      this.args.poolId = this.get("Id");
+      this.args.poolId = this.get("PoolId");
       this.args.amount = this.get("Amount");
     } else if (this.action == "ProposalEnded") {
       this.args.bundleId = this.get("BundleId");
+      this.args.bundleId = this.get("PoolId");
       this.args.byteSize = this.get("ByteSize");
       this.args.uploader = this.get("Uploader");
       this.args.nextUploader = this.get("NextUploader");
@@ -50,7 +51,7 @@ export class MessageEvent {
       this.args.status = this.get("Status");
     } else if (this.action == "Voted") {
       this.args.creator = this.get("Creator");
-      this.args.poolId = this.get("Id");
+      this.args.poolId = this.get("PoolId");
       this.args.bundleId = this.get("BundleId");
       this.args.support = this.get("Support");
     }
