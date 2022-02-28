@@ -5,11 +5,14 @@ import { KYVE_DECIMALS, KYVE_DEFAULT_FEE } from "./utils/constants";
 import { createRegistry } from "./utils/registry";
 import { KyveWallet } from "./wallet";
 import { sha256 } from "@cosmjs/crypto";
-import { toHex } from "@cosmjs/encoding";
+import { fromBase64, toHex } from "@cosmjs/encoding";
 import { bech32 } from "bech32";
 import { decodeTxRaw } from "@cosmjs/proto-signing";
 import { FullDecodedTransaction } from "./types/transactions";
 import { MessageEvent } from "./types/events";
+import { cosmos, verifyADR36Amino } from "@keplr-wallet/cosmos";
+import { StdSignature } from "@cosmjs/launchpad/build/types";
+import { pubkeyToAddress } from "@cosmjs/amino/build/addresses";
 
 export { KYVE_DECIMALS } from "./utils/constants";
 export { KyveWallet } from "./wallet";
@@ -218,5 +221,37 @@ export class KyveSDK {
       return true;
     } catch {}
     return false;
+  }
+
+  async signString(message: string): Promise<StdSignature> {
+    if (window.keplr) {
+      return await window?.keplr.signArbitrary(
+        "kyve",
+        await this.wallet.getAddress(),
+        message
+      );
+    }
+    throw new Error("Keplr wallet not installed.");
+  }
+
+  async verifyString(
+    signature: string,
+    data: string,
+    pubKey: string
+  ): Promise<boolean> {
+    return verifyADR36Amino(
+      "kyve",
+      this.getAddressFromPubKey(pubKey),
+      new TextEncoder().encode(data),
+      fromBase64(pubKey),
+      fromBase64(signature)
+    );
+  }
+
+  getAddressFromPubKey(pubKey: string) {
+    return pubkeyToAddress(
+      { type: "tendermint/PubKeySecp256k1", value: pubKey },
+      "kyve"
+    );
   }
 }
