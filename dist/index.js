@@ -60,6 +60,7 @@ var transactions_1 = require("./types/transactions");
 var events_1 = require("./types/events");
 var cosmos_1 = require("@keplr-wallet/cosmos");
 var addresses_1 = require("@cosmjs/amino/build/addresses");
+var tx_1 = require("cosmjs-types/cosmos/tx/v1beta1/tx");
 var constants_2 = require("./utils/constants");
 __createBinding(exports, constants_2, "KYVE_DECIMALS");
 var wallet_1 = require("./wallet");
@@ -142,7 +143,7 @@ var KyveSDK = /** @class */ (function () {
     KyveSDK.prototype.fund = function (id, amount, fee) {
         if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
         return __awaiter(this, void 0, void 0, function () {
-            var client, creator, msg, tx;
+            var client, creator, msg, txRaw, txBytes;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getClient()];
@@ -159,10 +160,14 @@ var KyveSDK = /** @class */ (function () {
                                 amount: amount.toString()
                             }
                         };
-                        return [4 /*yield*/, client.signAndBroadcast(creator, [msg], fee)];
+                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
                     case 3:
-                        tx = _a.sent();
-                        return [2 /*return*/, tx.transactionHash];
+                        txRaw = _a.sent();
+                        txBytes = tx_1.TxRaw.encode(txRaw).finish();
+                        return [2 /*return*/, {
+                                transactionHash: (0, encoding_1.toHex)((0, crypto_1.sha256)(txBytes)),
+                                transactionBroadcast: client.broadcastTx(txBytes)
+                            }];
                 }
             });
         });

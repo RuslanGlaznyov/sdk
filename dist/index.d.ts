@@ -1,4 +1,4 @@
-import { SigningStargateClient } from "@cosmjs/stargate";
+import { DeliverTxResponse, SigningStargateClient } from "@cosmjs/stargate";
 import { BigNumber } from "bignumber.js";
 import { KyveWallet } from "./wallet";
 import { FullDecodedTransaction } from "./types/transactions";
@@ -20,7 +20,10 @@ export declare class KyveSDK {
     fund(id: number | string, amount: BigNumber, fee?: {
         amount: import("@cosmjs/stargate").Coin[];
         gas: string;
-    }): Promise<string>;
+    }): Promise<{
+        transactionHash: string;
+        transactionBroadcast: Promise<DeliverTxResponse>;
+    }>;
     defund(id: number | string, amount: BigNumber, fee?: {
         amount: import("@cosmjs/stargate").Coin[];
         gas: string;

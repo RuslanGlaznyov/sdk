@@ -1,4 +1,9 @@
-import { coins, SigningStargateClient } from "@cosmjs/stargate";
+import {
+  coins,
+  DeliverTxResponse,
+  SigningStargateClient,
+  StargateClient,
+} from "@cosmjs/stargate";
 import axios from "axios";
 import { BigNumber } from "bignumber.js";
 import { KYVE_DECIMALS, KYVE_DEFAULT_FEE } from "./utils/constants";
@@ -10,9 +15,10 @@ import { bech32 } from "bech32";
 import { decodeTxRaw } from "@cosmjs/proto-signing";
 import { FullDecodedTransaction } from "./types/transactions";
 import { MessageEvent } from "./types/events";
-import { cosmos, verifyADR36Amino } from "@keplr-wallet/cosmos";
+import { verifyADR36Amino } from "@keplr-wallet/cosmos";
 import { StdSignature } from "@cosmjs/launchpad/build/types";
 import { pubkeyToAddress } from "@cosmjs/amino/build/addresses";
+import { TxRaw } from "cosmjs-types/cosmos/tx/v1beta1/tx";
 
 export { KYVE_DECIMALS } from "./utils/constants";
 export { KyveWallet } from "./wallet";
@@ -82,7 +88,10 @@ export class KyveSDK {
     id: number | string,
     amount: BigNumber,
     fee = KYVE_DEFAULT_FEE
-  ): Promise<string> {
+  ): Promise<{
+    transactionHash: string;
+    transactionBroadcast: Promise<DeliverTxResponse>;
+  }> {
     const client = await this.getClient();
     const creator = await this.wallet.getAddress();
 
@@ -95,8 +104,13 @@ export class KyveSDK {
       },
     };
 
-    const tx = await client.signAndBroadcast(creator, [msg], fee);
-    return tx.transactionHash;
+    const txRaw = await client.sign(creator, [msg], fee, "");
+    const txBytes = TxRaw.encode(txRaw).finish();
+
+    return {
+      transactionHash: toHex(sha256(txBytes)),
+      transactionBroadcast: client.broadcastTx(txBytes),
+    };
   }
 
   async defund(
