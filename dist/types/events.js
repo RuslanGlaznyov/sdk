@@ -27,7 +27,7 @@ var MessageEvent = /** @class */ (function () {
         }
         else if (this.action == "ProposalEnded") {
             this.args.bundleId = this.get("BundleId");
-            this.args.bundleId = this.get("PoolId");
+            this.args.poolId = this.get("PoolId");
             this.args.byteSize = this.get("ByteSize");
             this.args.uploader = this.get("Uploader");
             this.args.nextUploader = this.get("NextUploader");

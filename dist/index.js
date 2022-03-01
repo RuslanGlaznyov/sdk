@@ -156,7 +156,35 @@ var KyveSDK = /** @class */ (function () {
                             value: {
                                 creator: creator,
                                 id: id,
-                                amount: amount
+                                amount: amount.toString()
+                            }
+                        };
+                        return [4 /*yield*/, client.signAndBroadcast(creator, [msg], fee)];
+                    case 3:
+                        tx = _a.sent();
+                        return [2 /*return*/, tx.transactionHash];
+                }
+            });
+        });
+    };
+    KyveSDK.prototype.defund = function (id, amount, fee) {
+        if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
+        return __awaiter(this, void 0, void 0, function () {
+            var client, creator, msg, tx;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getClient()];
+                    case 1:
+                        client = _a.sent();
+                        return [4 /*yield*/, this.wallet.getAddress()];
+                    case 2:
+                        creator = _a.sent();
+                        msg = {
+                            typeUrl: "/KYVENetwork.kyve.registry.MsgDefundPool",
+                            value: {
+                                creator: creator,
+                                id: id,
+                                amount: amount.toString()
                             }
                         };
                         return [4 /*yield*/, client.signAndBroadcast(creator, [msg], fee)];
