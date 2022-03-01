@@ -108,7 +108,7 @@ export class KyveSDK {
     const txBytes = TxRaw.encode(txRaw).finish();
 
     return {
-      transactionHash: toHex(sha256(txBytes)),
+      transactionHash: toHex(sha256(txBytes)).toUpperCase(),
       transactionBroadcast: client.broadcastTx(txBytes),
     };
   }
@@ -117,7 +117,10 @@ export class KyveSDK {
     id: number | string,
     amount: BigNumber,
     fee = KYVE_DEFAULT_FEE
-  ): Promise<string> {
+  ): Promise<{
+    transactionHash: string;
+    transactionBroadcast: Promise<DeliverTxResponse>;
+  }> {
     const client = await this.getClient();
     const creator = await this.wallet.getAddress();
 
@@ -130,8 +133,13 @@ export class KyveSDK {
       },
     };
 
-    const tx = await client.signAndBroadcast(creator, [msg], fee);
-    return tx.transactionHash;
+    const txRaw = await client.sign(creator, [msg], fee, "");
+    const txBytes = TxRaw.encode(txRaw).finish();
+
+    return {
+      transactionHash: toHex(sha256(txBytes)).toUpperCase(),
+      transactionBroadcast: client.broadcastTx(txBytes),
+    };
   }
 
   async transfer(

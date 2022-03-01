@@ -27,7 +27,10 @@ export declare class KyveSDK {
     defund(id: number | string, amount: BigNumber, fee?: {
         amount: import("@cosmjs/stargate").Coin[];
         gas: string;
-    }): Promise<string>;
+    }): Promise<{
+        transactionHash: string;
+        transactionBroadcast: Promise<DeliverTxResponse>;
+    }>;
     transfer(recipient: string, amount: number, fee?: {
         amount: import("@cosmjs/stargate").Coin[];
         gas: string;
