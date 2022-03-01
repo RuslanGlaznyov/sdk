@@ -79,8 +79,8 @@ export class KyveSDK {
   }
 
   async fund(
-    id: number,
-    amount: number,
+    id: number | string,
+    amount: BigNumber,
     fee = KYVE_DEFAULT_FEE
   ): Promise<string> {
     const client = await this.getClient();
@@ -91,7 +91,28 @@ export class KyveSDK {
       value: {
         creator,
         id,
-        amount,
+        amount: amount.toString(),
+      },
+    };
+
+    const tx = await client.signAndBroadcast(creator, [msg], fee);
+    return tx.transactionHash;
+  }
+
+  async defund(
+    id: number | string,
+    amount: BigNumber,
+    fee = KYVE_DEFAULT_FEE
+  ): Promise<string> {
+    const client = await this.getClient();
+    const creator = await this.wallet.getAddress();
+
+    const msg = {
+      typeUrl: "/KYVENetwork.kyve.registry.MsgDefundPool",
+      value: {
+        creator,
+        id,
+        amount: amount.toString(),
       },
     };
 
