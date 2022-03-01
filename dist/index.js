@@ -204,6 +204,70 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
+    KyveSDK.prototype.stake = function (id, amount, fee) {
+        if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
+        return __awaiter(this, void 0, void 0, function () {
+            var client, creator, msg, txRaw, txBytes;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getClient()];
+                    case 1:
+                        client = _a.sent();
+                        return [4 /*yield*/, this.wallet.getAddress()];
+                    case 2:
+                        creator = _a.sent();
+                        msg = {
+                            typeUrl: "/KYVENetwork.kyve.registry.MsgStakePool",
+                            value: {
+                                creator: creator,
+                                id: id,
+                                amount: amount.toString()
+                            }
+                        };
+                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                    case 3:
+                        txRaw = _a.sent();
+                        txBytes = tx_1.TxRaw.encode(txRaw).finish();
+                        return [2 /*return*/, {
+                                transactionHash: (0, encoding_1.toHex)((0, crypto_1.sha256)(txBytes)).toUpperCase(),
+                                transactionBroadcast: client.broadcastTx(txBytes)
+                            }];
+                }
+            });
+        });
+    };
+    KyveSDK.prototype.unstake = function (id, amount, fee) {
+        if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
+        return __awaiter(this, void 0, void 0, function () {
+            var client, creator, msg, txRaw, txBytes;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getClient()];
+                    case 1:
+                        client = _a.sent();
+                        return [4 /*yield*/, this.wallet.getAddress()];
+                    case 2:
+                        creator = _a.sent();
+                        msg = {
+                            typeUrl: "/KYVENetwork.kyve.registry.MsgUnstakePool",
+                            value: {
+                                creator: creator,
+                                id: id,
+                                amount: amount.toString()
+                            }
+                        };
+                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                    case 3:
+                        txRaw = _a.sent();
+                        txBytes = tx_1.TxRaw.encode(txRaw).finish();
+                        return [2 /*return*/, {
+                                transactionHash: (0, encoding_1.toHex)((0, crypto_1.sha256)(txBytes)).toUpperCase(),
+                                transactionBroadcast: client.broadcastTx(txBytes)
+                            }];
+                }
+            });
+        });
+    };
     KyveSDK.prototype.transfer = function (recipient, amount, fee) {
         if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
         return __awaiter(this, void 0, void 0, function () {

@@ -142,6 +142,64 @@ export class KyveSDK {
     };
   }
 
+  async stake(
+    id: number | string,
+    amount: BigNumber,
+    fee = KYVE_DEFAULT_FEE
+  ): Promise<{
+    transactionHash: string;
+    transactionBroadcast: Promise<DeliverTxResponse>;
+  }> {
+    const client = await this.getClient();
+    const creator = await this.wallet.getAddress();
+
+    const msg = {
+      typeUrl: "/KYVENetwork.kyve.registry.MsgStakePool",
+      value: {
+        creator,
+        id,
+        amount: amount.toString(),
+      },
+    };
+
+    const txRaw = await client.sign(creator, [msg], fee, "");
+    const txBytes = TxRaw.encode(txRaw).finish();
+
+    return {
+      transactionHash: toHex(sha256(txBytes)).toUpperCase(),
+      transactionBroadcast: client.broadcastTx(txBytes),
+    };
+  }
+
+  async unstake(
+    id: number | string,
+    amount: BigNumber,
+    fee = KYVE_DEFAULT_FEE
+  ): Promise<{
+    transactionHash: string;
+    transactionBroadcast: Promise<DeliverTxResponse>;
+  }> {
+    const client = await this.getClient();
+    const creator = await this.wallet.getAddress();
+
+    const msg = {
+      typeUrl: "/KYVENetwork.kyve.registry.MsgUnstakePool",
+      value: {
+        creator,
+        id,
+        amount: amount.toString(),
+      },
+    };
+
+    const txRaw = await client.sign(creator, [msg], fee, "");
+    const txBytes = TxRaw.encode(txRaw).finish();
+
+    return {
+      transactionHash: toHex(sha256(txBytes)).toUpperCase(),
+      transactionBroadcast: client.broadcastTx(txBytes),
+    };
+  }
+
   async transfer(
     recipient: string,
     amount: number,

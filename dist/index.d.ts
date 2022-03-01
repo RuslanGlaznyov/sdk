@@ -31,6 +31,20 @@ export declare class KyveSDK {
         transactionHash: string;
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;
+    stake(id: number | string, amount: BigNumber, fee?: {
+        amount: import("@cosmjs/stargate").Coin[];
+        gas: string;
+    }): Promise<{
+        transactionHash: string;
+        transactionBroadcast: Promise<DeliverTxResponse>;
+    }>;
+    unstake(id: number | string, amount: BigNumber, fee?: {
+        amount: import("@cosmjs/stargate").Coin[];
+        gas: string;
+    }): Promise<{
+        transactionHash: string;
+        transactionBroadcast: Promise<DeliverTxResponse>;
+    }>;
     transfer(recipient: string, amount: number, fee?: {
         amount: import("@cosmjs/stargate").Coin[];
         gas: string;
