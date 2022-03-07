@@ -68,7 +68,7 @@ export class KyveSDK {
     const creator = await this.wallet.getAddress();
 
     const msg = {
-      typeUrl: "/KYVENetwork.kyve.registry.MsgCreatePool",
+      typeUrl: "/kyve.registry.v1beta1.MsgCreatePool",
       value: {
         creator,
         metadata,
@@ -96,7 +96,7 @@ export class KyveSDK {
     const creator = await this.wallet.getAddress();
 
     const msg = {
-      typeUrl: "/KYVENetwork.kyve.registry.MsgFundPool",
+      typeUrl: "/kyve.registry.v1beta1.MsgFundPool",
       value: {
         creator,
         id,
@@ -125,7 +125,7 @@ export class KyveSDK {
     const creator = await this.wallet.getAddress();
 
     const msg = {
-      typeUrl: "/KYVENetwork.kyve.registry.MsgDefundPool",
+      typeUrl: "/kyve.registry.v1beta1.MsgDefundPool",
       value: {
         creator,
         id,
@@ -154,7 +154,7 @@ export class KyveSDK {
     const creator = await this.wallet.getAddress();
 
     const msg = {
-      typeUrl: "/KYVENetwork.kyve.registry.MsgStakePool",
+      typeUrl: "/kyve.registry.v1beta1.MsgStakePool",
       value: {
         creator,
         id,
@@ -183,7 +183,7 @@ export class KyveSDK {
     const creator = await this.wallet.getAddress();
 
     const msg = {
-      typeUrl: "/KYVENetwork.kyve.registry.MsgUnstakePool",
+      typeUrl: "/kyve.registry.v1beta1.MsgUnstakePool",
       value: {
         creator,
         id,
@@ -200,7 +200,6 @@ export class KyveSDK {
     };
   }
 
-
   async delegate(
     id: number | string,
     staker: string,
@@ -214,7 +213,7 @@ export class KyveSDK {
     const creator = await this.wallet.getAddress();
 
     const msg = {
-      typeUrl: "/KYVENetwork.kyve.registry.MsgDelegatePool",
+      typeUrl: "/kyve.registry.v1beta1.MsgDelegatePool",
       value: {
         creator,
         id,
@@ -245,7 +244,7 @@ export class KyveSDK {
     const creator = await this.wallet.getAddress();
 
     const msg = {
-      typeUrl: "/KYVENetwork.kyve.registry.MsgUndelegatePool",
+      typeUrl: "/kyve.registry.v1beta1.MsgUndelegatePool",
       value: {
         creator,
         id,
@@ -263,7 +262,6 @@ export class KyveSDK {
     };
   }
 
-
   async withdraw(
     id: number | string,
     staker: string,
@@ -276,7 +274,7 @@ export class KyveSDK {
     const creator = await this.wallet.getAddress();
 
     const msg = {
-      typeUrl: "/KYVENetwork.kyve.registry.MsgWithdrawPool",
+      typeUrl: "/kyve.registry.v1beta1.MsgWithdrawPool",
       value: {
         creator,
         id,
@@ -292,7 +290,6 @@ export class KyveSDK {
       transactionBroadcast: client.broadcastTx(txBytes),
     };
   }
-
 
   async transfer(
     recipient: string,

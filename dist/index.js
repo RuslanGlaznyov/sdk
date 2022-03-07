@@ -121,7 +121,7 @@ var KyveSDK = /** @class */ (function () {
                     case 2:
                         creator = _a.sent();
                         msg = {
-                            typeUrl: "/KYVENetwork.kyve.registry.MsgCreatePool",
+                            typeUrl: "/kyve.registry.v1beta1.MsgCreatePool",
                             value: {
                                 creator: creator,
                                 metadata: metadata,
@@ -153,7 +153,7 @@ var KyveSDK = /** @class */ (function () {
                     case 2:
                         creator = _a.sent();
                         msg = {
-                            typeUrl: "/KYVENetwork.kyve.registry.MsgFundPool",
+                            typeUrl: "/kyve.registry.v1beta1.MsgFundPool",
                             value: {
                                 creator: creator,
                                 id: id,
@@ -185,7 +185,7 @@ var KyveSDK = /** @class */ (function () {
                     case 2:
                         creator = _a.sent();
                         msg = {
-                            typeUrl: "/KYVENetwork.kyve.registry.MsgDefundPool",
+                            typeUrl: "/kyve.registry.v1beta1.MsgDefundPool",
                             value: {
                                 creator: creator,
                                 id: id,
@@ -217,7 +217,7 @@ var KyveSDK = /** @class */ (function () {
                     case 2:
                         creator = _a.sent();
                         msg = {
-                            typeUrl: "/KYVENetwork.kyve.registry.MsgStakePool",
+                            typeUrl: "/kyve.registry.v1beta1.MsgStakePool",
                             value: {
                                 creator: creator,
                                 id: id,
@@ -249,11 +249,109 @@ var KyveSDK = /** @class */ (function () {
                     case 2:
                         creator = _a.sent();
                         msg = {
-                            typeUrl: "/KYVENetwork.kyve.registry.MsgUnstakePool",
+                            typeUrl: "/kyve.registry.v1beta1.MsgUnstakePool",
                             value: {
                                 creator: creator,
                                 id: id,
                                 amount: amount.toString()
+                            }
+                        };
+                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                    case 3:
+                        txRaw = _a.sent();
+                        txBytes = tx_1.TxRaw.encode(txRaw).finish();
+                        return [2 /*return*/, {
+                                transactionHash: (0, encoding_1.toHex)((0, crypto_1.sha256)(txBytes)).toUpperCase(),
+                                transactionBroadcast: client.broadcastTx(txBytes)
+                            }];
+                }
+            });
+        });
+    };
+    KyveSDK.prototype.delegate = function (id, staker, amount, fee) {
+        if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
+        return __awaiter(this, void 0, void 0, function () {
+            var client, creator, msg, txRaw, txBytes;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getClient()];
+                    case 1:
+                        client = _a.sent();
+                        return [4 /*yield*/, this.wallet.getAddress()];
+                    case 2:
+                        creator = _a.sent();
+                        msg = {
+                            typeUrl: "/kyve.registry.v1beta1.MsgDelegatePool",
+                            value: {
+                                creator: creator,
+                                id: id,
+                                staker: staker,
+                                amount: amount.toString()
+                            }
+                        };
+                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                    case 3:
+                        txRaw = _a.sent();
+                        txBytes = tx_1.TxRaw.encode(txRaw).finish();
+                        return [2 /*return*/, {
+                                transactionHash: (0, encoding_1.toHex)((0, crypto_1.sha256)(txBytes)).toUpperCase(),
+                                transactionBroadcast: client.broadcastTx(txBytes)
+                            }];
+                }
+            });
+        });
+    };
+    KyveSDK.prototype.undelegate = function (id, staker, amount, fee) {
+        if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
+        return __awaiter(this, void 0, void 0, function () {
+            var client, creator, msg, txRaw, txBytes;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getClient()];
+                    case 1:
+                        client = _a.sent();
+                        return [4 /*yield*/, this.wallet.getAddress()];
+                    case 2:
+                        creator = _a.sent();
+                        msg = {
+                            typeUrl: "/kyve.registry.v1beta1.MsgUndelegatePool",
+                            value: {
+                                creator: creator,
+                                id: id,
+                                staker: staker,
+                                amount: amount.toString()
+                            }
+                        };
+                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                    case 3:
+                        txRaw = _a.sent();
+                        txBytes = tx_1.TxRaw.encode(txRaw).finish();
+                        return [2 /*return*/, {
+                                transactionHash: (0, encoding_1.toHex)((0, crypto_1.sha256)(txBytes)).toUpperCase(),
+                                transactionBroadcast: client.broadcastTx(txBytes)
+                            }];
+                }
+            });
+        });
+    };
+    KyveSDK.prototype.withdraw = function (id, staker, fee) {
+        if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
+        return __awaiter(this, void 0, void 0, function () {
+            var client, creator, msg, txRaw, txBytes;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getClient()];
+                    case 1:
+                        client = _a.sent();
+                        return [4 /*yield*/, this.wallet.getAddress()];
+                    case 2:
+                        creator = _a.sent();
+                        msg = {
+                            typeUrl: "/kyve.registry.v1beta1.MsgWithdrawPool",
+                            value: {
+                                creator: creator,
+                                id: id,
+                                staker: staker
                             }
                         };
                         return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
@@ -414,7 +512,7 @@ var KyveSDK = /** @class */ (function () {
             return __generator(this, function (_e) {
                 switch (_e.label) {
                     case 0:
-                        if (!window.keplr) return [3 /*break*/, 5];
+                        if (!window.keplr) return [3 /*break*/, 4];
                         if (!(window === null || window === void 0)) return [3 /*break*/, 1];
                         _a = void 0;
                         return [3 /*break*/, 3];
@@ -425,9 +523,8 @@ var KyveSDK = /** @class */ (function () {
                     case 2:
                         _a = _c.apply(_b, _d.concat([_e.sent(), message]));
                         _e.label = 3;
-                    case 3: return [4 /*yield*/, (_a)];
-                    case 4: return [2 /*return*/, _e.sent()];
-                    case 5: throw new Error("Keplr wallet not installed.");
+                    case 3: return [2 /*return*/, _a];
+                    case 4: throw new Error("Keplr wallet not installed.");
                 }
             });
         });

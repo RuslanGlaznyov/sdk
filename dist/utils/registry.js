@@ -52,36 +52,42 @@ var createRegistry = function () { return __awaiter(void 0, void 0, void 0, func
                 root = _a.sent();
                 return [2 /*return*/, new proto_signing_1.Registry(Array.from([
                         [
-                            "/KYVENetwork.kyve.registry.MsgCreatePool",
+                            "/kyve.registry.v1beta1.MsgCreatePool",
                             root.lookupType("MsgCreatePool"),
                         ],
+                        ["/kyve.registry.v1beta1.MsgFundPool", root.lookupType("MsgFundPool")],
                         [
-                            "/KYVENetwork.kyve.registry.MsgFundPool",
-                            root.lookupType("MsgFundPool"),
-                        ],
-                        [
-                            "/KYVENetwork.kyve.registry.MsgDefundPool",
+                            "/kyve.registry.v1beta1.MsgDefundPool",
                             root.lookupType("MsgDefundPool"),
                         ],
+                        ["/kyve.registry.v1beta1.MsgStakePool", root.lookupType("MsgStakePool")],
                         [
-                            "/KYVENetwork.kyve.registry.MsgStakePool",
-                            root.lookupType("MsgStakePool"),
-                        ],
-                        [
-                            "/KYVENetwork.kyve.registry.MsgUnstakePool",
+                            "/kyve.registry.v1beta1.MsgUnstakePool",
                             root.lookupType("MsgUnstakePool"),
                         ],
                         [
-                            "/KYVENetwork.kyve.registry.MsgClaimUploaderRole",
+                            "/kyve.registry.v1beta1.MsgClaimUploaderRole",
                             root.lookupType("MsgClaimUploaderRole"),
                         ],
                         [
-                            "/KYVENetwork.kyve.registry.MsgSubmitBundleProposal",
+                            "/kyve.registry.v1beta1.MsgSubmitBundleProposal",
                             root.lookupType("MsgSubmitBundleProposal"),
                         ],
                         [
-                            "/KYVENetwork.kyve.registry.MsgVoteProposal",
+                            "/kyve.registry.v1beta1.MsgVoteProposal",
                             root.lookupType("MsgVoteProposal"),
+                        ],
+                        [
+                            "/kyve.registry.v1beta1.MsgDelegatePool",
+                            root.lookupType("MsgDelegatePool"),
+                        ],
+                        [
+                            "/kyve.registry.v1beta1.MsgUndelegatePool",
+                            root.lookupType("MsgUndelegatePool"),
+                        ],
+                        [
+                            "/kyve.registry.v1beta1.MsgWithdrawPool",
+                            root.lookupType("MsgWithdrawPool"),
                         ],
                     ]))];
         }

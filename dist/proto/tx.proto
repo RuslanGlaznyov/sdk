@@ -1,147 +1,238 @@
 syntax = "proto3";
-package KYVENetwork.kyve.registry;
+package kyve.registry.v1beta1;
 
-// import "src/proto/pool.proto";
+import "kyve/registry/v1beta1/registry.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/KYVENetwork/kyve/x/registry/types";
 
-// Msg defines the Msg service.
+// Msg defines the treasury Msg service.
 service Msg {
+  // CreatePool ...
   rpc CreatePool(MsgCreatePool) returns (MsgCreatePoolResponse);
+  // UpdatePool ...
   rpc UpdatePool(MsgUpdatePool) returns (MsgUpdatePoolResponse);
+  // DeletePool ...
   rpc DeletePool(MsgDeletePool) returns (MsgDeletePoolResponse);
+  // FundPool ...
   rpc FundPool(MsgFundPool) returns (MsgFundPoolResponse);
+  // DefundPool ...
   rpc DefundPool(MsgDefundPool) returns (MsgDefundPoolResponse);
+  // PausePool ...
   rpc PausePool(MsgPausePool) returns (MsgPausePoolResponse);
+  // UnpausePool ...
   rpc UnpausePool(MsgUnpausePool) returns (MsgUnpausePoolResponse);
+  // StakePool ...
   rpc StakePool(MsgStakePool) returns (MsgStakePoolResponse);
+  // UnstakePool ...
   rpc UnstakePool(MsgUnstakePool) returns (MsgUnstakePoolResponse);
+  // SubmitBundleProposal ...
   rpc SubmitBundleProposal(MsgSubmitBundleProposal) returns (MsgSubmitBundleProposalResponse);
+  // VoteProposal ...
   rpc VoteProposal(MsgVoteProposal) returns (MsgVoteProposalResponse);
+  // ClaimUploaderRole ...
   rpc ClaimUploaderRole(MsgClaimUploaderRole) returns (MsgClaimUploaderRoleResponse);
-// this line is used by starport scaffolding # proto/tx/rpc
+  rpc DelegatePool(MsgDelegatePool) returns (MsgDelegatePoolResponse);
+  rpc WithdrawPool(MsgWithdrawPool) returns (MsgWithdrawPoolResponse);
+  rpc UndelegatePool(MsgUndelegatePool) returns (MsgUndelegatePoolResponse);
+  // this line is used by starport scaffolding # proto/tx/rpc
 }
 
-message BundleProposal {
-  string uploader = 1;
-  string nextUploader = 2;
-  string bundleId = 3;
-  uint64 byteSize = 4;
-  uint64 fromHeight = 5;
-  uint64 toHeight = 6;
-  uint64 createdAt = 7;
-  map<string, uint64> votersValid = 8;
-  map<string, uint64> votersInvalid = 9;
-}
-
+// MsgCreatePool defines a SDK message for creating a new pool.
 message MsgCreatePool {
-  string creator = 1;
-  string metadata = 2;
-  uint64 startHeight = 3;
-  uint64 bundleDelay = 4;
-  uint64 operatingCost = 5;
-  uint64 storageCost = 6;
-  BundleProposal bundleProposal = 8;
+  // creator ...
+  string                               creator         = 1;
+  // name ...
+  string                               name            = 3;
+  // runtime ...
+  string                               runtime         = 4;
+  // logo ...
+  string                               logo            = 5;
+  // versions ...
+  string                               versions        = 6;
+  // config ...
+  string                               config          = 7;
+  // start_height ...
+  uint64                               start_height    = 8;
+  // min_bundle_size ...
+  uint64                               min_bundle_size = 9;
+  // operating_cost ...
+  uint64                               operating_cost  = 10;
+  // storage_cost ...
+  uint64                               storage_cost    = 11;
+  // bundle_proposal ...
+  kyve.registry.v1beta1.BundleProposal bundle_proposal = 12;
 }
 
+// MsgCreatePoolResponse defines the Msg/CreatePool response type.
 message MsgCreatePoolResponse {
+  // id ...
   uint64 id = 1;
 }
 
+// MsgUpdatePool defines a SDK message for updating a pool.
 message MsgUpdatePool {
+  // creator ...
   string creator = 1;
-  uint64 id = 2;
+  // id ...
+  uint64 id      = 2;
 }
 
+// MsgUpdatePoolResponse defines the Msg/UpdatePool response type.
 message MsgUpdatePoolResponse {}
 
+// MsgDeletePool defines a SDK message for deleting a pool.
 message MsgDeletePool {
+  // creator ...
   string creator = 1;
-  uint64 id = 2;
+  // id ...
+  uint64 id      = 2;
 }
 
+// MsgDeletePoolResponse defines the Msg/DeletePool response type.
 message MsgDeletePoolResponse {}
 
+// MsgFundPool defines a SDK message for funding a pool.
 message MsgFundPool {
+  // creator ...
   string creator = 1;
-  uint64 id = 2;
-  uint64 amount = 3;
+  // id ...
+  uint64 id      = 2;
+  // amount ...
+  uint64 amount  = 3;
 }
 
-message MsgFundPoolResponse {
-}
+// MsgFundPoolResponse defines the Msg/FundPool response type.
+message MsgFundPoolResponse {}
 
+// MsgDefundPool defines a SDK message for defunding a pool.
 message MsgDefundPool {
+  // creator ...
   string creator = 1;
-  uint64 id = 2;
-  uint64 amount = 3;
+  // id ...
+  uint64 id      = 2;
+  // amount ...
+  uint64 amount  = 3;
 }
 
-message MsgDefundPoolResponse {
-}
+// MsgDefundPoolResponse defines the Msg/DefundPool response type.
+message MsgDefundPoolResponse {}
 
+// MsgPausePool defines a SDK message for pausing a pool.
 message MsgPausePool {
+  // creator ...
   string creator = 1;
-  uint64 id = 2;
+  // id ...
+  uint64 id      = 2;
 }
 
-message MsgPausePoolResponse {
-}
+// MsgPausePoolResponse defines the Msg/PausePool response type.
+message MsgPausePoolResponse {}
 
+// MsgUnpausePool defines a SDK message for unpausing a pool.
 message MsgUnpausePool {
+  // creator ...
   string creator = 1;
-  uint64 id = 2;
+  // id ...
+  uint64 id      = 2;
 }
 
-message MsgUnpausePoolResponse {
-}
+// MsgUnpausePoolResponse defines the Msg/UnpausePool response type.
+message MsgUnpausePoolResponse {}
 
+// MsgStakePool defines a SDK message for staking in a pool.
 message MsgStakePool {
+  // creator ...
   string creator = 1;
-  uint64 id = 2;
-  uint64 amount = 3;
+  // id ...
+  uint64 id      = 2;
+  // amount ...
+  uint64 amount  = 3;
 }
 
-message MsgStakePoolResponse {
-}
+// MsgStakePoolResponse defines the Msg/StakePool response type.
+message MsgStakePoolResponse {}
 
+// MsgUnstakePool defines a SDK message for unstaking from a pool.
 message MsgUnstakePool {
+  // creator ...
   string creator = 1;
-  uint64 id = 2;
-  uint64 amount = 3;
+  // id ...
+  uint64 id      = 2;
+  // amount ...
+  uint64 amount  = 3;
 }
 
-message MsgUnstakePoolResponse {
-}
+// MsgUnstakePoolResponse defines the Msg/UnstakePool response type.
+message MsgUnstakePoolResponse {}
 
+// MsgSubmitBundleProposal defines a SDK message for submitting a bundle proposal.
 message MsgSubmitBundleProposal {
-  string creator = 1;
-  uint64 id = 2;
-  string bundleId = 3;
-  uint64 byteSize = 4;
-  uint64 bundleSize = 5;
+  // creator ...
+  string creator     = 1;
+  // id ...
+  uint64 id          = 2;
+  // bundle_id ...
+  string bundle_id   = 3;
+  // byte_size ...
+  uint64 byte_size   = 4;
+  // bundle_size ...
+  uint64 bundle_size = 5;
 }
 
-message MsgSubmitBundleProposalResponse {
-}
+// MsgSubmitBundleProposalResponse defines the Msg/SubmitBundleProposal response type.
+message MsgSubmitBundleProposalResponse {}
 
+// MsgVoteProposal defines a SDK message for voting on a bundle proposal.
 message MsgVoteProposal {
-  string creator = 1;
-  uint64 id = 2;
-  string bundleId = 3;
-  bool support = 4;
+  // creator ...
+  string creator   = 1;
+  // id ...
+  uint64 id        = 2;
+  // bundle_id ...
+  string bundle_id = 3;
+  // support ...
+  bool   support   = 4;
 }
 
-message MsgVoteProposalResponse {
-}
+// MsgVoteProposalResponse defines the Msg/VoteProposal response type.
+message MsgVoteProposalResponse {}
 
+// MsgClaimUploaderRole defines a SDK message for claiming the uploader role.
 message MsgClaimUploaderRole {
+  // creator ...
   string creator = 1;
-  uint64 id = 2;
+  // id ...
+  uint64 id      = 2;
 }
 
-message MsgClaimUploaderRoleResponse {
+// MsgClaimUploaderRoleResponse defines the Msg/ClaimUploaderRole response type.
+message MsgClaimUploaderRoleResponse {}
+
+message MsgDelegatePool {
+  string creator = 1;
+  uint64 poolId = 2;
+  string stakerAddress = 3;
+  uint64 amount = 4;
 }
+
+message MsgDelegatePoolResponse {}
+
+message MsgWithdrawPool {
+  string creator = 1;
+  uint64 poolId = 2;
+  string stakerAddress = 3;
+}
+
+message MsgWithdrawPoolResponse {}
+
+message MsgUndelegatePool {
+  string creator = 1;
+  uint64 poolId = 2;
+  string stakerAddress = 3;
+  uint64 amount = 4;
+}
+
+message MsgUndelegatePoolResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message
