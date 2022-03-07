@@ -210,9 +210,13 @@ message MsgClaimUploaderRole {
 message MsgClaimUploaderRoleResponse {}
 
 message MsgDelegatePool {
+  // creator ...
   string creator = 1;
+  // poolId ...
   uint64 poolId = 2;
+  // stakerAddress ...
   string stakerAddress = 3;
+  // amount ...
   uint64 amount = 4;
 }
 
