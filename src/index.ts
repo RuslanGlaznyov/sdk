@@ -200,6 +200,100 @@ export class KyveSDK {
     };
   }
 
+
+  async delegate(
+    id: number | string,
+    staker: string,
+    amount: BigNumber,
+    fee = KYVE_DEFAULT_FEE
+  ): Promise<{
+    transactionHash: string;
+    transactionBroadcast: Promise<DeliverTxResponse>;
+  }> {
+    const client = await this.getClient();
+    const creator = await this.wallet.getAddress();
+
+    const msg = {
+      typeUrl: "/KYVENetwork.kyve.registry.MsgDelegatePool",
+      value: {
+        creator,
+        id,
+        staker,
+        amount: amount.toString(),
+      },
+    };
+
+    const txRaw = await client.sign(creator, [msg], fee, "");
+    const txBytes = TxRaw.encode(txRaw).finish();
+
+    return {
+      transactionHash: toHex(sha256(txBytes)).toUpperCase(),
+      transactionBroadcast: client.broadcastTx(txBytes),
+    };
+  }
+
+  async undelegate(
+    id: number | string,
+    staker: string,
+    amount: BigNumber,
+    fee = KYVE_DEFAULT_FEE
+  ): Promise<{
+    transactionHash: string;
+    transactionBroadcast: Promise<DeliverTxResponse>;
+  }> {
+    const client = await this.getClient();
+    const creator = await this.wallet.getAddress();
+
+    const msg = {
+      typeUrl: "/KYVENetwork.kyve.registry.MsgUndelegatePool",
+      value: {
+        creator,
+        id,
+        staker,
+        amount: amount.toString(),
+      },
+    };
+
+    const txRaw = await client.sign(creator, [msg], fee, "");
+    const txBytes = TxRaw.encode(txRaw).finish();
+
+    return {
+      transactionHash: toHex(sha256(txBytes)).toUpperCase(),
+      transactionBroadcast: client.broadcastTx(txBytes),
+    };
+  }
+
+
+  async withdraw(
+    id: number | string,
+    staker: string,
+    fee = KYVE_DEFAULT_FEE
+  ): Promise<{
+    transactionHash: string;
+    transactionBroadcast: Promise<DeliverTxResponse>;
+  }> {
+    const client = await this.getClient();
+    const creator = await this.wallet.getAddress();
+
+    const msg = {
+      typeUrl: "/KYVENetwork.kyve.registry.MsgWithdrawPool",
+      value: {
+        creator,
+        id,
+        staker,
+      },
+    };
+
+    const txRaw = await client.sign(creator, [msg], fee, "");
+    const txBytes = TxRaw.encode(txRaw).finish();
+
+    return {
+      transactionHash: toHex(sha256(txBytes)).toUpperCase(),
+      transactionBroadcast: client.broadcastTx(txBytes),
+    };
+  }
+
+
   async transfer(
     recipient: string,
     amount: number,
@@ -326,7 +420,7 @@ export class KyveSDK {
 
   async signString(message: string): Promise<StdSignature> {
     if (window.keplr) {
-      return await window?.keplr.signArbitrary(
+      return window?.keplr.signArbitrary(
         "kyve",
         await this.wallet.getAddress(),
         message

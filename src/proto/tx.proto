@@ -20,29 +20,24 @@ service Msg {
   rpc SubmitBundleProposal(MsgSubmitBundleProposal) returns (MsgSubmitBundleProposalResponse);
   rpc VoteProposal(MsgVoteProposal) returns (MsgVoteProposalResponse);
   rpc ClaimUploaderRole(MsgClaimUploaderRole) returns (MsgClaimUploaderRoleResponse);
-// this line is used by starport scaffolding # proto/tx/rpc
-}
-
-message BundleProposal {
-  string uploader = 1;
-  string nextUploader = 2;
-  string bundleId = 3;
-  uint64 byteSize = 4;
-  uint64 fromHeight = 5;
-  uint64 toHeight = 6;
-  uint64 createdAt = 7;
-  map<string, uint64> votersValid = 8;
-  map<string, uint64> votersInvalid = 9;
+  rpc DelegatePool(MsgDelegatePool) returns (MsgDelegatePoolResponse);
+  rpc WithdrawPool(MsgWithdrawPool) returns (MsgWithdrawPoolResponse);
+  rpc UndelegatePool(MsgUndelegatePool) returns (MsgUndelegatePoolResponse);
+  // this line is used by starport scaffolding # proto/tx/rpc
 }
 
 message MsgCreatePool {
   string creator = 1;
-  string metadata = 2;
-  uint64 startHeight = 3;
-  uint64 bundleDelay = 4;
-  uint64 operatingCost = 5;
-  uint64 storageCost = 6;
-  BundleProposal bundleProposal = 8;
+  string name = 3;
+  string runtime = 4;
+  string logo = 5;
+  string versions = 6;
+  string config = 7;
+  uint64 startHeight = 8;
+  uint64 bundleDelay = 9;
+  uint64 operatingCost = 10;
+  uint64 storageCost = 11;
+  BundleProposal bundleProposal = 12;
 }
 
 message MsgCreatePoolResponse {
@@ -142,6 +137,35 @@ message MsgClaimUploaderRole {
 }
 
 message MsgClaimUploaderRoleResponse {
+}
+
+message MsgDelegatePool {
+  string creator = 1;
+  uint64 poolId = 2;
+  string stakerAddress = 3;
+  uint64 amount = 4;
+}
+
+message MsgDelegatePoolResponse {
+}
+
+message MsgWithdrawPool {
+  string creator = 1;
+  uint64 poolId = 2;
+  string stakerAddress = 3;
+}
+
+message MsgWithdrawPoolResponse {
+}
+
+message MsgUndelegatePool {
+  string creator = 1;
+  uint64 poolId = 2;
+  string stakerAddress = 3;
+  uint64 amount = 4;
+}
+
+message MsgUndelegatePoolResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
