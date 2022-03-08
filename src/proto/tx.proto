@@ -32,8 +32,11 @@ service Msg {
   rpc VoteProposal(MsgVoteProposal) returns (MsgVoteProposalResponse);
   // ClaimUploaderRole ...
   rpc ClaimUploaderRole(MsgClaimUploaderRole) returns (MsgClaimUploaderRoleResponse);
+  // DelegatePool ...
   rpc DelegatePool(MsgDelegatePool) returns (MsgDelegatePoolResponse);
+  // WithdrawPool ...
   rpc WithdrawPool(MsgWithdrawPool) returns (MsgWithdrawPoolResponse);
+  // UndelegatePool ...
   rpc UndelegatePool(MsgUndelegatePool) returns (MsgUndelegatePoolResponse);
   // this line is used by starport scaffolding # proto/tx/rpc
 }
@@ -209,34 +212,47 @@ message MsgClaimUploaderRole {
 // MsgClaimUploaderRoleResponse defines the Msg/ClaimUploaderRole response type.
 message MsgClaimUploaderRoleResponse {}
 
+// MsgDelegatePool defines a SDK message for delegating to a protocol node in a specific pool.
 message MsgDelegatePool {
   // creator ...
   string creator = 1;
-  // poolId ...
-  uint64 poolId = 2;
-  // stakerAddress ...
-  string stakerAddress = 3;
+  // id ...
+  uint64 id      = 2;
+  // staker ...
+  string staker  = 3;
   // amount ...
-  uint64 amount = 4;
+  uint64 amount  = 4;
 }
 
+// MsgDelegatePoolResponse defines the Msg/DelegatePool response type.
 message MsgDelegatePoolResponse {}
 
+// MsgWithdrawPool defines a SDK message for withdrawing delegation rewards from a specific pool.
 message MsgWithdrawPool {
+  // creator ...
   string creator = 1;
-  uint64 poolId = 2;
-  string stakerAddress = 3;
+  // id ...
+  uint64 id      = 2;
+  // staker ...
+  string staker  = 3;
 }
 
+// MsgWithdrawPoolResponse defines the Msg/WithdrawPool response type.
 message MsgWithdrawPoolResponse {}
 
+// MsgUndelegatePool defines a SDK message for undelegating from a specific pool.
 message MsgUndelegatePool {
+  // creator ...
   string creator = 1;
-  uint64 poolId = 2;
-  string stakerAddress = 3;
-  uint64 amount = 4;
+  // id ...
+  uint64 id      = 2;
+  // staker ...
+  string staker  = 3;
+  // amount ...
+  uint64 amount  = 4;
 }
 
+// MsgUndelegatePoolResponse defines the Msg/UndelegatePool response type.
 message MsgUndelegatePoolResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message

@@ -262,7 +262,7 @@ export class KyveSDK {
     };
   }
 
-  async withdraw(
+  async withdrawRewards(
     id: number | string,
     staker: string,
     fee = KYVE_DEFAULT_FEE
@@ -276,9 +276,9 @@ export class KyveSDK {
     const msg = {
       typeUrl: "/kyve.registry.v1beta1.MsgWithdrawPool",
       value: {
-        creator,
-        id,
-        staker,
+        creator: creator,
+        id: id,
+        staker: staker,
       },
     };
 

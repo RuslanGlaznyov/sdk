@@ -334,7 +334,7 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
-    KyveSDK.prototype.withdraw = function (id, staker, fee) {
+    KyveSDK.prototype.withdrawRewards = function (id, staker, fee) {
         if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
         return __awaiter(this, void 0, void 0, function () {
             var client, creator, msg, txRaw, txBytes;

@@ -59,7 +59,7 @@ export declare class KyveSDK {
         transactionHash: string;
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;
-    withdraw(id: number | string, staker: string, fee?: {
+    withdrawRewards(id: number | string, staker: string, fee?: {
         amount: import("@cosmjs/stargate").Coin[];
         gas: string;
     }): Promise<{
