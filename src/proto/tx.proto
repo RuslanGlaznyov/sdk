@@ -1,7 +1,7 @@
 syntax = "proto3";
 package kyve.registry.v1beta1;
 
-import "kyve/registry/v1beta1/registry.proto";
+import "./registry.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/KYVENetwork/kyve/x/registry/types";
