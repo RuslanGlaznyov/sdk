@@ -1,7 +1,7 @@
 syntax = "proto3";
 package kyve.registry.v1beta1;
 
-import "gogoproto/gogo.proto";
+//import "gogoproto/gogo.proto";
 
 option go_package = "github.com/KYVENetwork/kyve/x/registry/types";
 
