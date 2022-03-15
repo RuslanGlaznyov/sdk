@@ -97,6 +97,20 @@ export class KyveWallet {
     return coin ? coin.amount : "0";
   }
 
+  async fetchVote(proposalId: string): Promise<string | undefined> {
+    const address = await this.getAddress();
+
+    const { data } = await axios.get<{
+      vote?: {
+        option: string;
+      };
+    }>(
+      `${this.endpoints.rest}/cosmos/gov/v1beta1/proposals/${proposalId}/votes/${address}`
+    );
+
+    if (data.vote) return data.vote.option;
+  }
+
   formatBalance(balance: string, decimals: number = 2): string {
     return humanize(
       new BigNumber(balance)
