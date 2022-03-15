@@ -19,7 +19,7 @@ export declare class KyveWallet {
     getAddress(): Promise<string>;
     getName(): Promise<string>;
     getBalance(): Promise<string>;
-    fetchVote(proposalId: string): Promise<string | undefined>;
+    fetchVote(proposalId: number): Promise<string | undefined>;
     formatBalance(balance: string, decimals?: number): string;
     static generate(): Promise<KyveWallet>;
 }

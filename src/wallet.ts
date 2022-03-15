@@ -97,7 +97,7 @@ export class KyveWallet {
     return coin ? coin.amount : "0";
   }
 
-  async fetchVote(proposalId: string): Promise<string | undefined> {
+  async fetchVote(proposalId: number): Promise<string | undefined> {
     const address = await this.getAddress();
 
     const { data } = await axios.get<{
