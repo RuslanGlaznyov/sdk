@@ -3,12 +3,14 @@ import path from "path";
 import { load } from "protobufjs";
 
 export const createRegistry = async (): Promise<Registry> => {
-  const root = await load(path.join(__dirname, "../proto/tx.proto"));
-  const cosmosRoot = await load(path.join(__dirname, "../proto/cosmos.proto"));
+  const root = await load([
+    path.join(__dirname, "../proto/tx.proto"),
+    path.join(__dirname, "../proto/cosmos.proto"),
+  ]);
 
   return new Registry(
     Array.from([
-      [`/cosmos.gov.v1beta1.MsgVote`, cosmosRoot.lookupType("MsgVote")],
+      [`/cosmos.gov.v1beta1.MsgVote`, root.lookupType("MsgVote")],
       [
         `/kyve.registry.v1beta1.MsgCreatePool`,
         root.lookupType("MsgCreatePool"),
