@@ -1,7 +1,11 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -61,6 +65,7 @@ var events_1 = require("./types/events");
 var cosmos_1 = require("@keplr-wallet/cosmos");
 var addresses_1 = require("@cosmjs/amino/build/addresses");
 var tx_1 = require("cosmjs-types/cosmos/tx/v1beta1/tx");
+var long_1 = __importDefault(require("long"));
 var constants_2 = require("./utils/constants");
 __createBinding(exports, constants_2, "KYVE_DECIMALS");
 var wallet_1 = require("./wallet");
@@ -369,7 +374,7 @@ var KyveSDK = /** @class */ (function () {
     KyveSDK.prototype.govVote = function (id, option, fee) {
         if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
         return __awaiter(this, void 0, void 0, function () {
-            var client, creator, msg, txRaw, txBytes;
+            var client, creator, _option, msg, txRaw, txBytes;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getClient()];
@@ -378,12 +383,23 @@ var KyveSDK = /** @class */ (function () {
                         return [4 /*yield*/, this.wallet.getAddress()];
                     case 2:
                         creator = _a.sent();
+                        _option = cosmos_1.cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_UNSPECIFIED;
+                        switch (option) {
+                            case "Yes":
+                                _option = cosmos_1.cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_YES;
+                            case "Abstain":
+                                _option = cosmos_1.cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_ABSTAIN;
+                            case "No":
+                                _option = cosmos_1.cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_NO;
+                            case "NoWithVeto":
+                                _option = cosmos_1.cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_NO_WITH_VETO;
+                        }
                         msg = {
                             typeUrl: "/cosmos.gov.v1beta1.MsgVote",
                             value: {
-                                proposal_id: id,
+                                proposal_id: long_1["default"].fromString(id),
                                 voter: creator,
-                                option: option
+                                option: _option
                             }
                         };
                         return [4 /*yield*/, client.sign(creator, [msg], fee, "")];

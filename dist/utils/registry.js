@@ -41,18 +41,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 exports.__esModule = true;
 exports.createRegistry = void 0;
 var proto_signing_1 = require("@cosmjs/proto-signing");
+var cosmos_1 = require("@keplr-wallet/cosmos");
 var path_1 = __importDefault(require("path"));
 var protobufjs_1 = require("protobufjs");
-var voteOption = new protobufjs_1.Enum("option")
-    .add("VOTE_OPTION_UNSPECIFIED", 0)
-    .add("VOTE_OPTION_YES", 1)
-    .add("VOTE_OPTION_ABSTAIN", 2)
-    .add("VOTE_OPTION_NO", 3)
-    .add("VOTE_OPTION_NO_WITH_VETO", 4);
-var msgVote = new protobufjs_1.Type("MsgVote")
-    .add(new protobufjs_1.Field("proposal_id", 1, "uint64"))
-    .add(new protobufjs_1.Field("voter", 2, "string"))
-    .add(voteOption);
 var createRegistry = function () { return __awaiter(void 0, void 0, void 0, function () {
     var root;
     return __generator(this, function (_a) {
@@ -61,7 +52,7 @@ var createRegistry = function () { return __awaiter(void 0, void 0, void 0, func
             case 1:
                 root = _a.sent();
                 return [2 /*return*/, new proto_signing_1.Registry(Array.from([
-                        ["/cosmos.gov.v1beta1.MsgVote", msgVote],
+                        ["/cosmos.gov.v1beta1.MsgVote", cosmos_1.cosmos.gov.v1beta1.MsgVote],
                         [
                             "/kyve.registry.v1beta1.MsgCreatePool",
                             root.lookupType("MsgCreatePool"),

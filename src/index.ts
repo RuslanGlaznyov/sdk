@@ -15,10 +15,11 @@ import { bech32 } from "bech32";
 import { decodeTxRaw } from "@cosmjs/proto-signing";
 import { FullDecodedTransaction } from "./types/transactions";
 import { MessageEvent } from "./types/events";
-import { verifyADR36Amino } from "@keplr-wallet/cosmos";
+import { cosmos, verifyADR36Amino } from "@keplr-wallet/cosmos";
 import { StdSignature } from "@cosmjs/launchpad/build/types";
 import { pubkeyToAddress } from "@cosmjs/amino/build/addresses";
 import { TxRaw } from "cosmjs-types/cosmos/tx/v1beta1/tx";
+import Long from "long";
 
 export { KYVE_DECIMALS } from "./utils/constants";
 export { KyveWallet } from "./wallet";
@@ -292,8 +293,8 @@ export class KyveSDK {
   }
 
   async govVote(
-    id: number | string,
-    option: number,
+    id: string,
+    option: "Yes" | "Abstain" | "No" | "NoWithVeto",
     fee = KYVE_DEFAULT_FEE
   ): Promise<{
     transactionHash: string;
@@ -302,12 +303,24 @@ export class KyveSDK {
     const client = await this.getClient();
     const creator = await this.wallet.getAddress();
 
+    let _option = cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_UNSPECIFIED;
+    switch (option) {
+      case "Yes":
+        _option = cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_YES;
+      case "Abstain":
+        _option = cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_ABSTAIN;
+      case "No":
+        _option = cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_NO;
+      case "NoWithVeto":
+        _option = cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_NO_WITH_VETO;
+    }
+
     const msg = {
       typeUrl: "/cosmos.gov.v1beta1.MsgVote",
       value: {
-        proposal_id: id,
+        proposal_id: Long.fromString(id),
         voter: creator,
-        option,
+        option: _option,
       },
     };
 

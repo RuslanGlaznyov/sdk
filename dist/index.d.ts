@@ -66,7 +66,7 @@ export declare class KyveSDK {
         transactionHash: string;
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;
-    govVote(id: number | string, option: number, fee?: {
+    govVote(id: string, option: "Yes" | "Abstain" | "No" | "NoWithVeto", fee?: {
         amount: import("@cosmjs/stargate").Coin[];
         gas: string;
     }): Promise<{
