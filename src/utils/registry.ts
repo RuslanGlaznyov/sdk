@@ -8,6 +8,7 @@ export const createRegistry = async (): Promise<Registry> => {
 
   return new Registry(
     Array.from([
+      [`/cosmos.gov.v1beta1.MsgDeposit`, cosmos.gov.v1beta1.MsgDeposit],
       [`/cosmos.gov.v1beta1.MsgVote`, cosmos.gov.v1beta1.MsgVote],
       [
         `/kyve.registry.v1beta1.MsgCreatePool`,

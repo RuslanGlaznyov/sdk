@@ -52,6 +52,7 @@ var createRegistry = function () { return __awaiter(void 0, void 0, void 0, func
             case 1:
                 root = _a.sent();
                 return [2 /*return*/, new proto_signing_1.Registry(Array.from([
+                        ["/cosmos.gov.v1beta1.MsgDeposit", cosmos_1.cosmos.gov.v1beta1.MsgDeposit],
                         ["/cosmos.gov.v1beta1.MsgVote", cosmos_1.cosmos.gov.v1beta1.MsgVote],
                         [
                             "/kyve.registry.v1beta1.MsgCreatePool",

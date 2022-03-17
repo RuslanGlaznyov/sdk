@@ -371,6 +371,38 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
+    KyveSDK.prototype.govDeposit = function (id, amount, fee) {
+        if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
+        return __awaiter(this, void 0, void 0, function () {
+            var client, creator, msg, txRaw, txBytes;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getClient()];
+                    case 1:
+                        client = _a.sent();
+                        return [4 /*yield*/, this.wallet.getAddress()];
+                    case 2:
+                        creator = _a.sent();
+                        msg = {
+                            typeUrl: "/cosmos.gov.v1beta1.MsgDeposit",
+                            value: {
+                                proposalId: long_1["default"].fromString(id),
+                                depositor: creator,
+                                amount: (0, stargate_1.coins)(amount.toString(), "tkyve")
+                            }
+                        };
+                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                    case 3:
+                        txRaw = _a.sent();
+                        txBytes = tx_1.TxRaw.encode(txRaw).finish();
+                        return [2 /*return*/, {
+                                transactionHash: (0, encoding_1.toHex)((0, crypto_1.sha256)(txBytes)).toUpperCase(),
+                                transactionBroadcast: client.broadcastTx(txBytes)
+                            }];
+                }
+            });
+        });
+    };
     KyveSDK.prototype.govVote = function (id, option, fee) {
         if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
         return __awaiter(this, void 0, void 0, function () {
@@ -433,7 +465,7 @@ var KyveSDK = /** @class */ (function () {
                         parsedAmount = new bignumber_js_1.BigNumber(amount)
                             .multipliedBy(new bignumber_js_1.BigNumber(10).pow(constants_1.KYVE_DECIMALS))
                             .toNumber();
-                        return [4 /*yield*/, client.sendTokens(creator, recipient, (0, stargate_1.coins)(parsedAmount, "kyve"), fee)];
+                        return [4 /*yield*/, client.sendTokens(creator, recipient, (0, stargate_1.coins)(parsedAmount, "tkyve"), fee)];
                     case 3:
                         tx = _a.sent();
                         return [2 /*return*/, tx.transactionHash];

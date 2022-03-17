@@ -291,6 +291,35 @@ export class KyveSDK {
     };
   }
 
+  async govDeposit(
+    id: string,
+    amount: BigNumber,
+    fee = KYVE_DEFAULT_FEE
+  ): Promise<{
+    transactionHash: string;
+    transactionBroadcast: Promise<DeliverTxResponse>;
+  }> {
+    const client = await this.getClient();
+    const creator = await this.wallet.getAddress();
+
+    const msg = {
+      typeUrl: "/cosmos.gov.v1beta1.MsgDeposit",
+      value: {
+        proposalId: Long.fromString(id),
+        depositor: creator,
+        amount: coins(amount.toString(), "tkyve"),
+      },
+    };
+
+    const txRaw = await client.sign(creator, [msg], fee, "");
+    const txBytes = TxRaw.encode(txRaw).finish();
+
+    return {
+      transactionHash: toHex(sha256(txBytes)).toUpperCase(),
+      transactionBroadcast: client.broadcastTx(txBytes),
+    };
+  }
+
   async govVote(
     id: string,
     option: "Yes" | "Abstain" | "No" | "NoWithVeto",
@@ -351,7 +380,7 @@ export class KyveSDK {
     const tx = await client.sendTokens(
       creator,
       recipient,
-      coins(parsedAmount, "kyve"),
+      coins(parsedAmount, "tkyve"),
       fee
     );
     return tx.transactionHash;
