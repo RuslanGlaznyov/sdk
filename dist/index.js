@@ -397,7 +397,7 @@ var KyveSDK = /** @class */ (function () {
                         msg = {
                             typeUrl: "/cosmos.gov.v1beta1.MsgVote",
                             value: {
-                                proposal_id: long_1["default"].fromString(id),
+                                proposalId: long_1["default"].fromString(id),
                                 voter: creator,
                                 option: _option
                             }

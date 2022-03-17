@@ -317,7 +317,7 @@ export class KyveSDK {
     const msg = {
       typeUrl: "/cosmos.gov.v1beta1.MsgVote",
       value: {
-        proposal_id: Long.fromString(id),
+        proposalId: Long.fromString(id),
         voter: creator,
         option: _option,
       },
