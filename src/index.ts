@@ -2,7 +2,6 @@ import {
   coins,
   DeliverTxResponse,
   SigningStargateClient,
-  StargateClient,
 } from "@cosmjs/stargate";
 import axios from "axios";
 import { BigNumber } from "bignumber.js";

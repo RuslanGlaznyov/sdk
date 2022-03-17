@@ -1,7 +1,7 @@
 import { Registry } from "@cosmjs/proto-signing";
 import { cosmos } from "@keplr-wallet/cosmos";
 import path from "path";
-import { Enum, Field, load, Type } from "protobufjs";
+import { load } from "protobufjs";
 
 export const createRegistry = async (): Promise<Registry> => {
   const root = await load(path.join(__dirname, "../proto/tx.proto"));
