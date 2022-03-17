@@ -1,16 +1,24 @@
 import { Registry } from "@cosmjs/proto-signing";
 import path from "path";
-import { load } from "protobufjs";
+import { Enum, Field, load, Type } from "protobufjs";
+
+const voteOption = new Enum("option")
+  .add("VOTE_OPTION_UNSPECIFIED", 0)
+  .add("VOTE_OPTION_YES", 1)
+  .add("VOTE_OPTION_ABSTAIN", 2)
+  .add("VOTE_OPTION_NO", 3)
+  .add("VOTE_OPTION_NO_WITH_VETO", 4);
+const msgVote = new Type("MsgVote")
+  .add(new Field("proposal_id", 1, "uint64"))
+  .add(new Field("voter", 2, "string"))
+  .add(voteOption);
 
 export const createRegistry = async (): Promise<Registry> => {
-  const root = await load([
-    path.join(__dirname, "../proto/tx.proto"),
-    path.join(__dirname, "../proto/cosmos.proto"),
-  ]);
+  const root = await load(path.join(__dirname, "../proto/tx.proto"));
 
   return new Registry(
     Array.from([
-      [`/cosmos.gov.v1beta1.MsgVote`, root.lookupType("MsgVote")],
+      [`/cosmos.gov.v1beta1.MsgVote`, msgVote],
       [
         `/kyve.registry.v1beta1.MsgCreatePool`,
         root.lookupType("MsgCreatePool"),
