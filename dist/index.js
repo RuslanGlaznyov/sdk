@@ -387,12 +387,16 @@ var KyveSDK = /** @class */ (function () {
                         switch (option) {
                             case "Yes":
                                 _option = cosmos_1.cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_YES;
+                                break;
                             case "Abstain":
                                 _option = cosmos_1.cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_ABSTAIN;
+                                break;
                             case "No":
                                 _option = cosmos_1.cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_NO;
+                                break;
                             case "NoWithVeto":
                                 _option = cosmos_1.cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_NO_WITH_VETO;
+                                break;
                         }
                         msg = {
                             typeUrl: "/cosmos.gov.v1beta1.MsgVote",

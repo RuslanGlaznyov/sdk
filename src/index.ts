@@ -306,12 +306,16 @@ export class KyveSDK {
     switch (option) {
       case "Yes":
         _option = cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_YES;
+        break;
       case "Abstain":
         _option = cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_ABSTAIN;
+        break;
       case "No":
         _option = cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_NO;
+        break;
       case "NoWithVeto":
         _option = cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_NO_WITH_VETO;
+        break;
     }
 
     const msg = {
