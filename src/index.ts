@@ -293,7 +293,12 @@ export class KyveSDK {
 
   async govVote(
     id: number | string,
-    option: number,
+    option:
+      | "VOTE_OPTION_UNSPECIFIED"
+      | "VOTE_OPTION_YES"
+      | "VOTE_OPTION_ABSTAIN"
+      | "VOTE_OPTION_NO"
+      | "VOTE_OPTION_NO_WITH_VETO",
     fee = KYVE_DEFAULT_FEE
   ): Promise<{
     transactionHash: string;
