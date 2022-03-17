@@ -44,13 +44,17 @@ var proto_signing_1 = require("@cosmjs/proto-signing");
 var path_1 = __importDefault(require("path"));
 var protobufjs_1 = require("protobufjs");
 var createRegistry = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var root;
+    var root, cosmosRoot;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, (0, protobufjs_1.load)(path_1["default"].join(__dirname, "../proto/tx.proto"))];
             case 1:
                 root = _a.sent();
+                return [4 /*yield*/, (0, protobufjs_1.load)(path_1["default"].join(__dirname, "../proto/cosmos.proto"))];
+            case 2:
+                cosmosRoot = _a.sent();
                 return [2 /*return*/, new proto_signing_1.Registry(Array.from([
+                        ["/cosmos.gov.v1beta1.MsgVote", cosmosRoot.lookupType("MsgVote")],
                         [
                             "/kyve.registry.v1beta1.MsgCreatePool",
                             root.lookupType("MsgCreatePool"),
