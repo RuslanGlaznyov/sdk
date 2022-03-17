@@ -276,9 +276,38 @@ export class KyveSDK {
     const msg = {
       typeUrl: "/kyve.registry.v1beta1.MsgWithdrawPool",
       value: {
-        creator: creator,
-        id: id,
-        staker: staker,
+        creator,
+        id,
+        staker,
+      },
+    };
+
+    const txRaw = await client.sign(creator, [msg], fee, "");
+    const txBytes = TxRaw.encode(txRaw).finish();
+
+    return {
+      transactionHash: toHex(sha256(txBytes)).toUpperCase(),
+      transactionBroadcast: client.broadcastTx(txBytes),
+    };
+  }
+
+  async govVote(
+    id: number | string,
+    option: number,
+    fee = KYVE_DEFAULT_FEE
+  ): Promise<{
+    transactionHash: string;
+    transactionBroadcast: Promise<DeliverTxResponse>;
+  }> {
+    const client = await this.getClient();
+    const creator = await this.wallet.getAddress();
+
+    const msg = {
+      typeUrl: "/cosmos.gov.v1beta1.MsgVote",
+      value: {
+        proposal_id: id,
+        voter: creator,
+        option,
       },
     };
 
