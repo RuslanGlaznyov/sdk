@@ -2,7 +2,6 @@ import {
   coins,
   DeliverTxResponse,
   SigningStargateClient,
-  StargateClient,
 } from "@cosmjs/stargate";
 import axios from "axios";
 import { BigNumber } from "bignumber.js";
@@ -15,10 +14,11 @@ import { bech32 } from "bech32";
 import { decodeTxRaw } from "@cosmjs/proto-signing";
 import { FullDecodedTransaction } from "./types/transactions";
 import { MessageEvent } from "./types/events";
-import { verifyADR36Amino } from "@keplr-wallet/cosmos";
+import { cosmos, verifyADR36Amino } from "@keplr-wallet/cosmos";
 import { StdSignature } from "@cosmjs/launchpad/build/types";
 import { pubkeyToAddress } from "@cosmjs/amino/build/addresses";
 import { TxRaw } from "cosmjs-types/cosmos/tx/v1beta1/tx";
+import Long from "long";
 
 export { KYVE_DECIMALS } from "./utils/constants";
 export { KyveWallet } from "./wallet";
@@ -276,9 +276,83 @@ export class KyveSDK {
     const msg = {
       typeUrl: "/kyve.registry.v1beta1.MsgWithdrawPool",
       value: {
-        creator: creator,
-        id: id,
-        staker: staker,
+        creator,
+        id,
+        staker,
+      },
+    };
+
+    const txRaw = await client.sign(creator, [msg], fee, "");
+    const txBytes = TxRaw.encode(txRaw).finish();
+
+    return {
+      transactionHash: toHex(sha256(txBytes)).toUpperCase(),
+      transactionBroadcast: client.broadcastTx(txBytes),
+    };
+  }
+
+  async govDeposit(
+    id: string,
+    amount: BigNumber,
+    fee = KYVE_DEFAULT_FEE
+  ): Promise<{
+    transactionHash: string;
+    transactionBroadcast: Promise<DeliverTxResponse>;
+  }> {
+    const client = await this.getClient();
+    const creator = await this.wallet.getAddress();
+
+    const msg = {
+      typeUrl: "/cosmos.gov.v1beta1.MsgDeposit",
+      value: {
+        proposalId: Long.fromString(id),
+        depositor: creator,
+        amount: coins(amount.toString(), "tkyve"),
+      },
+    };
+
+    const txRaw = await client.sign(creator, [msg], fee, "");
+    const txBytes = TxRaw.encode(txRaw).finish();
+
+    return {
+      transactionHash: toHex(sha256(txBytes)).toUpperCase(),
+      transactionBroadcast: client.broadcastTx(txBytes),
+    };
+  }
+
+  async govVote(
+    id: string,
+    option: "Yes" | "Abstain" | "No" | "NoWithVeto",
+    fee = KYVE_DEFAULT_FEE
+  ): Promise<{
+    transactionHash: string;
+    transactionBroadcast: Promise<DeliverTxResponse>;
+  }> {
+    const client = await this.getClient();
+    const creator = await this.wallet.getAddress();
+
+    let _option = cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_UNSPECIFIED;
+    switch (option) {
+      case "Yes":
+        _option = cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_YES;
+        break;
+      case "Abstain":
+        _option = cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_ABSTAIN;
+        break;
+      case "No":
+        _option = cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_NO;
+        break;
+      case "NoWithVeto":
+        _option = cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_NO_WITH_VETO;
+        break;
+    }
+
+    const msg = {
+      typeUrl: "/cosmos.gov.v1beta1.MsgVote",
+      value: {
+        proposalId: Long.fromString(id),
+        voter: creator,
+        option: _option,
       },
     };
 
@@ -306,7 +380,7 @@ export class KyveSDK {
     const tx = await client.sendTokens(
       creator,
       recipient,
-      coins(parsedAmount, "kyve"),
+      coins(parsedAmount, "tkyve"),
       fee
     );
     return tx.transactionHash;

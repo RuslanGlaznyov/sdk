@@ -41,6 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 exports.__esModule = true;
 exports.createRegistry = void 0;
 var proto_signing_1 = require("@cosmjs/proto-signing");
+var cosmos_1 = require("@keplr-wallet/cosmos");
 var path_1 = __importDefault(require("path"));
 var protobufjs_1 = require("protobufjs");
 var createRegistry = function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -51,6 +52,8 @@ var createRegistry = function () { return __awaiter(void 0, void 0, void 0, func
             case 1:
                 root = _a.sent();
                 return [2 /*return*/, new proto_signing_1.Registry(Array.from([
+                        ["/cosmos.gov.v1beta1.MsgDeposit", cosmos_1.cosmos.gov.v1beta1.MsgDeposit],
+                        ["/cosmos.gov.v1beta1.MsgVote", cosmos_1.cosmos.gov.v1beta1.MsgVote],
                         [
                             "/kyve.registry.v1beta1.MsgCreatePool",
                             root.lookupType("MsgCreatePool"),

@@ -148,6 +148,24 @@ var KyveWallet = /** @class */ (function () {
             });
         });
     };
+    KyveWallet.prototype.fetchVote = function (proposalId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var address, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getAddress()];
+                    case 1:
+                        address = _a.sent();
+                        return [4 /*yield*/, axios_1["default"].get("".concat(this.endpoints.rest, "/cosmos/gov/v1beta1/proposals/").concat(proposalId, "/votes/").concat(address))];
+                    case 2:
+                        data = (_a.sent()).data;
+                        if (data.vote)
+                            return [2 /*return*/, data.vote.option];
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     KyveWallet.prototype.formatBalance = function (balance, decimals) {
         if (decimals === void 0) { decimals = 2; }
         return (0, humanize_number_1["default"])(new bignumber_js_1.BigNumber(balance)

@@ -66,6 +66,20 @@ export declare class KyveSDK {
         transactionHash: string;
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;
+    govDeposit(id: string, amount: BigNumber, fee?: {
+        amount: import("@cosmjs/stargate").Coin[];
+        gas: string;
+    }): Promise<{
+        transactionHash: string;
+        transactionBroadcast: Promise<DeliverTxResponse>;
+    }>;
+    govVote(id: string, option: "Yes" | "Abstain" | "No" | "NoWithVeto", fee?: {
+        amount: import("@cosmjs/stargate").Coin[];
+        gas: string;
+    }): Promise<{
+        transactionHash: string;
+        transactionBroadcast: Promise<DeliverTxResponse>;
+    }>;
     transfer(recipient: string, amount: number, fee?: {
         amount: import("@cosmjs/stargate").Coin[];
         gas: string;
