@@ -35,9 +35,13 @@ export class KyveWallet {
   constructor(
     public readonly network: "alpha" | "beta" | "local",
     private readonly mnemonic?: string
-  ) {}
+  ) {
+    console.log("sdk mnemonic: ", mnemonic);
+    console.log("sdk mnemonic: ", this.mnemonic);
+  }
 
   async getSigner(): Promise<Signer> {
+    console.log("sdk requesting signer: ", this.mnemonic);
     if (!this.signer) {
       if (this.mnemonic) {
         console.log("sdk mnemonic: ", this.mnemonic);
