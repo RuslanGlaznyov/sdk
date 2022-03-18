@@ -73,6 +73,7 @@ __createBinding(exports, wallet_1, "KyveWallet");
 var KyveSDK = /** @class */ (function () {
     function KyveSDK(wallet) {
         this.wallet = wallet;
+        console.log("init sdk");
     }
     KyveSDK.prototype.getClient = function () {
         return __awaiter(this, void 0, void 0, function () {

@@ -36,15 +36,15 @@ export class KyveWallet {
     public readonly network: "alpha" | "beta" | "local",
     private readonly mnemonic?: string
   ) {
-    console.log("sdk mnemonic: ", mnemonic);
-    console.log("sdk mnemonic: ", this.mnemonic);
+    console.log("wallet mnemonic: ", mnemonic);
+    console.log("wallet mnemonic: ", this.mnemonic);
   }
 
   async getSigner(): Promise<Signer> {
-    console.log("sdk requesting signer: ", this.mnemonic);
+    console.log("wallet requesting signer: ", this.mnemonic);
     if (!this.signer) {
       if (this.mnemonic) {
-        console.log("sdk mnemonic: ", this.mnemonic);
+        console.log("wallet mnemonic: ", this.mnemonic);
         this.signer = await DirectSecp256k1HdWallet.fromMnemonic(
           this.mnemonic,
           KYVE_WALLET_OPTIONS

@@ -61,8 +61,8 @@ var KyveWallet = /** @class */ (function () {
     function KyveWallet(network, mnemonic) {
         this.network = network;
         this.mnemonic = mnemonic;
-        console.log("sdk mnemonic: ", mnemonic);
-        console.log("sdk mnemonic: ", this.mnemonic);
+        console.log("wallet mnemonic: ", mnemonic);
+        console.log("wallet mnemonic: ", this.mnemonic);
     }
     KyveWallet.prototype.getSigner = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -70,10 +70,10 @@ var KyveWallet = /** @class */ (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        console.log("sdk requesting signer: ", this.mnemonic);
+                        console.log("wallet requesting signer: ", this.mnemonic);
                         if (!!this.signer) return [3 /*break*/, 8];
                         if (!this.mnemonic) return [3 /*break*/, 2];
-                        console.log("sdk mnemonic: ", this.mnemonic);
+                        console.log("wallet mnemonic: ", this.mnemonic);
                         _a = this;
                         return [4 /*yield*/, proto_signing_1.DirectSecp256k1HdWallet.fromMnemonic(this.mnemonic, constants_1.KYVE_WALLET_OPTIONS)];
                     case 1:
