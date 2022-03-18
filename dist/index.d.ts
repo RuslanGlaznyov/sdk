@@ -79,6 +79,27 @@ export declare class KyveSDK {
         transactionHash: string;
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;
+    submitBundleProposal(id: number | string, bundleId: string, byteSize: number, bundleSize: number, fee?: {
+        amount: import("@cosmjs/stargate").Coin[];
+        gas: string;
+    }): Promise<{
+        transactionHash: string;
+        transactionBroadcast: Promise<DeliverTxResponse>;
+    }>;
+    voteProposal(id: number | string, bundleId: string, support: boolean, fee?: {
+        amount: import("@cosmjs/stargate").Coin[];
+        gas: string;
+    }): Promise<{
+        transactionHash: string;
+        transactionBroadcast: Promise<DeliverTxResponse>;
+    }>;
+    claimUploaderRole(id: number | string, fee?: {
+        amount: import("@cosmjs/stargate").Coin[];
+        gas: string;
+    }): Promise<{
+        transactionHash: string;
+        transactionBroadcast: Promise<DeliverTxResponse>;
+    }>;
     transfer(recipient: string, amount: number, fee?: {
         amount: import("@cosmjs/stargate").Coin[];
         gas: string;

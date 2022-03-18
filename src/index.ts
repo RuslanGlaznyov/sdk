@@ -368,6 +368,97 @@ export class KyveSDK {
     };
   }
 
+  async submitBundleProposal(
+    id: number | string,
+    bundleId: string,
+    byteSize: number,
+    bundleSize: number,
+    fee = KYVE_DEFAULT_FEE
+  ): Promise<{
+    transactionHash: string;
+    transactionBroadcast: Promise<DeliverTxResponse>;
+  }> {
+    const client = await this.getClient();
+    const creator = await this.wallet.getAddress();
+
+    const msg = {
+      typeUrl: "/kyve.registry.v1beta1.MsgSubmitBundleProposal",
+      value: {
+        creator,
+        id,
+        bundleId,
+        byteSize,
+        bundleSize,
+      },
+    };
+
+    const txRaw = await client.sign(creator, [msg], fee, "");
+    const txBytes = TxRaw.encode(txRaw).finish();
+
+    return {
+      transactionHash: toHex(sha256(txBytes)).toUpperCase(),
+      transactionBroadcast: client.broadcastTx(txBytes),
+    };
+  }
+
+  async voteProposal(
+    id: number | string,
+    bundleId: string,
+    support: boolean,
+    fee = KYVE_DEFAULT_FEE
+  ): Promise<{
+    transactionHash: string;
+    transactionBroadcast: Promise<DeliverTxResponse>;
+  }> {
+    const client = await this.getClient();
+    const creator = await this.wallet.getAddress();
+
+    const msg = {
+      typeUrl: "/kyve.registry.v1beta1.MsgVoteProposal",
+      value: {
+        creator,
+        id,
+        bundleId,
+        support,
+      },
+    };
+
+    const txRaw = await client.sign(creator, [msg], fee, "");
+    const txBytes = TxRaw.encode(txRaw).finish();
+
+    return {
+      transactionHash: toHex(sha256(txBytes)).toUpperCase(),
+      transactionBroadcast: client.broadcastTx(txBytes),
+    };
+  }
+
+  async claimUploaderRole(
+    id: number | string,
+    fee = KYVE_DEFAULT_FEE
+  ): Promise<{
+    transactionHash: string;
+    transactionBroadcast: Promise<DeliverTxResponse>;
+  }> {
+    const client = await this.getClient();
+    const creator = await this.wallet.getAddress();
+
+    const msg = {
+      typeUrl: "/kyve.registry.v1beta1.MsgClaimUploaderRole",
+      value: {
+        creator,
+        id,
+      },
+    };
+
+    const txRaw = await client.sign(creator, [msg], fee, "");
+    const txBytes = TxRaw.encode(txRaw).finish();
+
+    return {
+      transactionHash: toHex(sha256(txBytes)).toUpperCase(),
+      transactionBroadcast: client.broadcastTx(txBytes),
+    };
+  }
+
   async transfer(
     recipient: string,
     amount: number,
