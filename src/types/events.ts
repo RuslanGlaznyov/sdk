@@ -37,6 +37,11 @@ export class MessageEvent {
       this.args.creator = this.get("Creator");
       this.args.poolId = this.get("PoolId");
       this.args.amount = this.get("Amount");
+    } else if (this.action == "Delegated" || this.action == "Undelegated") {
+      this.args.creator = this.get("Creator");
+      this.args.poolId = this.get("PoolId");
+      this.args.amount = this.get("Amount");
+      this.args.staker = this.get("Staker");
     } else if (this.action == "ProposalEnded") {
       this.args.bundleId = this.get("BundleId");
       this.args.poolId = this.get("PoolId");
