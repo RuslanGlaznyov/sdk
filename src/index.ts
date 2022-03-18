@@ -495,7 +495,7 @@ export class KyveSDK {
   async signString(message: string): Promise<StdSignature> {
     if (window.keplr) {
       return window?.keplr.signArbitrary(
-        `kyve-${this.wallet.network}`,
+        `kyve${this.wallet.network.toUpperCase()}`,
         await this.wallet.getAddress(),
         message
       );

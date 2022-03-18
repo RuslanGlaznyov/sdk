@@ -78,13 +78,13 @@ var KyveWallet = /** @class */ (function () {
                     case 2:
                         if (!window) return [3 /*break*/, 7];
                         if (!window.keplr) return [3 /*break*/, 5];
-                        return [4 /*yield*/, window.keplr.experimentalSuggestChain(__assign(__assign({}, constants_1.KYVE_KEPLR_CONFIG), { rpc: constants_1.KYVE_ENDPOINTS[this.network].rpc, rest: constants_1.KYVE_ENDPOINTS[this.network].rest, chainId: "kyve-".concat(this.network), chainName: "KYVE - ".concat(this.network.toUpperCase()) }))];
+                        return [4 /*yield*/, window.keplr.experimentalSuggestChain(__assign(__assign({}, constants_1.KYVE_KEPLR_CONFIG), { rpc: constants_1.KYVE_ENDPOINTS[this.network].rpc, rest: constants_1.KYVE_ENDPOINTS[this.network].rest, chainId: "kyve".concat(this.network.toUpperCase()), chainName: "KYVE - ".concat(this.network.toUpperCase()) }))];
                     case 3:
                         _b.sent();
-                        return [4 /*yield*/, window.keplr.enable("kyve-".concat(this.network))];
+                        return [4 /*yield*/, window.keplr.enable("kyve".concat(this.network.toUpperCase()))];
                     case 4:
                         _b.sent();
-                        this.signer = window.keplr.getOfflineSigner("kyve-".concat(this.network));
+                        this.signer = window.keplr.getOfflineSigner("kyve".concat(this.network.toUpperCase()));
                         return [3 /*break*/, 6];
                     case 5: throw new Error("Please install Keplr.");
                     case 6: return [3 /*break*/, 8];
@@ -121,7 +121,7 @@ var KyveWallet = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         if (!(window && window.keplr)) return [3 /*break*/, 2];
-                        return [4 /*yield*/, window.keplr.getKey("kyve-".concat(this.network))];
+                        return [4 /*yield*/, window.keplr.getKey("kyve".concat(this.network.toUpperCase()))];
                     case 1:
                         name_1 = (_a.sent()).name;
                         return [2 /*return*/, name_1];

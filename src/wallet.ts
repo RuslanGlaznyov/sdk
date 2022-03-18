@@ -51,11 +51,13 @@ export class KyveWallet {
               ...KYVE_KEPLR_CONFIG,
               rpc: KYVE_ENDPOINTS[this.network].rpc,
               rest: KYVE_ENDPOINTS[this.network].rest,
-              chainId: `kyve-${this.network}`,
+              chainId: `kyve${this.network.toUpperCase()}`,
               chainName: `KYVE - ${this.network.toUpperCase()}`,
             });
-            await window.keplr.enable(`kyve-${this.network}`);
-            this.signer = window.keplr.getOfflineSigner(`kyve-${this.network}`);
+            await window.keplr.enable(`kyve${this.network.toUpperCase()}`);
+            this.signer = window.keplr.getOfflineSigner(
+              `kyve${this.network.toUpperCase()}`
+            );
           } else {
             throw new Error("Please install Keplr.");
           }
@@ -81,7 +83,9 @@ export class KyveWallet {
 
   async getName(): Promise<string> {
     if (window && window.keplr) {
-      const { name } = await window.keplr.getKey(`kyve-${this.network}`);
+      const { name } = await window.keplr.getKey(
+        `kyve${this.network.toUpperCase()}`
+      );
       return name;
     } else {
       throw new Error("Unsupported.");
