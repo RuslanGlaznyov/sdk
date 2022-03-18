@@ -1,9 +1,23 @@
 {
   "name": "@kyve/sdk-test",
   "version": "0.0.0",
-  "license": "MIT",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KYVENetwork/sdk"
+  },
+  "keywords": [
+    "KYVE",
+    "Arweave",
+    "Blockchain",
+    "PoS"
+  ],
+  "author": "John Letey <john@kyve.network>, Troy Kessler <troy@kyve.network>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "rimraf dist && copyfiles -f ./src/proto/* ./dist/proto && tsc",
     "format": "prettier --write ."
