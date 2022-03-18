@@ -35,9 +35,7 @@ interface PoolResponse {
 export class KyveSDK {
   private client?: SigningStargateClient;
 
-  constructor(private readonly wallet: KyveWallet) {
-    console.log("init sdk");
-  }
+  constructor(private readonly wallet: KyveWallet) {}
 
   async getClient(): Promise<SigningStargateClient> {
     if (!this.client) {
