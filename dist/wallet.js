@@ -70,6 +70,7 @@ var KyveWallet = /** @class */ (function () {
                     case 0:
                         if (!!this.signer) return [3 /*break*/, 8];
                         if (!this.mnemonic) return [3 /*break*/, 2];
+                        console.log("sdk mnemonic: ", this.mnemonic);
                         _a = this;
                         return [4 /*yield*/, proto_signing_1.DirectSecp256k1HdWallet.fromMnemonic(this.mnemonic, constants_1.KYVE_WALLET_OPTIONS)];
                     case 1:
