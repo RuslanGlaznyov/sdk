@@ -71,8 +71,7 @@ __createBinding(exports, constants_2, "KYVE_DECIMALS");
 var wallet_1 = require("./wallet");
 __createBinding(exports, wallet_1, "KyveWallet");
 var KyveSDK = /** @class */ (function () {
-    function KyveSDK(endpoint, wallet) {
-        this.endpoint = endpoint;
+    function KyveSDK(wallet) {
         this.wallet = wallet;
     }
     KyveSDK.prototype.getClient = function () {
@@ -85,7 +84,7 @@ var KyveSDK = /** @class */ (function () {
                         if (!!this.client) return [3 /*break*/, 4];
                         _a = this;
                         _c = (_b = stargate_1.SigningStargateClient).connectWithSigner;
-                        _d = [this.endpoint];
+                        _d = [constants_1.KYVE_ENDPOINTS[this.wallet.network].rpc];
                         return [4 /*yield*/, this.wallet.getSigner()];
                     case 1:
                         _d = _d.concat([_f.sent()]);
@@ -105,7 +104,7 @@ var KyveSDK = /** @class */ (function () {
             var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, axios_1["default"].get("".concat(this.endpoint, "/kyve/registry/pool/").concat(id))];
+                    case 0: return [4 /*yield*/, axios_1["default"].get("".concat(constants_1.KYVE_ENDPOINTS[this.wallet.network].rest, "/kyve/registry/v1beta1/pool/").concat(id))];
                     case 1:
                         data = (_a.sent()).data;
                         return [2 /*return*/, data.Pool];
@@ -602,7 +601,7 @@ var KyveSDK = /** @class */ (function () {
                         return [3 /*break*/, 3];
                     case 1:
                         _c = (_b = window.keplr).signArbitrary;
-                        _d = ["kyve"];
+                        _d = ["kyve-".concat(this.wallet.network)];
                         return [4 /*yield*/, this.wallet.getAddress()];
                     case 2:
                         _a = _c.apply(_b, _d.concat([_e.sent(), message]));

@@ -5,21 +5,31 @@ var proto_signing_1 = require("@cosmjs/proto-signing");
 var cosmos_1 = require("@keplr-wallet/cosmos");
 exports.KYVE_DECIMALS = 9;
 exports.KYVE_DEFAULT_FEE = {
-    amount: (0, proto_signing_1.coins)(0, "kyve"),
+    amount: (0, proto_signing_1.coins)(0, "tkyve"),
     gas: "200000"
 };
 exports.KYVE_ENDPOINTS = {
-    rpc: "https://rpc.node.kyve.network",
-    rest: "https://api.node.kyve.network"
+    alpha: {
+        rpc: "https://rpc.alpha.kyve.network",
+        rest: "https://api.alpha.kyve.network"
+    },
+    beta: {
+        rpc: "https://rpc.beta.kyve.network",
+        rest: "https://api.beta.kyve.network"
+    },
+    local: {
+        rpc: "http://localhost:26657",
+        rest: "http://localhost:1317"
+    }
 };
 exports.KYVE_KEPLR_CONFIG = {
-    rpc: exports.KYVE_ENDPOINTS.rpc,
-    rest: exports.KYVE_ENDPOINTS.rest,
-    chainId: "kyve",
-    chainName: "KYVE",
+    rpc: "",
+    rest: "",
+    chainId: "",
+    chainName: "",
     stakeCurrency: {
         coinDenom: "KYVE",
-        coinMinimalDenom: "kyve",
+        coinMinimalDenom: "tkyve",
         coinDecimals: exports.KYVE_DECIMALS
     },
     bip44: {
@@ -29,14 +39,14 @@ exports.KYVE_KEPLR_CONFIG = {
     currencies: [
         {
             coinDenom: "KYVE",
-            coinMinimalDenom: "kyve",
+            coinMinimalDenom: "tkyve",
             coinDecimals: exports.KYVE_DECIMALS
         },
     ],
     feeCurrencies: [
         {
             coinDenom: "KYVE",
-            coinMinimalDenom: "kyve",
+            coinMinimalDenom: "tkyve",
             coinDecimals: exports.KYVE_DECIMALS
         },
     ],

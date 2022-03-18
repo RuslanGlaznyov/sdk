@@ -6,8 +6,18 @@ export declare const KYVE_DEFAULT_FEE: {
     gas: string;
 };
 export declare const KYVE_ENDPOINTS: {
-    rpc: string;
-    rest: string;
+    alpha: {
+        rpc: string;
+        rest: string;
+    };
+    beta: {
+        rpc: string;
+        rest: string;
+    };
+    local: {
+        rpc: string;
+        rest: string;
+    };
 };
 export declare const KYVE_KEPLR_CONFIG: ChainInfo;
 export declare const KYVE_WALLET_OPTIONS: Partial<DirectSecp256k1HdWalletOptions>;

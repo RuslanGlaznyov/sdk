@@ -7,10 +7,9 @@ import { StdSignature } from "@cosmjs/launchpad/build/types";
 export { KYVE_DECIMALS } from "./utils/constants";
 export { KyveWallet } from "./wallet";
 export declare class KyveSDK {
-    readonly endpoint: string;
     private readonly wallet;
     private client?;
-    constructor(endpoint: string, wallet: KyveWallet);
+    constructor(wallet: KyveWallet);
     getClient(): Promise<SigningStargateClient>;
     fetchPoolState(id: number): Promise<any>;
     create(metadata: string, startHeight: number, bundleDelay: number, operatingCost: number, storageCost: number, bundleProposal: any, fee?: {

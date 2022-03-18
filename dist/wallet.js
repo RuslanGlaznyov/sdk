@@ -58,10 +58,9 @@ var bignumber_js_1 = require("bignumber.js");
 var humanize_number_1 = __importDefault(require("humanize-number"));
 var constants_1 = require("./utils/constants");
 var KyveWallet = /** @class */ (function () {
-    function KyveWallet(mnemonic, endpoints) {
-        if (endpoints === void 0) { endpoints = constants_1.KYVE_ENDPOINTS; }
+    function KyveWallet(network, mnemonic) {
+        this.network = network;
         this.mnemonic = mnemonic;
-        this.endpoints = endpoints;
     }
     KyveWallet.prototype.getSigner = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -79,13 +78,13 @@ var KyveWallet = /** @class */ (function () {
                     case 2:
                         if (!window) return [3 /*break*/, 7];
                         if (!window.keplr) return [3 /*break*/, 5];
-                        return [4 /*yield*/, window.keplr.experimentalSuggestChain(__assign(__assign({}, constants_1.KYVE_KEPLR_CONFIG), this.endpoints))];
+                        return [4 /*yield*/, window.keplr.experimentalSuggestChain(__assign(__assign({}, constants_1.KYVE_KEPLR_CONFIG), { rpc: constants_1.KYVE_ENDPOINTS[this.network].rpc, rest: constants_1.KYVE_ENDPOINTS[this.network].rest, chainId: "kyve-".concat(this.network), chainName: "KYVE - ".concat(this.network.toUpperCase()) }))];
                     case 3:
                         _b.sent();
-                        return [4 /*yield*/, window.keplr.enable("kyve")];
+                        return [4 /*yield*/, window.keplr.enable("kyve-".concat(this.network))];
                     case 4:
                         _b.sent();
-                        this.signer = window.keplr.getOfflineSigner("kyve");
+                        this.signer = window.keplr.getOfflineSigner("kyve-".concat(this.network));
                         return [3 /*break*/, 6];
                     case 5: throw new Error("Please install Keplr.");
                     case 6: return [3 /*break*/, 8];
@@ -122,7 +121,7 @@ var KyveWallet = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         if (!(window && window.keplr)) return [3 /*break*/, 2];
-                        return [4 /*yield*/, window.keplr.getKey("kyve")];
+                        return [4 /*yield*/, window.keplr.getKey("kyve-".concat(this.network))];
                     case 1:
                         name_1 = (_a.sent()).name;
                         return [2 /*return*/, name_1];
@@ -133,35 +132,16 @@ var KyveWallet = /** @class */ (function () {
     };
     KyveWallet.prototype.getBalance = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var address, data, coin;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getAddress()];
-                    case 1:
-                        address = _a.sent();
-                        return [4 /*yield*/, axios_1["default"].get("".concat(this.endpoints.rest, "/bank/balances/").concat(address))];
-                    case 2:
-                        data = (_a.sent()).data;
-                        coin = data.result.find(function (coin) { return coin.denom === "kyve"; });
-                        return [2 /*return*/, coin ? coin.amount : "0"];
-                }
-            });
-        });
-    };
-    KyveWallet.prototype.fetchVote = function (proposalId) {
-        return __awaiter(this, void 0, void 0, function () {
             var address, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getAddress()];
                     case 1:
                         address = _a.sent();
-                        return [4 /*yield*/, axios_1["default"].get("".concat(this.endpoints.rest, "/cosmos/gov/v1beta1/proposals/").concat(proposalId, "/votes/").concat(address))];
+                        return [4 /*yield*/, axios_1["default"].get("".concat(constants_1.KYVE_ENDPOINTS[this.network].rest, "/cosmos/bank/v1beta1/balances/").concat(address, "/by_denom?denom=tkyve"))];
                     case 2:
                         data = (_a.sent()).data;
-                        if (data.vote)
-                            return [2 /*return*/, data.vote.option];
-                        return [2 /*return*/];
+                        return [2 /*return*/, data.balance.amount];
                 }
             });
         });
@@ -172,7 +152,7 @@ var KyveWallet = /** @class */ (function () {
             .dividedBy(new bignumber_js_1.BigNumber(10).exponentiatedBy(constants_1.KYVE_DECIMALS))
             .toFixed(decimals));
     };
-    KyveWallet.generate = function () {
+    KyveWallet.generate = function (network) {
         return __awaiter(this, void 0, void 0, function () {
             var mnemonic;
             return __generator(this, function (_a) {
@@ -180,7 +160,7 @@ var KyveWallet = /** @class */ (function () {
                     case 0: return [4 /*yield*/, proto_signing_1.DirectSecp256k1HdWallet.generate(24, constants_1.KYVE_WALLET_OPTIONS)];
                     case 1:
                         mnemonic = (_a.sent()).mnemonic;
-                        return [2 /*return*/, new KyveWallet(mnemonic)];
+                        return [2 /*return*/, new KyveWallet(network, mnemonic)];
                 }
             });
         });

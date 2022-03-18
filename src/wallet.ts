@@ -20,8 +20,7 @@ declare global {
 }
 
 interface BalanceResponse {
-  height: string;
-  result: Coin[];
+  balance: Coin;
 }
 interface Endpoints {
   rpc: string;
@@ -34,8 +33,8 @@ export class KyveWallet {
   private address?: string;
 
   constructor(
-    private readonly mnemonic?: string,
-    private readonly endpoints: Endpoints = KYVE_ENDPOINTS
+    public readonly network: "alpha" | "beta" | "local",
+    private readonly mnemonic?: string
   ) {}
 
   async getSigner(): Promise<Signer> {
@@ -50,10 +49,13 @@ export class KyveWallet {
           if (window.keplr) {
             await window.keplr.experimentalSuggestChain({
               ...KYVE_KEPLR_CONFIG,
-              ...this.endpoints,
+              rpc: KYVE_ENDPOINTS[this.network].rpc,
+              rest: KYVE_ENDPOINTS[this.network].rest,
+              chainId: `kyve-${this.network}`,
+              chainName: `KYVE - ${this.network.toUpperCase()}`,
             });
-            await window.keplr.enable("kyve");
-            this.signer = window.keplr.getOfflineSigner("kyve");
+            await window.keplr.enable(`kyve-${this.network}`);
+            this.signer = window.keplr.getOfflineSigner(`kyve-${this.network}`);
           } else {
             throw new Error("Please install Keplr.");
           }
@@ -79,7 +81,7 @@ export class KyveWallet {
 
   async getName(): Promise<string> {
     if (window && window.keplr) {
-      const { name } = await window.keplr.getKey("kyve");
+      const { name } = await window.keplr.getKey(`kyve-${this.network}`);
       return name;
     } else {
       throw new Error("Unsupported.");
@@ -90,25 +92,12 @@ export class KyveWallet {
     const address = await this.getAddress();
 
     const { data } = await axios.get<BalanceResponse>(
-      `${this.endpoints.rest}/bank/balances/${address}`
-    );
-    const coin = data.result.find((coin) => coin.denom === "kyve");
-
-    return coin ? coin.amount : "0";
-  }
-
-  async fetchVote(proposalId: number): Promise<string | undefined> {
-    const address = await this.getAddress();
-
-    const { data } = await axios.get<{
-      vote?: {
-        option: string;
-      };
-    }>(
-      `${this.endpoints.rest}/cosmos/gov/v1beta1/proposals/${proposalId}/votes/${address}`
+      `${
+        KYVE_ENDPOINTS[this.network].rest
+      }/cosmos/bank/v1beta1/balances/${address}/by_denom?denom=tkyve`
     );
 
-    if (data.vote) return data.vote.option;
+    return data.balance.amount;
   }
 
   formatBalance(balance: string, decimals: number = 2): string {
@@ -119,11 +108,13 @@ export class KyveWallet {
     );
   }
 
-  static async generate(): Promise<KyveWallet> {
+  static async generate(
+    network: "alpha" | "beta" | "local"
+  ): Promise<KyveWallet> {
     const { mnemonic } = await DirectSecp256k1HdWallet.generate(
       24,
       KYVE_WALLET_OPTIONS
     );
-    return new KyveWallet(mnemonic);
+    return new KyveWallet(network, mnemonic);
   }
 }

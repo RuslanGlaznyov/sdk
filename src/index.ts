@@ -5,7 +5,11 @@ import {
 } from "@cosmjs/stargate";
 import axios from "axios";
 import { BigNumber } from "bignumber.js";
-import { KYVE_DECIMALS, KYVE_DEFAULT_FEE } from "./utils/constants";
+import {
+  KYVE_DECIMALS,
+  KYVE_DEFAULT_FEE,
+  KYVE_ENDPOINTS,
+} from "./utils/constants";
 import { createRegistry } from "./utils/registry";
 import { KyveWallet } from "./wallet";
 import { sha256 } from "@cosmjs/crypto";
@@ -31,15 +35,12 @@ interface PoolResponse {
 export class KyveSDK {
   private client?: SigningStargateClient;
 
-  constructor(
-    public readonly endpoint: string,
-    private readonly wallet: KyveWallet
-  ) {}
+  constructor(private readonly wallet: KyveWallet) {}
 
   async getClient(): Promise<SigningStargateClient> {
     if (!this.client) {
       this.client = await SigningStargateClient.connectWithSigner(
-        this.endpoint,
+        KYVE_ENDPOINTS[this.wallet.network].rpc,
         await this.wallet.getSigner(),
         { registry: await createRegistry() }
       );
@@ -50,7 +51,9 @@ export class KyveSDK {
 
   async fetchPoolState(id: number): Promise<any> {
     const { data } = await axios.get<PoolResponse>(
-      `${this.endpoint}/kyve/registry/pool/${id}`
+      `${
+        KYVE_ENDPOINTS[this.wallet.network].rest
+      }/kyve/registry/v1beta1/pool/${id}`
     );
     return data.Pool;
   }
@@ -492,7 +495,7 @@ export class KyveSDK {
   async signString(message: string): Promise<StdSignature> {
     if (window.keplr) {
       return window?.keplr.signArbitrary(
-        "kyve",
+        `kyve-${this.wallet.network}`,
         await this.wallet.getAddress(),
         message
       );

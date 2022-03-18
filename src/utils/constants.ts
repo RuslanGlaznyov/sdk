@@ -5,23 +5,33 @@ import { ChainInfo } from "@keplr-wallet/types";
 export const KYVE_DECIMALS = 9;
 
 export const KYVE_DEFAULT_FEE = {
-  amount: coins(0, "kyve"),
+  amount: coins(0, "tkyve"),
   gas: "200000",
 };
 
 export const KYVE_ENDPOINTS = {
-  rpc: "https://rpc.node.kyve.network",
-  rest: "https://api.node.kyve.network",
+  alpha: {
+    rpc: "https://rpc.alpha.kyve.network",
+    rest: "https://api.alpha.kyve.network",
+  },
+  beta: {
+    rpc: "https://rpc.beta.kyve.network",
+    rest: "https://api.beta.kyve.network",
+  },
+  local: {
+    rpc: "http://localhost:26657",
+    rest: "http://localhost:1317",
+  },
 };
 
 export const KYVE_KEPLR_CONFIG: ChainInfo = {
-  rpc: KYVE_ENDPOINTS.rpc,
-  rest: KYVE_ENDPOINTS.rest,
-  chainId: "kyve",
-  chainName: "KYVE",
+  rpc: "",
+  rest: "",
+  chainId: "",
+  chainName: "",
   stakeCurrency: {
     coinDenom: "KYVE",
-    coinMinimalDenom: "kyve",
+    coinMinimalDenom: "tkyve",
     coinDecimals: KYVE_DECIMALS,
   },
   bip44: {
@@ -31,14 +41,14 @@ export const KYVE_KEPLR_CONFIG: ChainInfo = {
   currencies: [
     {
       coinDenom: "KYVE",
-      coinMinimalDenom: "kyve",
+      coinMinimalDenom: "tkyve",
       coinDecimals: KYVE_DECIMALS,
     },
   ],
   feeCurrencies: [
     {
       coinDenom: "KYVE",
-      coinMinimalDenom: "kyve",
+      coinMinimalDenom: "tkyve",
       coinDecimals: KYVE_DECIMALS,
     },
   ],
