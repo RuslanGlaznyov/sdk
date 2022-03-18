@@ -146,6 +146,12 @@ var KyveWallet = /** @class */ (function () {
             });
         });
     };
+    KyveWallet.prototype.getRestEndpoint = function () {
+        return constants_1.KYVE_ENDPOINTS[this.network].rest;
+    };
+    KyveWallet.prototype.getRpcEndpoint = function () {
+        return constants_1.KYVE_ENDPOINTS[this.network].rpc;
+    };
     KyveWallet.prototype.formatBalance = function (balance, decimals) {
         if (decimals === void 0) { decimals = 2; }
         return (0, humanize_number_1["default"])(new bignumber_js_1.BigNumber(balance)

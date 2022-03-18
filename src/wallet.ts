@@ -100,6 +100,14 @@ export class KyveWallet {
     return data.balance.amount;
   }
 
+  getRestEndpoint(): string {
+    return KYVE_ENDPOINTS[this.network].rest;
+  }
+
+  getRpcEndpoint(): string {
+    return KYVE_ENDPOINTS[this.network].rpc;
+  }
+
   formatBalance(balance: string, decimals: number = 2): string {
     return humanize(
       new BigNumber(balance)

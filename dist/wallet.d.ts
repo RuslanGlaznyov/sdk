@@ -15,6 +15,8 @@ export declare class KyveWallet {
     getAddress(): Promise<string>;
     getName(): Promise<string>;
     getBalance(): Promise<string>;
+    getRestEndpoint(): string;
+    getRpcEndpoint(): string;
     formatBalance(balance: string, decimals?: number): string;
     static generate(network: "alpha" | "beta" | "local"): Promise<KyveWallet>;
 }
