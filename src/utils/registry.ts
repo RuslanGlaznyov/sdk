@@ -48,6 +48,10 @@ export const createRegistry = async (): Promise<Registry> => {
         `/kyve.registry.v1beta1.MsgWithdrawPool`,
         root.lookupType("MsgWithdrawPool"),
       ],
+      [
+        `/kyve.registry.v1beta1.MsgUpdateCommission`,
+        root.lookupType("MsgUpdateCommission"),
+      ],
     ])
   );
 };

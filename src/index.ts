@@ -295,6 +295,35 @@ export class KyveSDK {
     };
   }
 
+  async updateCommission(
+    id: number | string,
+    commission: string,
+    fee = KYVE_DEFAULT_FEE
+  ): Promise<{
+    transactionHash: string;
+    transactionBroadcast: Promise<DeliverTxResponse>;
+  }> {
+    const client = await this.getClient();
+    const creator = await this.wallet.getAddress();
+
+    const msg = {
+      typeUrl: "/kyve.registry.v1beta1.MsgUpdateCommission",
+      value: {
+        creator,
+        id,
+        commission,
+      },
+    };
+
+    const txRaw = await client.sign(creator, [msg], fee, "");
+    const txBytes = TxRaw.encode(txRaw).finish();
+
+    return {
+      transactionHash: toHex(sha256(txBytes)).toUpperCase(),
+      transactionBroadcast: client.broadcastTx(txBytes),
+    };
+  }
+
   async govDeposit(
     id: string,
     amount: BigNumber,

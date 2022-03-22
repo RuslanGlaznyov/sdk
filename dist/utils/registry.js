@@ -92,6 +92,10 @@ var createRegistry = function () { return __awaiter(void 0, void 0, void 0, func
                             "/kyve.registry.v1beta1.MsgWithdrawPool",
                             root.lookupType("MsgWithdrawPool"),
                         ],
+                        [
+                            "/kyve.registry.v1beta1.MsgUpdateCommission",
+                            root.lookupType("MsgUpdateCommission"),
+                        ],
                     ]))];
         }
     });
