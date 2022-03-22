@@ -1,7 +1,6 @@
 import { DeliverTxResponse, SigningStargateClient } from "@cosmjs/stargate";
 import { BigNumber } from "bignumber.js";
 import { KyveWallet } from "./wallet";
-import { FullDecodedTransaction } from "./types/transactions";
 import { MessageEvent } from "./types/events";
 import { StdSignature } from "@cosmjs/launchpad/build/types";
 export { KYVE_DECIMALS } from "./utils/constants";
@@ -104,12 +103,6 @@ export declare class KyveSDK {
         amount: import("@cosmjs/stargate").Coin[];
         gas: string;
     }): Promise<string>;
-    /**
-     * get message-logs from all blocks within the range "fromBlock" (inclusive) and "toBlock" (inclusive)
-     * @param fromBlock (inclusive)
-     * @param toBlock (inclusive)
-     */
-    getDecodedTransactions(fromBlock: number, toBlock: number): Promise<FullDecodedTransaction[]>;
     getMessageEventLogs(fromBlock: number, toBlock: number): Promise<MessageEvent[]>;
     isValidAddress(address: string): boolean;
     signString(message: string): Promise<StdSignature>;

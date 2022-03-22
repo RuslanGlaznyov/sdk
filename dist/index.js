@@ -66,6 +66,7 @@ var cosmos_1 = require("@keplr-wallet/cosmos");
 var addresses_1 = require("@cosmjs/amino/build/addresses");
 var tx_1 = require("cosmjs-types/cosmos/tx/v1beta1/tx");
 var long_1 = __importDefault(require("long"));
+var tendermint_rpc_1 = require("@cosmjs/tendermint-rpc");
 var constants_2 = require("./utils/constants");
 __createBinding(exports, constants_2, "KYVE_DECIMALS");
 var wallet_1 = require("./wallet");
@@ -570,45 +571,59 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
-    /**
-     * get message-logs from all blocks within the range "fromBlock" (inclusive) and "toBlock" (inclusive)
-     * @param fromBlock (inclusive)
-     * @param toBlock (inclusive)
-     */
-    KyveSDK.prototype.getDecodedTransactions = function (fromBlock, toBlock) {
+    KyveSDK.prototype.getMessageEventLogs = function (fromBlock, toBlock) {
         var _a;
         return __awaiter(this, void 0, void 0, function () {
-            var client, _b, transactions, i, block, _i, _c, encodedTransaction, id, fullDecodedTransaction, indexedTx, decodedRaw, _d, _e, msg, _f, _g, eventWrapper, _h, _j, event_1;
-            return __generator(this, function (_k) {
-                switch (_k.label) {
+            var client, _b, tendermint, events, i, block, blockResult, e_1, _i, _c, encodedTransaction, id, fullDecodedTransaction, indexedTx, decodedRaw, _d, _e, msg, _f, _g, eventWrapper, _h, _j, event_1, eventsArray, eventsArray, decoder, decodedEvents, _k, _l, ev;
+            return __generator(this, function (_m) {
+                switch (_m.label) {
                     case 0:
                         if (!((_a = this.client) !== null && _a !== void 0)) return [3 /*break*/, 1];
                         _b = _a;
                         return [3 /*break*/, 3];
                     case 1: return [4 /*yield*/, this.getClient()];
                     case 2:
-                        _b = (_k.sent());
-                        _k.label = 3;
+                        _b = (_m.sent());
+                        _m.label = 3;
                     case 3:
                         client = _b;
-                        transactions = [];
-                        i = fromBlock;
-                        _k.label = 4;
+                        return [4 /*yield*/, tendermint_rpc_1.Tendermint34Client.connect(constants_1.KYVE_ENDPOINTS[this.wallet.network].rpc)];
                     case 4:
-                        if (!(i <= toBlock)) return [3 /*break*/, 10];
-                        return [4 /*yield*/, client.getBlock(i)];
+                        tendermint = _m.sent();
+                        events = [];
+                        i = fromBlock;
+                        _m.label = 5;
                     case 5:
-                        block = _k.sent();
-                        _i = 0, _c = block.txs;
-                        _k.label = 6;
+                        if (!(i <= toBlock)) return [3 /*break*/, 16];
+                        return [4 /*yield*/, client.getBlock(i)];
                     case 6:
-                        if (!(_i < _c.length)) return [3 /*break*/, 9];
+                        block = _m.sent();
+                        blockResult = void 0;
+                        _m.label = 7;
+                    case 7:
+                        _m.trys.push([7, 9, , 10]);
+                        return [4 /*yield*/, tendermint.blockResults(i)];
+                    case 8:
+                        blockResult = _m.sent();
+                        return [3 /*break*/, 10];
+                    case 9:
+                        e_1 = _m.sent();
+                        events.push(new events_1.MessageEvent([
+                            { key: "action", value: "ParsingError" },
+                            { key: "stacktrace", value: JSON.stringify(e_1) },
+                        ], new Date(block.header.time), block.header.height));
+                        return [3 /*break*/, 10];
+                    case 10:
+                        _i = 0, _c = block.txs;
+                        _m.label = 11;
+                    case 11:
+                        if (!(_i < _c.length)) return [3 /*break*/, 14];
                         encodedTransaction = _c[_i];
                         id = (0, encoding_1.toHex)((0, crypto_1.sha256)(encodedTransaction));
                         fullDecodedTransaction = new transactions_1.FullDecodedTransaction();
                         return [4 /*yield*/, client.getTx(id)];
-                    case 7:
-                        indexedTx = _k.sent();
+                    case 12:
+                        indexedTx = _m.sent();
                         if (indexedTx != null) {
                             fullDecodedTransaction.indexedTx = indexedTx;
                             fullDecodedTransaction.blockTime = new Date(block.header.time);
@@ -640,41 +655,44 @@ var KyveSDK = /** @class */ (function () {
                             }
                             catch (e) { }
                         }
-                        transactions.push(fullDecodedTransaction);
-                        _k.label = 8;
-                    case 8:
+                        if (fullDecodedTransaction.events &&
+                            fullDecodedTransaction.events.length > 0) {
+                            eventsArray = fullDecodedTransaction.events.find(function (value) { return value.type == "message"; }).attributes;
+                            if (eventsArray.find(function (value) { return value.key == "module"; }) &&
+                                eventsArray.find(function (value) { return value.key == "action"; }) &&
+                                eventsArray.find(function (value) { return value.key == "sender"; })) {
+                                events.push(new events_1.MessageEvent(eventsArray, fullDecodedTransaction.blockTime, fullDecodedTransaction.blockNumber));
+                            }
+                        }
+                        _m.label = 13;
+                    case 13:
                         _i++;
-                        return [3 /*break*/, 6];
-                    case 9:
-                        i++;
-                        return [3 /*break*/, 4];
-                    case 10: return [2 /*return*/, transactions];
-                }
-            });
-        });
-    };
-    KyveSDK.prototype.getMessageEventLogs = function (fromBlock, toBlock) {
-        return __awaiter(this, void 0, void 0, function () {
-            var decodedTransactions, events, _i, decodedTransactions_1, tx, eventsArray;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getDecodedTransactions(fromBlock, toBlock)];
-                    case 1:
-                        decodedTransactions = _a.sent();
-                        events = [];
-                        for (_i = 0, decodedTransactions_1 = decodedTransactions; _i < decodedTransactions_1.length; _i++) {
-                            tx = decodedTransactions_1[_i];
-                            if (tx.events && tx.events.length > 0) {
-                                eventsArray = tx.events.find(function (value) { return value.type == "message"; })
-                                    .attributes;
-                                if (eventsArray.find(function (value) { return value.key == "module"; }) &&
-                                    eventsArray.find(function (value) { return value.key == "action"; }) &&
-                                    eventsArray.find(function (value) { return value.key == "sender"; })) {
-                                    events.push(new events_1.MessageEvent(eventsArray, tx));
+                        return [3 /*break*/, 11];
+                    case 14:
+                        // Iterate EndBlockEvents
+                        if (blockResult != undefined) {
+                            eventsArray = blockResult.endBlockEvents.find(function (value) { return value.type == "message"; });
+                            if (eventsArray != undefined) {
+                                decoder = new TextDecoder();
+                                decodedEvents = [];
+                                for (_k = 0, _l = eventsArray.attributes; _k < _l.length; _k++) {
+                                    ev = _l[_k];
+                                    decodedEvents.push({
+                                        key: decoder.decode(ev.key),
+                                        value: decoder.decode(ev.value)
+                                    });
+                                }
+                                if (decodedEvents.find(function (value) { return value.key == "module"; }) &&
+                                    decodedEvents.find(function (value) { return value.key == "action"; })) {
+                                    events.push(new events_1.MessageEvent(decodedEvents, new Date(block.header.time), blockResult.height));
                                 }
                             }
                         }
-                        return [2 /*return*/, events];
+                        _m.label = 15;
+                    case 15:
+                        i++;
+                        return [3 /*break*/, 5];
+                    case 16: return [2 /*return*/, events];
                 }
             });
         });

@@ -23,6 +23,7 @@ import { StdSignature } from "@cosmjs/launchpad/build/types";
 import { pubkeyToAddress } from "@cosmjs/amino/build/addresses";
 import { TxRaw } from "cosmjs-types/cosmos/tx/v1beta1/tx";
 import Long from "long";
+import { Tendermint34Client } from "@cosmjs/tendermint-rpc";
 
 export { KYVE_DECIMALS } from "./utils/constants";
 export { KyveWallet } from "./wallet";
@@ -480,21 +481,35 @@ export class KyveSDK {
     return tx.transactionHash;
   }
 
-  /**
-   * get message-logs from all blocks within the range "fromBlock" (inclusive) and "toBlock" (inclusive)
-   * @param fromBlock (inclusive)
-   * @param toBlock (inclusive)
-   */
-  async getDecodedTransactions(
+  async getMessageEventLogs(
     fromBlock: number,
     toBlock: number
-  ): Promise<FullDecodedTransaction[]> {
+  ): Promise<MessageEvent[]> {
     const client = this.client ?? (await this.getClient());
 
-    const transactions: FullDecodedTransaction[] = [];
+    const tendermint = await Tendermint34Client.connect(
+      KYVE_ENDPOINTS[this.wallet.network].rpc
+    );
+
+    const events = [];
 
     for (let i = fromBlock; i <= toBlock; i++) {
       const block = await client.getBlock(i);
+      let blockResult;
+      try {
+        blockResult = await tendermint.blockResults(i);
+      } catch (e) {
+        events.push(
+          new MessageEvent(
+            [
+              { key: "action", value: "ParsingError" },
+              { key: "stacktrace", value: JSON.stringify(e) },
+            ],
+            new Date(block.header.time),
+            block.header.height
+          )
+        );
+      }
 
       // Iterate transaction headers
       for (const encodedTransaction of block.txs) {
@@ -539,35 +554,58 @@ export class KyveSDK {
           } catch (e) {}
         }
 
-        transactions.push(fullDecodedTransaction);
-      }
-    }
-
-    return transactions;
-  }
-
-  async getMessageEventLogs(
-    fromBlock: number,
-    toBlock: number
-  ): Promise<MessageEvent[]> {
-    const decodedTransactions = await this.getDecodedTransactions(
-      fromBlock,
-      toBlock
-    );
-
-    const events = [];
-
-    for (const tx of decodedTransactions) {
-      if (tx.events && tx.events.length > 0) {
-        const eventsArray = tx.events.find((value) => value.type == "message")
-          .attributes as any[];
-
         if (
-          eventsArray.find((value) => value.key == "module") &&
-          eventsArray.find((value) => value.key == "action") &&
-          eventsArray.find((value) => value.key == "sender")
+          fullDecodedTransaction.events &&
+          fullDecodedTransaction.events.length > 0
         ) {
-          events.push(new MessageEvent(eventsArray, tx));
+          const eventsArray = fullDecodedTransaction.events.find(
+            (value) => value.type == "message"
+          ).attributes as any[];
+
+          if (
+            eventsArray.find((value) => value.key == "module") &&
+            eventsArray.find((value) => value.key == "action") &&
+            eventsArray.find((value) => value.key == "sender")
+          ) {
+            events.push(
+              new MessageEvent(
+                eventsArray,
+                fullDecodedTransaction.blockTime!,
+                fullDecodedTransaction.blockNumber!
+              )
+            );
+          }
+        }
+      }
+
+      // Iterate EndBlockEvents
+      if (blockResult != undefined) {
+        const eventsArray = blockResult.endBlockEvents.find(
+          (value) => value.type == "message"
+        );
+        if (eventsArray != undefined) {
+          const decoder = new TextDecoder();
+
+          const decodedEvents = [];
+          for (const ev of eventsArray.attributes) {
+            decodedEvents.push({
+              key: decoder.decode(ev.key),
+              value: decoder.decode(ev.value),
+            });
+          }
+
+          if (
+            decodedEvents.find((value) => value.key == "module") &&
+            decodedEvents.find((value) => value.key == "action")
+          ) {
+            events.push(
+              new MessageEvent(
+                decodedEvents,
+                new Date(block.header.time),
+                blockResult.height
+              )
+            );
+          }
         }
       }
     }

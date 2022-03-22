@@ -1,21 +1,21 @@
 "use strict";
+/**
+ *  Contains all events form the custom messages in the go/cosmos KYVE implementation.
+ */
 exports.__esModule = true;
 exports.MessageEvent = void 0;
 var MessageEvent = /** @class */ (function () {
-    function MessageEvent(eventsArray, decodedTx) {
-        var _a;
+    function MessageEvent(eventsArray, time, height) {
+        var _a, _b, _c, _d, _e, _f;
         this.eventsArray = eventsArray;
-        this.action = eventsArray
-            .reverse()
-            .find(function (value) { return value.key == "action"; }).value;
-        this.module = eventsArray
-            .reverse()
-            .find(function (value) { return value.key == "module"; }).value;
-        this.sender = eventsArray
-            .reverse()
-            .find(function (value) { return value.key == "sender"; }).value;
-        this.time = decodedTx.blockTime;
-        this.height = (_a = decodedTx.indexedTx) === null || _a === void 0 ? void 0 : _a.height;
+        this.action =
+            (_b = (_a = eventsArray.reverse().find(function (value) { return value.key == "action"; })) === null || _a === void 0 ? void 0 : _a.value) !== null && _b !== void 0 ? _b : "";
+        this.module =
+            (_d = (_c = eventsArray.reverse().find(function (value) { return value.key == "module"; })) === null || _c === void 0 ? void 0 : _c.value) !== null && _d !== void 0 ? _d : "";
+        this.sender =
+            (_f = (_e = eventsArray.reverse().find(function (value) { return value.key == "sender"; })) === null || _e === void 0 ? void 0 : _e.value) !== null && _f !== void 0 ? _f : "";
+        this.time = time;
+        this.height = height;
         this.args = {};
         if (this.action == "Funded" ||
             this.action == "Defunded" ||

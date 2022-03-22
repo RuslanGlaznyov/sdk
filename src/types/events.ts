@@ -1,7 +1,6 @@
 /**
  *  Contains all events form the custom messages in the go/cosmos KYVE implementation.
  */
-import { FullDecodedTransaction } from "./transactions";
 
 export class MessageEvent {
   sender?: string;
@@ -13,19 +12,16 @@ export class MessageEvent {
 
   private readonly eventsArray: any[];
 
-  constructor(eventsArray: any[], decodedTx: FullDecodedTransaction) {
+  constructor(eventsArray: any[], time: Date, height: number) {
     this.eventsArray = eventsArray;
-    this.action = eventsArray
-      .reverse()
-      .find((value) => value.key == "action").value;
-    this.module = eventsArray
-      .reverse()
-      .find((value) => value.key == "module").value;
-    this.sender = eventsArray
-      .reverse()
-      .find((value) => value.key == "sender").value;
-    this.time = decodedTx.blockTime;
-    this.height = decodedTx.indexedTx?.height;
+    this.action =
+      eventsArray.reverse().find((value) => value.key == "action")?.value ?? "";
+    this.module =
+      eventsArray.reverse().find((value) => value.key == "module")?.value ?? "";
+    this.sender =
+      eventsArray.reverse().find((value) => value.key == "sender")?.value ?? "";
+    this.time = time;
+    this.height = height;
 
     this.args = {};
     if (
