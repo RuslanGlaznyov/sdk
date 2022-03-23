@@ -11,10 +11,6 @@ export declare class KyveSDK {
     constructor(wallet: KyveWallet);
     getClient(): Promise<SigningStargateClient>;
     fetchPoolState(id: number): Promise<any>;
-    create(metadata: string, startHeight: number, bundleDelay: number, operatingCost: number, storageCost: number, bundleProposal: any, fee?: {
-        amount: import("@cosmjs/stargate").Coin[];
-        gas: string;
-    }): Promise<string>;
     fund(id: number | string, amount: BigNumber, fee?: {
         amount: import("@cosmjs/stargate").Coin[];
         gas: string;
@@ -65,6 +61,13 @@ export declare class KyveSDK {
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;
     updateCommission(id: number | string, commission: string, fee?: {
+        amount: import("@cosmjs/stargate").Coin[];
+        gas: string;
+    }): Promise<{
+        transactionHash: string;
+        transactionBroadcast: Promise<DeliverTxResponse>;
+    }>;
+    govSubmitProposal(content: any, amount: BigNumber, fee?: {
         amount: import("@cosmjs/stargate").Coin[];
         gas: string;
     }): Promise<{
