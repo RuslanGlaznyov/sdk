@@ -67,7 +67,7 @@ export declare class KyveSDK {
         transactionHash: string;
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;
-    govSubmitProposal(content: any, amount: BigNumber, fee?: {
+    govSubmitProposal(title: string, description: string, content: any, amount: BigNumber, fee?: {
         amount: import("@cosmjs/stargate").Coin[];
         gas: string;
     }): Promise<{

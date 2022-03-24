@@ -371,7 +371,7 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
-    KyveSDK.prototype.govSubmitProposal = function (content, amount, fee) {
+    KyveSDK.prototype.govSubmitProposal = function (title, description, content, amount, fee) {
         if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
         return __awaiter(this, void 0, void 0, function () {
             var client, creator, msg, txRaw, txBytes;
@@ -385,6 +385,8 @@ var KyveSDK = /** @class */ (function () {
                         creator = _a.sent();
                         msg = {
                             typeUrl: "/cosmos.gov.v1beta1.MsgSubmitProposal",
+                            title: title,
+                            description: description,
                             value: {
                                 content: content,
                                 initialDeposit: (0, stargate_1.coins)(amount.toString(), "tkyve"),

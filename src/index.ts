@@ -296,6 +296,8 @@ export class KyveSDK {
   }
 
   async govSubmitProposal(
+    title: string,
+    description: string,
     content: any,
     amount: BigNumber,
     fee = KYVE_DEFAULT_FEE
@@ -308,6 +310,8 @@ export class KyveSDK {
 
     const msg = {
       typeUrl: "/cosmos.gov.v1beta1.MsgSubmitProposal",
+      title,
+      description,
       value: {
         content,
         initialDeposit: coins(amount.toString(), "tkyve"),
