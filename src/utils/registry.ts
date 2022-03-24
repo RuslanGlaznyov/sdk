@@ -19,6 +19,8 @@ const Content = new Type("content")
 
 const MsgSubmitProposal = new Type("MsgSubmitProposal")
   .add(Content)
+  // @ts-ignore
+  .add(new Field("initial_deposit", 2, cosmos.base.v1beta1.Coin, "repeated"))
   .add(new Field("proposer", 3, "string"));
 
 export const createRegistry = async (): Promise<Registry> => {

@@ -59,6 +59,8 @@ var Content = new protobufjs_1.Type("content")
     .add(new protobufjs_1.Field("operating_cost", 12, "uint64"));
 var MsgSubmitProposal = new protobufjs_1.Type("MsgSubmitProposal")
     .add(Content)
+    // @ts-ignore
+    .add(new protobufjs_1.Field("initial_deposit", 2, cosmos_1.cosmos.base.v1beta1.Coin, "repeated"))
     .add(new protobufjs_1.Field("proposer", 3, "string"));
 var createRegistry = function () { return __awaiter(void 0, void 0, void 0, function () {
     var root;

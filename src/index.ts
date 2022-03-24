@@ -310,7 +310,7 @@ export class KyveSDK {
       typeUrl: "/cosmos.gov.v1beta1.MsgSubmitProposal",
       value: {
         content,
-        // initial_deposit: coins(amount.toString(), "tkyve"),
+        initial_deposit: coins(amount.toString(), "tkyve"),
         proposer: creator,
       },
     };
