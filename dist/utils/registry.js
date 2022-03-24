@@ -50,7 +50,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 exports.__esModule = true;
 exports.createRegistry = void 0;
 var proto_signing_1 = require("@cosmjs/proto-signing");
-var modules_1 = require("@cosmjs/stargate/build/modules");
+var stargate_1 = require("@cosmjs/stargate");
 var path_1 = __importDefault(require("path"));
 var protobufjs_1 = require("protobufjs");
 var createRegistry = function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -60,7 +60,7 @@ var createRegistry = function () { return __awaiter(void 0, void 0, void 0, func
             case 0: return [4 /*yield*/, (0, protobufjs_1.load)(path_1["default"].join(__dirname, "../proto/tx.proto"))];
             case 1:
                 root = _a.sent();
-                return [2 /*return*/, new proto_signing_1.Registry(Array.from(__spreadArray(__spreadArray([], modules_1.govTypes, true), [
+                return [2 /*return*/, new proto_signing_1.Registry(Array.from(__spreadArray(__spreadArray([], stargate_1.defaultRegistryTypes, true), [
                         [
                             "/kyve.registry.v1beta1.MsgCreatePool",
                             root.lookupType("MsgCreatePool"),
