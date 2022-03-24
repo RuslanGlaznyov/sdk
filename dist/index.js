@@ -387,7 +387,7 @@ var KyveSDK = /** @class */ (function () {
                             typeUrl: "/cosmos.gov.v1beta1.MsgSubmitProposal",
                             value: {
                                 content: content,
-                                initial_deposit: (0, stargate_1.coins)(amount.toString(), "tkyve"),
+                                initialDeposit: (0, stargate_1.coins)(amount.toString(), "tkyve"),
                                 proposer: creator
                             }
                         };
