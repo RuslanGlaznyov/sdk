@@ -1,13 +1,32 @@
 import { Registry } from "@cosmjs/proto-signing";
 import { cosmos } from "@keplr-wallet/cosmos";
 import path from "path";
-import { load } from "protobufjs";
+import { Field, load, Type } from "protobufjs";
+
+const Content = new Type("content")
+  .add(new Field("@type", 1, "string"))
+  .add(new Field("title", 2, "string"))
+  .add(new Field("description", 3, "string"))
+  .add(new Field("id", 4, "uint64"))
+  .add(new Field("name", 5, "string"))
+  .add(new Field("runtime", 6, "string"))
+  .add(new Field("logo", 7, "string"))
+  .add(new Field("versions", 8, "string"))
+  .add(new Field("config", 9, "string"))
+  .add(new Field("start_height", 10, "uint64"))
+  .add(new Field("min_bundle_size", 11, "uint64"))
+  .add(new Field("operating_cost", 12, "uint64"));
+
+const MsgSubmitProposal = new Type("MsgSubmitProposal")
+  .add(Content)
+  .add(new Field("proposer", 3, "string"));
 
 export const createRegistry = async (): Promise<Registry> => {
   const root = await load(path.join(__dirname, "../proto/tx.proto"));
 
   return new Registry(
     Array.from([
+      [`/cosmos.gov.v1beta1.MsgSubmitProposal`, MsgSubmitProposal],
       [`/cosmos.gov.v1beta1.MsgDeposit`, cosmos.gov.v1beta1.MsgDeposit],
       [`/cosmos.gov.v1beta1.MsgVote`, cosmos.gov.v1beta1.MsgVote],
       [

@@ -44,6 +44,22 @@ var proto_signing_1 = require("@cosmjs/proto-signing");
 var cosmos_1 = require("@keplr-wallet/cosmos");
 var path_1 = __importDefault(require("path"));
 var protobufjs_1 = require("protobufjs");
+var Content = new protobufjs_1.Type("content")
+    .add(new protobufjs_1.Field("@type", 1, "string"))
+    .add(new protobufjs_1.Field("title", 2, "string"))
+    .add(new protobufjs_1.Field("description", 3, "string"))
+    .add(new protobufjs_1.Field("id", 4, "uint64"))
+    .add(new protobufjs_1.Field("name", 5, "string"))
+    .add(new protobufjs_1.Field("runtime", 6, "string"))
+    .add(new protobufjs_1.Field("logo", 7, "string"))
+    .add(new protobufjs_1.Field("versions", 8, "string"))
+    .add(new protobufjs_1.Field("config", 9, "string"))
+    .add(new protobufjs_1.Field("start_height", 10, "uint64"))
+    .add(new protobufjs_1.Field("min_bundle_size", 11, "uint64"))
+    .add(new protobufjs_1.Field("operating_cost", 12, "uint64"));
+var MsgSubmitProposal = new protobufjs_1.Type("MsgSubmitProposal")
+    .add(Content)
+    .add(new protobufjs_1.Field("proposer", 3, "string"));
 var createRegistry = function () { return __awaiter(void 0, void 0, void 0, function () {
     var root;
     return __generator(this, function (_a) {
@@ -52,6 +68,7 @@ var createRegistry = function () { return __awaiter(void 0, void 0, void 0, func
             case 1:
                 root = _a.sent();
                 return [2 /*return*/, new proto_signing_1.Registry(Array.from([
+                        ["/cosmos.gov.v1beta1.MsgSubmitProposal", MsgSubmitProposal],
                         ["/cosmos.gov.v1beta1.MsgDeposit", cosmos_1.cosmos.gov.v1beta1.MsgDeposit],
                         ["/cosmos.gov.v1beta1.MsgVote", cosmos_1.cosmos.gov.v1beta1.MsgVote],
                         [
