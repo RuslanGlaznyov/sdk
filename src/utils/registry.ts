@@ -1,5 +1,5 @@
 import { Registry } from "@cosmjs/proto-signing";
-import { cosmos } from "@keplr-wallet/cosmos";
+import { defaultRegistryTypes } from "@cosmjs/stargate";
 import path from "path";
 import { load } from "protobufjs";
 
@@ -8,8 +8,7 @@ export const createRegistry = async (): Promise<Registry> => {
 
   return new Registry(
     Array.from([
-      [`/cosmos.gov.v1beta1.MsgDeposit`, cosmos.gov.v1beta1.MsgDeposit],
-      [`/cosmos.gov.v1beta1.MsgVote`, cosmos.gov.v1beta1.MsgVote],
+      ...defaultRegistryTypes,
       [
         `/kyve.registry.v1beta1.MsgCreatePool`,
         root.lookupType("MsgCreatePool"),

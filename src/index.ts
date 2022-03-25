@@ -59,35 +59,6 @@ export class KyveSDK {
     return data.Pool;
   }
 
-  async create(
-    metadata: string,
-    startHeight: number,
-    bundleDelay: number,
-    operatingCost: number,
-    storageCost: number,
-    bundleProposal: any,
-    fee = KYVE_DEFAULT_FEE
-  ): Promise<string> {
-    const client = await this.getClient();
-    const creator = await this.wallet.getAddress();
-
-    const msg = {
-      typeUrl: "/kyve.registry.v1beta1.MsgCreatePool",
-      value: {
-        creator,
-        metadata,
-        startHeight,
-        bundleDelay,
-        operatingCost,
-        storageCost,
-        bundleProposal,
-      },
-    };
-
-    const tx = await client.signAndBroadcast(creator, [msg], fee);
-    return tx.transactionHash;
-  }
-
   async fund(
     id: number | string,
     amount: BigNumber,
@@ -312,6 +283,39 @@ export class KyveSDK {
         creator,
         id,
         commission,
+      },
+    };
+
+    const txRaw = await client.sign(creator, [msg], fee, "");
+    const txBytes = TxRaw.encode(txRaw).finish();
+
+    return {
+      transactionHash: toHex(sha256(txBytes)).toUpperCase(),
+      transactionBroadcast: client.broadcastTx(txBytes),
+    };
+  }
+
+  async govSubmitProposal(
+    title: string,
+    description: string,
+    content: any,
+    amount: BigNumber,
+    fee = KYVE_DEFAULT_FEE
+  ): Promise<{
+    transactionHash: string;
+    transactionBroadcast: Promise<DeliverTxResponse>;
+  }> {
+    const client = await this.getClient();
+    const creator = await this.wallet.getAddress();
+
+    const msg = {
+      typeUrl: "/cosmos.gov.v1beta1.MsgSubmitProposal",
+      title,
+      description,
+      value: {
+        content,
+        initialDeposit: coins(amount.toString(), "tkyve"),
+        proposer: creator,
       },
     };
 
