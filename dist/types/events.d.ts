@@ -10,5 +10,4 @@ export declare class MessageEvent {
     args: any;
     private readonly eventsArray;
     constructor(eventsArray: any[], time: Date, height: number);
-    private get;
 }

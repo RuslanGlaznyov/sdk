@@ -575,35 +575,60 @@ export class KyveSDK {
           // Extract event logs
 
           try {
+            const rawEventsArrays = [];
+
             for (const eventWrapper of JSON.parse(indexedTx.rawLog)) {
               for (const event of eventWrapper.events) {
-                fullDecodedTransaction.events.push(event);
+                rawEventsArrays.push(event);
+              }
+            }
+
+            for (const ev of rawEventsArrays) {
+              if (ev.type == "message") {
+                const kyveEvent = ev.attributes.filter(
+                  (value: { key: string }) => value.key == "EventName"
+                ).length;
+
+                if (kyveEvent == 0) {
+                  events.push(
+                    new MessageEvent(
+                      ev.attributes,
+                      fullDecodedTransaction.blockTime!,
+                      fullDecodedTransaction.blockNumber!
+                    )
+                  );
+                  fullDecodedTransaction.events.push(ev.attributes);
+                } else {
+                  // First two entries are sender and action
+                  let tx_sender = ev.attributes.find(
+                    (value: any) => value.key == "sender"
+                  ) ?? { key: "sender", value: "" };
+                  let tx_action = ev.attributes.find(
+                    (value: any) => value.key == "action"
+                  ) ?? { key: "sender", value: "" };
+
+                  let singleEventArray = [tx_sender, tx_action];
+
+                  for (const attr of ev.attributes.reverse()) {
+                    singleEventArray.push(attr);
+                    if (attr.key == "EventName") {
+                      if (singleEventArray.length > 2) {
+                        events.push(
+                          new MessageEvent(
+                            singleEventArray,
+                            fullDecodedTransaction.blockTime!,
+                            fullDecodedTransaction.blockNumber!
+                          )
+                        );
+                        fullDecodedTransaction.events.push(singleEventArray);
+                      }
+                      singleEventArray = [tx_sender, tx_action];
+                    }
+                  }
+                }
               }
             }
           } catch (e) {}
-        }
-
-        if (
-          fullDecodedTransaction.events &&
-          fullDecodedTransaction.events.length > 0
-        ) {
-          const eventsArray = fullDecodedTransaction.events.find(
-            (value) => value.type == "message"
-          ).attributes as any[];
-
-          if (
-            eventsArray.find((value) => value.key == "module") &&
-            eventsArray.find((value) => value.key == "action") &&
-            eventsArray.find((value) => value.key == "sender")
-          ) {
-            events.push(
-              new MessageEvent(
-                eventsArray,
-                fullDecodedTransaction.blockTime!,
-                fullDecodedTransaction.blockNumber!
-              )
-            );
-          }
         }
       }
 
