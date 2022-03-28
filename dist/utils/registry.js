@@ -48,7 +48,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.createRegistry = exports.UpdatePoolProposal = exports.CreatePoolProposal = exports.TextProposal = void 0;
+exports.createRegistry = exports.UpdatePoolProposal = exports.CreatePoolProposal = exports.ParameterChangeProposal = exports.TextProposal = void 0;
 var proto_signing_1 = require("@cosmjs/proto-signing");
 var stargate_1 = require("@cosmjs/stargate");
 var path_1 = __importDefault(require("path"));
@@ -56,6 +56,44 @@ var protobufjs_1 = require("protobufjs");
 exports.TextProposal = new protobufjs_1.Type("TextProposal")
     .add(new protobufjs_1.Field("title", 1, "string"))
     .add(new protobufjs_1.Field("description", 2, "string"));
+var ParamsRoot = protobufjs_1.Root.fromJSON({
+    nested: {
+        ParamChange: {
+            fields: {
+                subspace: {
+                    type: "string",
+                    id: 1
+                },
+                key: {
+                    type: "string",
+                    id: 2
+                },
+                value: {
+                    type: "string",
+                    id: 3
+                }
+            }
+        },
+        ParameterChangeProposal: {
+            fields: {
+                title: {
+                    type: "string",
+                    id: 1
+                },
+                description: {
+                    type: "string",
+                    id: 2
+                },
+                changes: {
+                    rule: "repeated",
+                    type: "ParamChange",
+                    id: 3
+                }
+            }
+        }
+    }
+});
+exports.ParameterChangeProposal = ParamsRoot.lookupType("ParameterChangeProposal");
 exports.CreatePoolProposal = new protobufjs_1.Type("CreatePoolProposal")
     .add(new protobufjs_1.Field("title", 1, "string"))
     .add(new protobufjs_1.Field("description", 2, "string"))

@@ -13,6 +13,7 @@ import {
 import {
   CreatePoolProposal,
   createRegistry,
+  ParameterChangeProposal,
   TextProposal,
   UpdatePoolProposal,
 } from "./utils/registry";
@@ -301,7 +302,11 @@ export class KyveSDK {
   }
 
   async govSubmitProposal(
-    type: "TextProposal" | "CreatePoolProposal" | "UpdatePoolProposal",
+    type:
+      | "TextProposal"
+      | "ParameterChangeProposal"
+      | "CreatePoolProposal"
+      | "UpdatePoolProposal",
     content: Object,
     amount: BigNumber,
     fee = KYVE_DEFAULT_FEE
@@ -318,6 +323,10 @@ export class KyveSDK {
       case "TextProposal":
         typeUrl = "/cosmos.gov.v1beta1.TextProposal";
         encodedContent = TextProposal.encode(content).finish();
+        break;
+      case "ParameterChangeProposal":
+        typeUrl = "/cosmos.params.v1beta1.ParameterChangeProposal";
+        encodedContent = ParameterChangeProposal.encode(content).finish();
         break;
       case "CreatePoolProposal":
         typeUrl = "/kyve.registry.v1beta1.CreatePoolProposal";

@@ -1,11 +1,53 @@
 import { Registry } from "@cosmjs/proto-signing";
 import { defaultRegistryTypes } from "@cosmjs/stargate";
 import path from "path";
-import { Field, load, Type } from "protobufjs";
+import { Field, load, Root, Type } from "protobufjs";
 
 export const TextProposal = new Type("TextProposal")
   .add(new Field("title", 1, "string"))
   .add(new Field("description", 2, "string"));
+
+const ParamsRoot = Root.fromJSON({
+  nested: {
+    ParamChange: {
+      fields: {
+        subspace: {
+          type: "string",
+          id: 1,
+        },
+        key: {
+          type: "string",
+          id: 2,
+        },
+        value: {
+          type: "string",
+          id: 3,
+        },
+      },
+    },
+    ParameterChangeProposal: {
+      fields: {
+        title: {
+          type: "string",
+          id: 1,
+        },
+        description: {
+          type: "string",
+          id: 2,
+        },
+        changes: {
+          rule: "repeated",
+          type: "ParamChange",
+          id: 3,
+        },
+      },
+    },
+  },
+});
+
+export const ParameterChangeProposal = ParamsRoot.lookupType(
+  "ParameterChangeProposal"
+);
 
 export const CreatePoolProposal = new Type("CreatePoolProposal")
   .add(new Field("title", 1, "string"))

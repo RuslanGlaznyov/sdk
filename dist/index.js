@@ -388,6 +388,10 @@ var KyveSDK = /** @class */ (function () {
                                 typeUrl = "/cosmos.gov.v1beta1.TextProposal";
                                 encodedContent = registry_1.TextProposal.encode(content).finish();
                                 break;
+                            case "ParameterChangeProposal":
+                                typeUrl = "/cosmos.params.v1beta1.ParameterChangeProposal";
+                                encodedContent = registry_1.ParameterChangeProposal.encode(content).finish();
+                                break;
                             case "CreatePoolProposal":
                                 typeUrl = "/kyve.registry.v1beta1.CreatePoolProposal";
                                 encodedContent = registry_1.CreatePoolProposal.encode(content).finish();
