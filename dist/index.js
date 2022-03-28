@@ -374,7 +374,7 @@ var KyveSDK = /** @class */ (function () {
     KyveSDK.prototype.govSubmitProposal = function (type, content, amount, fee) {
         if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
         return __awaiter(this, void 0, void 0, function () {
-            var client, creator, encodedContent, msg, txRaw, txBytes;
+            var client, creator, typeUrl, encodedContent, msg, txRaw, txBytes;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getClient()];
@@ -385,12 +385,15 @@ var KyveSDK = /** @class */ (function () {
                         creator = _a.sent();
                         switch (type) {
                             case "TextProposal":
+                                typeUrl = "/cosmos.gov.v1beta1.TextProposal";
                                 encodedContent = registry_1.TextProposal.encode(content).finish();
                                 break;
                             case "CreatePoolProposal":
+                                typeUrl = "/kyve.registry.v1beta1.CreatePoolProposal";
                                 encodedContent = registry_1.CreatePoolProposal.encode(content).finish();
                                 break;
                             case "UpdatePoolProposal":
+                                typeUrl = "/kyve.registry.v1beta1.UpdatePoolProposal";
                                 encodedContent = registry_1.UpdatePoolProposal.encode(content).finish();
                                 break;
                         }
@@ -398,7 +401,7 @@ var KyveSDK = /** @class */ (function () {
                             typeUrl: "/cosmos.gov.v1beta1.MsgSubmitProposal",
                             value: {
                                 content: {
-                                    typeUrl: "/cosmos.gov.v1beta1.TextProposal",
+                                    typeUrl: typeUrl,
                                     value: encodedContent
                                 },
                                 initialDeposit: (0, stargate_1.coins)(amount.toString(), "tkyve"),

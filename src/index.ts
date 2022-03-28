@@ -312,15 +312,19 @@ export class KyveSDK {
     const client = await this.getClient();
     const creator = await this.wallet.getAddress();
 
+    let typeUrl: string;
     let encodedContent: Uint8Array;
     switch (type) {
       case "TextProposal":
+        typeUrl = "/cosmos.gov.v1beta1.TextProposal";
         encodedContent = TextProposal.encode(content).finish();
         break;
       case "CreatePoolProposal":
+        typeUrl = "/kyve.registry.v1beta1.CreatePoolProposal";
         encodedContent = CreatePoolProposal.encode(content).finish();
         break;
       case "UpdatePoolProposal":
+        typeUrl = "/kyve.registry.v1beta1.UpdatePoolProposal";
         encodedContent = UpdatePoolProposal.encode(content).finish();
         break;
     }
@@ -329,7 +333,7 @@ export class KyveSDK {
       typeUrl: "/cosmos.gov.v1beta1.MsgSubmitProposal",
       value: {
         content: {
-          typeUrl: "/cosmos.gov.v1beta1.TextProposal",
+          typeUrl,
           value: encodedContent,
         },
         initialDeposit: coins(amount.toString(), "tkyve"),
