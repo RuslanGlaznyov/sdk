@@ -35,12 +35,22 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
 exports.createRegistry = exports.UpdatePoolProposal = exports.CreatePoolProposal = exports.TextProposal = void 0;
 var proto_signing_1 = require("@cosmjs/proto-signing");
+var stargate_1 = require("@cosmjs/stargate");
 var path_1 = __importDefault(require("path"));
 var protobufjs_1 = require("protobufjs");
 exports.TextProposal = new protobufjs_1.Type("TextProposal")
@@ -75,7 +85,7 @@ var createRegistry = function () { return __awaiter(void 0, void 0, void 0, func
             case 0: return [4 /*yield*/, (0, protobufjs_1.load)(path_1["default"].join(__dirname, "../proto/tx.proto"))];
             case 1:
                 root = _a.sent();
-                return [2 /*return*/, new proto_signing_1.Registry(Array.from([
+                return [2 /*return*/, new proto_signing_1.Registry(Array.from(__spreadArray(__spreadArray([], stargate_1.defaultRegistryTypes, true), [
                         [
                             "/kyve.registry.v1beta1.MsgCreatePool",
                             root.lookupType("MsgCreatePool"),
@@ -118,7 +128,7 @@ var createRegistry = function () { return __awaiter(void 0, void 0, void 0, func
                             "/kyve.registry.v1beta1.MsgUpdateCommission",
                             root.lookupType("MsgUpdateCommission"),
                         ],
-                    ]))];
+                    ], false)))];
         }
     });
 }); };
