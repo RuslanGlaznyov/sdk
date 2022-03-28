@@ -371,10 +371,10 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
-    KyveSDK.prototype.govSubmitProposal = function (title, description, content, amount, fee) {
+    KyveSDK.prototype.govSubmitProposal = function (type, content, amount, fee) {
         if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
         return __awaiter(this, void 0, void 0, function () {
-            var client, creator, msg, txRaw, txBytes;
+            var client, creator, encodedContent, msg, txRaw, txBytes;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getClient()];
@@ -383,12 +383,24 @@ var KyveSDK = /** @class */ (function () {
                         return [4 /*yield*/, this.wallet.getAddress()];
                     case 2:
                         creator = _a.sent();
+                        switch (type) {
+                            case "TextProposal":
+                                encodedContent = registry_1.TextProposal.encode(content).finish();
+                                break;
+                            case "CreatePoolProposal":
+                                encodedContent = registry_1.CreatePoolProposal.encode(content).finish();
+                                break;
+                            case "UpdatePoolProposal":
+                                encodedContent = registry_1.UpdatePoolProposal.encode(content).finish();
+                                break;
+                        }
                         msg = {
                             typeUrl: "/cosmos.gov.v1beta1.MsgSubmitProposal",
-                            title: title,
-                            description: description,
                             value: {
-                                content: content,
+                                content: {
+                                    typeUrl: "/cosmos.gov.v1beta1.TextProposal",
+                                    value: encodedContent
+                                },
                                 initialDeposit: (0, stargate_1.coins)(amount.toString(), "tkyve"),
                                 proposer: creator
                             }

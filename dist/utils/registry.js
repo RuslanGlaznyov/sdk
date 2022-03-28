@@ -35,24 +35,39 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.createRegistry = void 0;
+exports.createRegistry = exports.UpdatePoolProposal = exports.CreatePoolProposal = exports.TextProposal = void 0;
 var proto_signing_1 = require("@cosmjs/proto-signing");
-var stargate_1 = require("@cosmjs/stargate");
 var path_1 = __importDefault(require("path"));
 var protobufjs_1 = require("protobufjs");
+exports.TextProposal = new protobufjs_1.Type("TextProposal")
+    .add(new protobufjs_1.Field("title", 1, "string"))
+    .add(new protobufjs_1.Field("description", 2, "string"));
+exports.CreatePoolProposal = new protobufjs_1.Type("CreatePoolProposal")
+    .add(new protobufjs_1.Field("title", 1, "string"))
+    .add(new protobufjs_1.Field("description", 2, "string"))
+    .add(new protobufjs_1.Field("name", 3, "string"))
+    .add(new protobufjs_1.Field("runtime", 4, "string"))
+    .add(new protobufjs_1.Field("logo", 5, "string"))
+    .add(new protobufjs_1.Field("versions", 6, "string"))
+    .add(new protobufjs_1.Field("config", 7, "string"))
+    .add(new protobufjs_1.Field("start_height", 8, "uint64"))
+    .add(new protobufjs_1.Field("min_bundle_size", 9, "uint64"))
+    .add(new protobufjs_1.Field("operating_cost", 10, "uint64"));
+exports.UpdatePoolProposal = new protobufjs_1.Type("UpdatePoolProposal")
+    .add(new protobufjs_1.Field("title", 1, "string"))
+    .add(new protobufjs_1.Field("description", 2, "string"))
+    .add(new protobufjs_1.Field("id", 3, "uint64"))
+    .add(new protobufjs_1.Field("name", 4, "string"))
+    .add(new protobufjs_1.Field("runtime", 5, "string"))
+    .add(new protobufjs_1.Field("logo", 6, "string"))
+    .add(new protobufjs_1.Field("versions", 7, "string"))
+    .add(new protobufjs_1.Field("config", 8, "string"))
+    .add(new protobufjs_1.Field("min_bundle_size", 9, "uint64"))
+    .add(new protobufjs_1.Field("operating_cost", 10, "uint64"));
 var createRegistry = function () { return __awaiter(void 0, void 0, void 0, function () {
     var root;
     return __generator(this, function (_a) {
@@ -60,7 +75,7 @@ var createRegistry = function () { return __awaiter(void 0, void 0, void 0, func
             case 0: return [4 /*yield*/, (0, protobufjs_1.load)(path_1["default"].join(__dirname, "../proto/tx.proto"))];
             case 1:
                 root = _a.sent();
-                return [2 /*return*/, new proto_signing_1.Registry(Array.from(__spreadArray(__spreadArray([], stargate_1.defaultRegistryTypes, true), [
+                return [2 /*return*/, new proto_signing_1.Registry(Array.from([
                         [
                             "/kyve.registry.v1beta1.MsgCreatePool",
                             root.lookupType("MsgCreatePool"),
@@ -103,7 +118,7 @@ var createRegistry = function () { return __awaiter(void 0, void 0, void 0, func
                             "/kyve.registry.v1beta1.MsgUpdateCommission",
                             root.lookupType("MsgUpdateCommission"),
                         ],
-                    ], false)))];
+                    ]))];
         }
     });
 }); };

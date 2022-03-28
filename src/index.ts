@@ -10,7 +10,12 @@ import {
   KYVE_DEFAULT_FEE,
   KYVE_ENDPOINTS,
 } from "./utils/constants";
-import { createRegistry } from "./utils/registry";
+import {
+  CreatePoolProposal,
+  createRegistry,
+  TextProposal,
+  UpdatePoolProposal,
+} from "./utils/registry";
 import { KyveWallet } from "./wallet";
 import { sha256 } from "@cosmjs/crypto";
 import { fromBase64, toHex } from "@cosmjs/encoding";
@@ -296,9 +301,8 @@ export class KyveSDK {
   }
 
   async govSubmitProposal(
-    title: string,
-    description: string,
-    content: any,
+    type: "TextProposal" | "CreatePoolProposal" | "UpdatePoolProposal",
+    content: Object,
     amount: BigNumber,
     fee = KYVE_DEFAULT_FEE
   ): Promise<{
@@ -308,12 +312,26 @@ export class KyveSDK {
     const client = await this.getClient();
     const creator = await this.wallet.getAddress();
 
+    let encodedContent: Uint8Array;
+    switch (type) {
+      case "TextProposal":
+        encodedContent = TextProposal.encode(content).finish();
+        break;
+      case "CreatePoolProposal":
+        encodedContent = CreatePoolProposal.encode(content).finish();
+        break;
+      case "UpdatePoolProposal":
+        encodedContent = UpdatePoolProposal.encode(content).finish();
+        break;
+    }
+
     const msg = {
       typeUrl: "/cosmos.gov.v1beta1.MsgSubmitProposal",
-      title,
-      description,
       value: {
-        content,
+        content: {
+          typeUrl: "/cosmos.gov.v1beta1.TextProposal",
+          value: encodedContent,
+        },
         initialDeposit: coins(amount.toString(), "tkyve"),
         proposer: creator,
       },

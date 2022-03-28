@@ -1,14 +1,40 @@
 import { Registry } from "@cosmjs/proto-signing";
-import { defaultRegistryTypes } from "@cosmjs/stargate";
 import path from "path";
-import { load } from "protobufjs";
+import { Field, load, Type } from "protobufjs";
+
+export const TextProposal = new Type("TextProposal")
+  .add(new Field("title", 1, "string"))
+  .add(new Field("description", 2, "string"));
+
+export const CreatePoolProposal = new Type("CreatePoolProposal")
+  .add(new Field("title", 1, "string"))
+  .add(new Field("description", 2, "string"))
+  .add(new Field("name", 3, "string"))
+  .add(new Field("runtime", 4, "string"))
+  .add(new Field("logo", 5, "string"))
+  .add(new Field("versions", 6, "string"))
+  .add(new Field("config", 7, "string"))
+  .add(new Field("start_height", 8, "uint64"))
+  .add(new Field("min_bundle_size", 9, "uint64"))
+  .add(new Field("operating_cost", 10, "uint64"));
+
+export const UpdatePoolProposal = new Type("UpdatePoolProposal")
+  .add(new Field("title", 1, "string"))
+  .add(new Field("description", 2, "string"))
+  .add(new Field("id", 3, "uint64"))
+  .add(new Field("name", 4, "string"))
+  .add(new Field("runtime", 5, "string"))
+  .add(new Field("logo", 6, "string"))
+  .add(new Field("versions", 7, "string"))
+  .add(new Field("config", 8, "string"))
+  .add(new Field("min_bundle_size", 9, "uint64"))
+  .add(new Field("operating_cost", 10, "uint64"));
 
 export const createRegistry = async (): Promise<Registry> => {
   const root = await load(path.join(__dirname, "../proto/tx.proto"));
 
   return new Registry(
     Array.from([
-      ...defaultRegistryTypes,
       [
         `/kyve.registry.v1beta1.MsgCreatePool`,
         root.lookupType("MsgCreatePool"),
