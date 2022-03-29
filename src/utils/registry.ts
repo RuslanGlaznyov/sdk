@@ -73,6 +73,16 @@ export const UpdatePoolProposal = new Type("UpdatePoolProposal")
   .add(new Field("min_bundle_size", 9, "uint64"))
   .add(new Field("operating_cost", 10, "uint64"));
 
+export const PausePoolProposal = new Type("PausePoolProposal")
+  .add(new Field("title", 1, "string"))
+  .add(new Field("description", 2, "string"))
+  .add(new Field("id", 3, "uint64"));
+
+export const UnpausePoolProposal = new Type("UnpausePoolProposal")
+  .add(new Field("title", 1, "string"))
+  .add(new Field("description", 2, "string"))
+  .add(new Field("id", 3, "uint64"));
+
 export const createRegistry = async (): Promise<Registry> => {
   const root = await load(path.join(__dirname, "../proto/tx.proto"));
 

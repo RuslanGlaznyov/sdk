@@ -400,6 +400,14 @@ var KyveSDK = /** @class */ (function () {
                                 typeUrl = "/kyve.registry.v1beta1.UpdatePoolProposal";
                                 encodedContent = registry_1.UpdatePoolProposal.encode(content).finish();
                                 break;
+                            case "PausePoolProposal":
+                                typeUrl = "/kyve.registry.v1beta1.PausePoolProposal";
+                                encodedContent = registry_1.PausePoolProposal.encode(content).finish();
+                                break;
+                            case "UnpausePoolProposal":
+                                typeUrl = "/kyve.registry.v1beta1.UnpausePoolProposal";
+                                encodedContent = registry_1.UnpausePoolProposal.encode(content).finish();
+                                break;
                         }
                         msg = {
                             typeUrl: "/cosmos.gov.v1beta1.MsgSubmitProposal",

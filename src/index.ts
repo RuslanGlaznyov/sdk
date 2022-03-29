@@ -14,7 +14,9 @@ import {
   CreatePoolProposal,
   createRegistry,
   ParameterChangeProposal,
+  PausePoolProposal,
   TextProposal,
+  UnpausePoolProposal,
   UpdatePoolProposal,
 } from "./utils/registry";
 import { KyveWallet } from "./wallet";
@@ -306,7 +308,9 @@ export class KyveSDK {
       | "TextProposal"
       | "ParameterChangeProposal"
       | "CreatePoolProposal"
-      | "UpdatePoolProposal",
+      | "UpdatePoolProposal"
+      | "PausePoolProposal"
+      | "UnpausePoolProposal",
     content: Object,
     amount: BigNumber,
     fee = KYVE_DEFAULT_FEE
@@ -335,6 +339,14 @@ export class KyveSDK {
       case "UpdatePoolProposal":
         typeUrl = "/kyve.registry.v1beta1.UpdatePoolProposal";
         encodedContent = UpdatePoolProposal.encode(content).finish();
+        break;
+      case "PausePoolProposal":
+        typeUrl = "/kyve.registry.v1beta1.PausePoolProposal";
+        encodedContent = PausePoolProposal.encode(content).finish();
+        break;
+      case "UnpausePoolProposal":
+        typeUrl = "/kyve.registry.v1beta1.UnpausePoolProposal";
+        encodedContent = UnpausePoolProposal.encode(content).finish();
         break;
     }
 

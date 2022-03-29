@@ -48,7 +48,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.createRegistry = exports.UpdatePoolProposal = exports.CreatePoolProposal = exports.ParameterChangeProposal = exports.TextProposal = void 0;
+exports.createRegistry = exports.UnpausePoolProposal = exports.PausePoolProposal = exports.UpdatePoolProposal = exports.CreatePoolProposal = exports.ParameterChangeProposal = exports.TextProposal = void 0;
 var proto_signing_1 = require("@cosmjs/proto-signing");
 var stargate_1 = require("@cosmjs/stargate");
 var path_1 = __importDefault(require("path"));
@@ -116,6 +116,14 @@ exports.UpdatePoolProposal = new protobufjs_1.Type("UpdatePoolProposal")
     .add(new protobufjs_1.Field("config", 8, "string"))
     .add(new protobufjs_1.Field("min_bundle_size", 9, "uint64"))
     .add(new protobufjs_1.Field("operating_cost", 10, "uint64"));
+exports.PausePoolProposal = new protobufjs_1.Type("PausePoolProposal")
+    .add(new protobufjs_1.Field("title", 1, "string"))
+    .add(new protobufjs_1.Field("description", 2, "string"))
+    .add(new protobufjs_1.Field("id", 3, "uint64"));
+exports.UnpausePoolProposal = new protobufjs_1.Type("UnpausePoolProposal")
+    .add(new protobufjs_1.Field("title", 1, "string"))
+    .add(new protobufjs_1.Field("description", 2, "string"))
+    .add(new protobufjs_1.Field("id", 3, "uint64"));
 var createRegistry = function () { return __awaiter(void 0, void 0, void 0, function () {
     var root;
     return __generator(this, function (_a) {
