@@ -1,101 +1,46 @@
 syntax = "proto3";
 package kyve.registry.v1beta1;
 
-import "./registry.proto";
-// this line is used by starport scaffolding # proto/tx/import
+option go_package = "github.com/KYVENetwork/chain/x/registry/types";
 
-option go_package = "github.com/KYVENetwork/kyve/x/registry/types";
-
-// Msg defines the treasury Msg service.
+// Msg defines the registry Msg service.
 service Msg {
-  // CreatePool ...
-  rpc CreatePool(MsgCreatePool) returns (MsgCreatePoolResponse);
-  // UpdatePool ...
-  rpc UpdatePool(MsgUpdatePool) returns (MsgUpdatePoolResponse);
-  // DeletePool ...
-  rpc DeletePool(MsgDeletePool) returns (MsgDeletePoolResponse);
+  // (DE)FUNDING
+
   // FundPool ...
   rpc FundPool(MsgFundPool) returns (MsgFundPoolResponse);
   // DefundPool ...
   rpc DefundPool(MsgDefundPool) returns (MsgDefundPoolResponse);
-  // PausePool ...
-  rpc PausePool(MsgPausePool) returns (MsgPausePoolResponse);
-  // UnpausePool ...
-  rpc UnpausePool(MsgUnpausePool) returns (MsgUnpausePoolResponse);
+
+  // (UN)STAKING
+
   // StakePool ...
   rpc StakePool(MsgStakePool) returns (MsgStakePoolResponse);
   // UnstakePool ...
   rpc UnstakePool(MsgUnstakePool) returns (MsgUnstakePoolResponse);
-  // SubmitBundleProposal ...
-  rpc SubmitBundleProposal(MsgSubmitBundleProposal) returns (MsgSubmitBundleProposalResponse);
-  // VoteProposal ...
-  rpc VoteProposal(MsgVoteProposal) returns (MsgVoteProposalResponse);
-  // ClaimUploaderRole ...
-  rpc ClaimUploaderRole(MsgClaimUploaderRole) returns (MsgClaimUploaderRoleResponse);
+
+  // DELEGATION - with unbonding and reward collection
+
   // DelegatePool ...
   rpc DelegatePool(MsgDelegatePool) returns (MsgDelegatePoolResponse);
   // WithdrawPool ...
   rpc WithdrawPool(MsgWithdrawPool) returns (MsgWithdrawPoolResponse);
   // UndelegatePool ...
   rpc UndelegatePool(MsgUndelegatePool) returns (MsgUndelegatePoolResponse);
-  // UpdateCommission ...
-  rpc UpdateCommission(MsgUpdateCommission) returns (MsgUpdateCommissionResponse);
-  // this line is used by starport scaffolding # proto/tx/rpc
+
+  // POOL Query for protocol nodes
+
+  // SubmitBundleProposal ...
+  rpc SubmitBundleProposal(MsgSubmitBundleProposal) returns (MsgSubmitBundleProposalResponse);
+  // VoteProposal ...
+  rpc VoteProposal(MsgVoteProposal) returns (MsgVoteProposalResponse);
+  // ClaimUploaderRole ...
+  rpc ClaimUploaderRole(MsgClaimUploaderRole) returns (MsgClaimUploaderRoleResponse);
+  // UpdateMetadata ...
+  rpc UpdateMetadata(MsgUpdateMetadata) returns (MsgUpdateMetadataResponse);
 }
 
-// MsgCreatePool defines a SDK message for creating a new pool.
-message MsgCreatePool {
-  // creator ...
-  string                               creator         = 1;
-  // name ...
-  string                               name            = 3;
-  // runtime ...
-  string                               runtime         = 4;
-  // logo ...
-  string                               logo            = 5;
-  // versions ...
-  string                               versions        = 6;
-  // config ...
-  string                               config          = 7;
-  // start_height ...
-  uint64                               start_height    = 8;
-  // min_bundle_size ...
-  uint64                               min_bundle_size = 9;
-  // operating_cost ...
-  uint64                               operating_cost  = 10;
-  // storage_cost ...
-  uint64                               storage_cost    = 11;
-  // bundle_proposal ...
-  kyve.registry.v1beta1.BundleProposal bundle_proposal = 12;
-}
-
-// MsgCreatePoolResponse defines the Msg/CreatePool response type.
-message MsgCreatePoolResponse {
-  // id ...
-  uint64 id = 1;
-}
-
-// MsgUpdatePool defines a SDK message for updating a pool.
-message MsgUpdatePool {
-  // creator ...
-  string creator = 1;
-  // id ...
-  uint64 id      = 2;
-}
-
-// MsgUpdatePoolResponse defines the Msg/UpdatePool response type.
-message MsgUpdatePoolResponse {}
-
-// MsgDeletePool defines a SDK message for deleting a pool.
-message MsgDeletePool {
-  // creator ...
-  string creator = 1;
-  // id ...
-  uint64 id      = 2;
-}
-
-// MsgDeletePoolResponse defines the Msg/DeletePool response type.
-message MsgDeletePoolResponse {}
+// (DE)FUNDING
 
 // MsgFundPool defines a SDK message for funding a pool.
 message MsgFundPool {
@@ -123,40 +68,7 @@ message MsgDefundPool {
 // MsgDefundPoolResponse defines the Msg/DefundPool response type.
 message MsgDefundPoolResponse {}
 
-// MsgPausePool defines a SDK message for pausing a pool.
-message MsgPausePool {
-  // creator ...
-  string creator = 1;
-  // id ...
-  uint64 id      = 2;
-}
-
-// MsgPausePoolResponse defines the Msg/PausePool response type.
-message MsgPausePoolResponse {}
-
-// MsgUnpausePool defines a SDK message for unpausing a pool.
-message MsgUnpausePool {
-  // creator ...
-  string creator = 1;
-  // id ...
-  uint64 id      = 2;
-}
-
-// MsgUnpausePoolResponse defines the Msg/UnpausePool response type.
-message MsgUnpausePoolResponse {}
-
-// MsgUpdateCommission defines a SDK message for claiming the uploader role.
-message MsgUpdateCommission {
-  // creator ...
-  string creator = 1;
-  // id ...
-  uint64 id      = 2;
-  // commission
-  string commission = 3;
-}
-
-// MsgUpdateCommissionResponse defines the Msg/UpdateCommission response type.
-message MsgUpdateCommissionResponse {}
+// (UN)STAKING
 
 // MsgStakePool defines a SDK message for staking in a pool.
 message MsgStakePool {
@@ -184,48 +96,7 @@ message MsgUnstakePool {
 // MsgUnstakePoolResponse defines the Msg/UnstakePool response type.
 message MsgUnstakePoolResponse {}
 
-// MsgSubmitBundleProposal defines a SDK message for submitting a bundle proposal.
-message MsgSubmitBundleProposal {
-  // creator ...
-  string creator     = 1;
-  // id ...
-  uint64 id          = 2;
-  // bundle_id ...
-  string bundle_id   = 3;
-  // byte_size ...
-  uint64 byte_size   = 4;
-  // bundle_size ...
-  uint64 bundle_size = 5;
-}
-
-// MsgSubmitBundleProposalResponse defines the Msg/SubmitBundleProposal response type.
-message MsgSubmitBundleProposalResponse {}
-
-// MsgVoteProposal defines a SDK message for voting on a bundle proposal.
-message MsgVoteProposal {
-  // creator ...
-  string creator   = 1;
-  // id ...
-  uint64 id        = 2;
-  // bundle_id ...
-  string bundle_id = 3;
-  // support ...
-  bool   support   = 4;
-}
-
-// MsgVoteProposalResponse defines the Msg/VoteProposal response type.
-message MsgVoteProposalResponse {}
-
-// MsgClaimUploaderRole defines a SDK message for claiming the uploader role.
-message MsgClaimUploaderRole {
-  // creator ...
-  string creator = 1;
-  // id ...
-  uint64 id      = 2;
-}
-
-// MsgClaimUploaderRoleResponse defines the Msg/ClaimUploaderRole response type.
-message MsgClaimUploaderRoleResponse {}
+// DELEGATION
 
 // MsgDelegatePool defines a SDK message for delegating to a protocol node in a specific pool.
 message MsgDelegatePool {
@@ -270,4 +141,66 @@ message MsgUndelegatePool {
 // MsgUndelegatePoolResponse defines the Msg/UndelegatePool response type.
 message MsgUndelegatePoolResponse {}
 
-// this line is used by starport scaffolding # proto/tx/message
+// POOL
+
+// MsgSubmitBundleProposal defines a SDK message for submitting a bundle proposal.
+message MsgSubmitBundleProposal {
+  // creator ...
+  string creator     = 1;
+  // id ...
+  uint64 id          = 2;
+  // bundle_id ...
+  string bundle_id   = 3;
+  // byte_size ...
+  uint64 byte_size   = 4;
+  // bundle_size ...
+  uint64 bundle_size = 5;
+}
+
+// MsgSubmitBundleProposalResponse defines the Msg/SubmitBundleProposal response type.
+message MsgSubmitBundleProposalResponse {}
+
+// MsgVoteProposal defines a SDK message for voting on a bundle proposal.
+message MsgVoteProposal {
+  // creator ...
+  string creator   = 1;
+  // id ...
+  uint64 id        = 2;
+  // bundle_id ...
+  string bundle_id = 3;
+  // support ...
+  bool   support   = 4;
+}
+
+// MsgVoteProposalResponse defines the Msg/VoteProposal response type.
+message MsgVoteProposalResponse {}
+
+// MsgClaimUploaderRole defines a SDK message for claiming the uploader role.
+message MsgClaimUploaderRole {
+  // creator ...
+  string creator = 1;
+  // id ...
+  uint64 id      = 2;
+}
+
+// MsgClaimUploaderRoleResponse defines the Msg/ClaimUploaderRole response type.
+message MsgClaimUploaderRoleResponse {}
+
+// MsgUpdateMetadata defines a SDK message for claiming the uploader role.
+message MsgUpdateMetadata {
+  // creator ...
+  string creator    = 1;
+  // id ...
+  uint64 id         = 2;
+  // commission ...
+  string commission = 3;
+  // moniker ...
+  string moniker = 4;
+  // website ...
+  string website = 5;
+  // logo
+  string logo = 6;
+}
+
+// MsgUpdateMetadataResponse defines the Msg/MsgUpdateMetadata response type.
+message MsgUpdateMetadataResponse {}

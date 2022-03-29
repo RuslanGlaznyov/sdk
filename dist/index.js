@@ -339,7 +339,7 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
-    KyveSDK.prototype.updateCommission = function (id, commission, fee) {
+    KyveSDK.prototype.updateMetadata = function (id, commission, moniker, website, logo, fee) {
         if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
         return __awaiter(this, void 0, void 0, function () {
             var client, creator, msg, txRaw, txBytes;
@@ -352,11 +352,14 @@ var KyveSDK = /** @class */ (function () {
                     case 2:
                         creator = _a.sent();
                         msg = {
-                            typeUrl: "/kyve.registry.v1beta1.MsgUpdateCommission",
+                            typeUrl: "/kyve.registry.v1beta1.MsgUpdateMetadata",
                             value: {
                                 creator: creator,
                                 id: id,
-                                commission: commission
+                                commission: commission,
+                                moniker: moniker,
+                                website: website,
+                                logo: logo
                             }
                         };
                         return [4 /*yield*/, client.sign(creator, [msg], fee, "")];

@@ -60,7 +60,7 @@ export declare class KyveSDK {
         transactionHash: string;
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;
-    updateCommission(id: number | string, commission: string, fee?: {
+    updateMetadata(id: number | string, commission: string, moniker: string, website: string, logo: string, fee?: {
         amount: import("@cosmjs/stargate").Coin[];
         gas: string;
     }): Promise<{

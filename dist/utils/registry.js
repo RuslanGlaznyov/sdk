@@ -132,10 +132,6 @@ var createRegistry = function () { return __awaiter(void 0, void 0, void 0, func
             case 1:
                 root = _a.sent();
                 return [2 /*return*/, new proto_signing_1.Registry(Array.from(__spreadArray(__spreadArray([], stargate_1.defaultRegistryTypes, true), [
-                        [
-                            "/kyve.registry.v1beta1.MsgCreatePool",
-                            root.lookupType("MsgCreatePool"),
-                        ],
                         ["/kyve.registry.v1beta1.MsgFundPool", root.lookupType("MsgFundPool")],
                         [
                             "/kyve.registry.v1beta1.MsgDefundPool",
@@ -171,8 +167,8 @@ var createRegistry = function () { return __awaiter(void 0, void 0, void 0, func
                             root.lookupType("MsgWithdrawPool"),
                         ],
                         [
-                            "/kyve.registry.v1beta1.MsgUpdateCommission",
-                            root.lookupType("MsgUpdateCommission"),
+                            "/kyve.registry.v1beta1.MsgUpdateMetadata",
+                            root.lookupType("MsgUpdateMetadata"),
                         ],
                     ], false)))];
         }

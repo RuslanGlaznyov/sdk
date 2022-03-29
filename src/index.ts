@@ -274,9 +274,12 @@ export class KyveSDK {
     };
   }
 
-  async updateCommission(
+  async updateMetadata(
     id: number | string,
     commission: string,
+    moniker: string,
+    website: string,
+    logo: string,
     fee = KYVE_DEFAULT_FEE
   ): Promise<{
     transactionHash: string;
@@ -286,11 +289,14 @@ export class KyveSDK {
     const creator = await this.wallet.getAddress();
 
     const msg = {
-      typeUrl: "/kyve.registry.v1beta1.MsgUpdateCommission",
+      typeUrl: "/kyve.registry.v1beta1.MsgUpdateMetadata",
       value: {
         creator,
         id,
         commission,
+        moniker,
+        website,
+        logo,
       },
     };
 

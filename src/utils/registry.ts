@@ -89,10 +89,6 @@ export const createRegistry = async (): Promise<Registry> => {
   return new Registry(
     Array.from([
       ...defaultRegistryTypes,
-      [
-        `/kyve.registry.v1beta1.MsgCreatePool`,
-        root.lookupType("MsgCreatePool"),
-      ],
       [`/kyve.registry.v1beta1.MsgFundPool`, root.lookupType("MsgFundPool")],
       [
         `/kyve.registry.v1beta1.MsgDefundPool`,
@@ -128,8 +124,8 @@ export const createRegistry = async (): Promise<Registry> => {
         root.lookupType("MsgWithdrawPool"),
       ],
       [
-        `/kyve.registry.v1beta1.MsgUpdateCommission`,
-        root.lookupType("MsgUpdateCommission"),
+        `/kyve.registry.v1beta1.MsgUpdateMetadata`,
+        root.lookupType("MsgUpdateMetadata"),
       ],
     ])
   );
