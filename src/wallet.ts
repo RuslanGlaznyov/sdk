@@ -12,6 +12,7 @@ import {
   KYVE_DECIMALS,
   KYVE_ENDPOINTS,
   KYVE_KEPLR_CONFIG,
+  KYVE_NETWORK,
   KYVE_WALLET_OPTIONS,
 } from "./utils/constants";
 
@@ -22,10 +23,6 @@ declare global {
 interface BalanceResponse {
   balance: Coin;
 }
-interface Endpoints {
-  rpc: string;
-  rest: string;
-}
 type Signer = DirectSecp256k1HdWallet | OfflineDirectSigner;
 
 export class KyveWallet {
@@ -33,7 +30,7 @@ export class KyveWallet {
   private address?: string;
 
   constructor(
-    public readonly network: "alpha" | "beta" | "local",
+    public readonly network: KYVE_NETWORK,
     private readonly mnemonic?: string
   ) {}
 
@@ -51,11 +48,13 @@ export class KyveWallet {
               ...KYVE_KEPLR_CONFIG,
               rpc: KYVE_ENDPOINTS[this.network].rpc,
               rest: KYVE_ENDPOINTS[this.network].rest,
-              chainId: `kyve-${this.network}`,
-              chainName: `KYVE - ${this.network.toUpperCase()}`,
+              chainId: KYVE_ENDPOINTS[this.network].chainId,
+              chainName: KYVE_ENDPOINTS[this.network].chainName,
             });
-            await window.keplr.enable(`kyve-${this.network}`);
-            this.signer = window.keplr.getOfflineSigner(`kyve-${this.network}`);
+            await window.keplr.enable(KYVE_ENDPOINTS[this.network].chainId);
+            this.signer = window.keplr.getOfflineSigner(
+              KYVE_ENDPOINTS[this.network].chainId
+            );
           } else {
             throw new Error("Please install Keplr.");
           }
@@ -81,7 +80,9 @@ export class KyveWallet {
 
   async getName(): Promise<string> {
     if (window && window.keplr) {
-      const { name } = await window.keplr.getKey(`kyve-${this.network}`);
+      const { name } = await window.keplr.getKey(
+        KYVE_ENDPOINTS[this.network].chainId
+      );
       return name;
     } else {
       throw new Error("Unsupported.");
@@ -108,6 +109,10 @@ export class KyveWallet {
     return KYVE_ENDPOINTS[this.network].rpc;
   }
 
+  getChainId(): string {
+    return KYVE_ENDPOINTS[this.network].chainId;
+  }
+
   formatBalance(balance: string, decimals: number = 2): string {
     return humanize(
       new BigNumber(balance)
@@ -116,9 +121,7 @@ export class KyveWallet {
     );
   }
 
-  static async generate(
-    network: "alpha" | "beta" | "local"
-  ): Promise<KyveWallet> {
+  static async generate(network: KYVE_NETWORK): Promise<KyveWallet> {
     const { mnemonic } = await DirectSecp256k1HdWallet.generate(
       24,
       KYVE_WALLET_OPTIONS

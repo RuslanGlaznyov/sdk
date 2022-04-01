@@ -799,7 +799,7 @@ var KyveSDK = /** @class */ (function () {
                         return [3 /*break*/, 3];
                     case 1:
                         _c = (_b = window.keplr).signArbitrary;
-                        _d = ["kyve-".concat(this.wallet.network)];
+                        _d = [this.wallet.getChainId()];
                         return [4 /*yield*/, this.wallet.getAddress()];
                     case 2:
                         _a = _c.apply(_b, _d.concat([_e.sent(), message]));

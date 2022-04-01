@@ -9,17 +9,29 @@ exports.KYVE_DEFAULT_FEE = {
     gas: "200000"
 };
 exports.KYVE_ENDPOINTS = {
+    local: {
+        rpc: "http://localhost:26657",
+        rest: "http://localhost:1317",
+        chainId: "kyve-local",
+        chainName: "KYVE - Local"
+    },
     alpha: {
         rpc: "https://rpc.alpha.kyve.network",
-        rest: "https://api.alpha.kyve.network"
+        rest: "https://api.alpha.kyve.network",
+        chainId: "kyve-alpha",
+        chainName: "KYVE - Alpha"
     },
     beta: {
         rpc: "https://rpc.beta.kyve.network",
-        rest: "https://api.beta.kyve.network"
+        rest: "https://api.beta.kyve.network",
+        chainId: "kyve-beta",
+        chainName: "KYVE - Beta"
     },
-    local: {
-        rpc: "http://localhost:26657",
-        rest: "http://localhost:1317"
+    korellia: {
+        rpc: "https://rpc.korellia.kyve.network",
+        rest: "https://api.korellia.kyve.network",
+        chainId: "korellia",
+        chainName: "Korellia"
     }
 };
 exports.KYVE_KEPLR_CONFIG = {
