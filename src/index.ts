@@ -687,24 +687,31 @@ export class KyveSDK {
 
       // Iterate EndBlockEvents
       if (blockResult != undefined) {
-        const eventsArray = blockResult.endBlockEvents.find(
+        const eventsMessages = blockResult.endBlockEvents.filter(
           (value) => value.type == "message"
         );
-        if (eventsArray != undefined) {
+
+        const attributes = [];
+        for (const ev of eventsMessages) {
+          attributes.push(...ev.attributes);
+        }
+
+        if (attributes.length > 0) {
           const decoder = new TextDecoder();
 
           const decodedEvents = [];
-          for (const ev of eventsArray.attributes) {
+          for (const ev of attributes) {
             decodedEvents.push({
               key: decoder.decode(ev.key),
               value: decoder.decode(ev.value),
             });
           }
 
-          if (
-            decodedEvents.find((value) => value.key == "module") &&
-            decodedEvents.find((value) => value.key == "action")
-          ) {
+          const kyveEvent = decodedEvents.filter(
+            (value: { key: string }) => value.key == "EventName"
+          ).length;
+
+          if (kyveEvent == 0) {
             events.push(
               new MessageEvent(
                 decodedEvents,
@@ -712,6 +719,32 @@ export class KyveSDK {
                 blockResult.height
               )
             );
+          } else {
+            // First two entries are sender and action
+            let tx_sender = decodedEvents.find(
+              (value: any) => value.key == "sender"
+            ) ?? { key: "sender", value: "" };
+            let tx_action = decodedEvents.find(
+              (value: any) => value.key == "action"
+            ) ?? { key: "sender", value: "" };
+
+            let singleEventArray = [tx_sender, tx_action];
+
+            for (const attr of decodedEvents.reverse()) {
+              singleEventArray.push(attr);
+              if (attr.key == "EventName") {
+                if (singleEventArray.length > 2) {
+                  events.push(
+                    new MessageEvent(
+                      singleEventArray,
+                      new Date(block.header.time),
+                      blockResult.height
+                    )
+                  );
+                }
+                singleEventArray = [tx_sender, tx_action];
+              }
+            }
           }
         }
       }
