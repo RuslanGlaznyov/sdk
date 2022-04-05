@@ -1,5 +1,5 @@
 {
-  "name": "@kyve/sdk",
+  "name": "@kyve/sdk-test",
   "version": "1.0.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
