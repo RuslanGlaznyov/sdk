@@ -59,7 +59,7 @@ exports.KYVE_KEPLR_CONFIG = {
     ],
     coinType: 118,
     gasPriceStep: { low: 0, average: 0, high: 0 },
-    features: ["stargate", "no-legacy-stdTx", "ibc-transfer", "ibc-go"]
+    features: ["ibc-transfer", "ibc-go"]
 };
 exports.KYVE_WALLET_OPTIONS = {
     prefix: "kyve"

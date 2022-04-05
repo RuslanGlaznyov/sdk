@@ -1,4 +1,4 @@
-import { coins, DirectSecp256k1HdWalletOptions } from "@cosmjs/proto-signing";
+import { DirectSecp256k1HdWalletOptions } from "@cosmjs/proto-signing";
 import { Bech32Address } from "@keplr-wallet/cosmos";
 import { ChainInfo } from "@keplr-wallet/types";
 
@@ -61,7 +61,7 @@ export const KYVE_KEPLR_CONFIG: ChainInfo = {
   ],
   coinType: 118,
   gasPriceStep: { low: 0, average: 0, high: 0 },
-  features: ["stargate", "no-legacy-stdTx", "ibc-transfer", "ibc-go"],
+  features: ["ibc-transfer", "ibc-go"],
 };
 
 export type KYVE_NETWORK = "local" | "alpha" | "beta" | "korellia";
