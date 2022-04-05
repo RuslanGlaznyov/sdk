@@ -798,7 +798,7 @@ export class KyveSDK {
 
     return {
       amount: coins(0, "tkyve"),
-      gas: (estimation * multiplier).toString(),
+      gas: Math.floor(estimation * multiplier).toString(),
     };
   }
 }
