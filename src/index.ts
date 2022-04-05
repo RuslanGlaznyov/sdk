@@ -1,15 +1,13 @@
 import {
   coins,
   DeliverTxResponse,
+  GasPrice,
   SigningStargateClient,
+  StdFee,
 } from "@cosmjs/stargate";
 import axios from "axios";
 import { BigNumber } from "bignumber.js";
-import {
-  KYVE_DECIMALS,
-  KYVE_DEFAULT_FEE,
-  KYVE_ENDPOINTS,
-} from "./utils/constants";
+import { KYVE_DECIMALS, KYVE_ENDPOINTS } from "./utils/constants";
 import {
   CreatePoolProposal,
   createRegistry,
@@ -23,7 +21,7 @@ import { KyveWallet } from "./wallet";
 import { sha256 } from "@cosmjs/crypto";
 import { fromBase64, toHex } from "@cosmjs/encoding";
 import { bech32 } from "bech32";
-import { decodeTxRaw } from "@cosmjs/proto-signing";
+import { decodeTxRaw, EncodeObject } from "@cosmjs/proto-signing";
 import { FullDecodedTransaction } from "./types/transactions";
 import { MessageEvent } from "./types/events";
 import { cosmos, verifyADR36Amino } from "@keplr-wallet/cosmos";
@@ -32,6 +30,7 @@ import { pubkeyToAddress } from "@cosmjs/amino/build/addresses";
 import { TxRaw } from "cosmjs-types/cosmos/tx/v1beta1/tx";
 import Long from "long";
 import { Tendermint34Client } from "@cosmjs/tendermint-rpc";
+import { Decimal } from "@cosmjs/math";
 
 export { KYVE_DECIMALS } from "./utils/constants";
 export { KyveWallet } from "./wallet";
@@ -48,10 +47,12 @@ export class KyveSDK {
 
   async getClient(): Promise<SigningStargateClient> {
     if (!this.client) {
+      const gasPrice = new GasPrice(Decimal.fromUserInput("0", 0), "tkyve");
+
       this.client = await SigningStargateClient.connectWithSigner(
         KYVE_ENDPOINTS[this.wallet.network].rpc,
         await this.wallet.getSigner(),
-        { registry: await createRegistry() }
+        { registry: await createRegistry(), gasPrice }
       );
     }
 
@@ -69,8 +70,7 @@ export class KyveSDK {
 
   async fund(
     id: number | string,
-    amount: BigNumber,
-    fee = KYVE_DEFAULT_FEE
+    amount: BigNumber
   ): Promise<{
     transactionHash: string;
     transactionBroadcast: Promise<DeliverTxResponse>;
@@ -87,6 +87,7 @@ export class KyveSDK {
       },
     };
 
+    const fee = await this.fetchFee([msg]);
     const txRaw = await client.sign(creator, [msg], fee, "");
     const txBytes = TxRaw.encode(txRaw).finish();
 
@@ -98,8 +99,7 @@ export class KyveSDK {
 
   async defund(
     id: number | string,
-    amount: BigNumber,
-    fee = KYVE_DEFAULT_FEE
+    amount: BigNumber
   ): Promise<{
     transactionHash: string;
     transactionBroadcast: Promise<DeliverTxResponse>;
@@ -116,6 +116,7 @@ export class KyveSDK {
       },
     };
 
+    const fee = await this.fetchFee([msg]);
     const txRaw = await client.sign(creator, [msg], fee, "");
     const txBytes = TxRaw.encode(txRaw).finish();
 
@@ -127,8 +128,7 @@ export class KyveSDK {
 
   async stake(
     id: number | string,
-    amount: BigNumber,
-    fee = KYVE_DEFAULT_FEE
+    amount: BigNumber
   ): Promise<{
     transactionHash: string;
     transactionBroadcast: Promise<DeliverTxResponse>;
@@ -145,6 +145,7 @@ export class KyveSDK {
       },
     };
 
+    const fee = await this.fetchFee([msg]);
     const txRaw = await client.sign(creator, [msg], fee, "");
     const txBytes = TxRaw.encode(txRaw).finish();
 
@@ -156,8 +157,7 @@ export class KyveSDK {
 
   async unstake(
     id: number | string,
-    amount: BigNumber,
-    fee = KYVE_DEFAULT_FEE
+    amount: BigNumber
   ): Promise<{
     transactionHash: string;
     transactionBroadcast: Promise<DeliverTxResponse>;
@@ -174,6 +174,7 @@ export class KyveSDK {
       },
     };
 
+    const fee = await this.fetchFee([msg]);
     const txRaw = await client.sign(creator, [msg], fee, "");
     const txBytes = TxRaw.encode(txRaw).finish();
 
@@ -186,8 +187,7 @@ export class KyveSDK {
   async delegate(
     id: number | string,
     staker: string,
-    amount: BigNumber,
-    fee = KYVE_DEFAULT_FEE
+    amount: BigNumber
   ): Promise<{
     transactionHash: string;
     transactionBroadcast: Promise<DeliverTxResponse>;
@@ -205,6 +205,7 @@ export class KyveSDK {
       },
     };
 
+    const fee = await this.fetchFee([msg]);
     const txRaw = await client.sign(creator, [msg], fee, "");
     const txBytes = TxRaw.encode(txRaw).finish();
 
@@ -217,8 +218,7 @@ export class KyveSDK {
   async undelegate(
     id: number | string,
     staker: string,
-    amount: BigNumber,
-    fee = KYVE_DEFAULT_FEE
+    amount: BigNumber
   ): Promise<{
     transactionHash: string;
     transactionBroadcast: Promise<DeliverTxResponse>;
@@ -236,6 +236,7 @@ export class KyveSDK {
       },
     };
 
+    const fee = await this.fetchFee([msg]);
     const txRaw = await client.sign(creator, [msg], fee, "");
     const txBytes = TxRaw.encode(txRaw).finish();
 
@@ -247,8 +248,7 @@ export class KyveSDK {
 
   async withdrawRewards(
     id: number | string,
-    staker: string,
-    fee = KYVE_DEFAULT_FEE
+    staker: string
   ): Promise<{
     transactionHash: string;
     transactionBroadcast: Promise<DeliverTxResponse>;
@@ -265,6 +265,7 @@ export class KyveSDK {
       },
     };
 
+    const fee = await this.fetchFee([msg]);
     const txRaw = await client.sign(creator, [msg], fee, "");
     const txBytes = TxRaw.encode(txRaw).finish();
 
@@ -279,8 +280,7 @@ export class KyveSDK {
     commission: string,
     moniker: string,
     website: string,
-    logo: string,
-    fee = KYVE_DEFAULT_FEE
+    logo: string
   ): Promise<{
     transactionHash: string;
     transactionBroadcast: Promise<DeliverTxResponse>;
@@ -300,6 +300,7 @@ export class KyveSDK {
       },
     };
 
+    const fee = await this.fetchFee([msg]);
     const txRaw = await client.sign(creator, [msg], fee, "");
     const txBytes = TxRaw.encode(txRaw).finish();
 
@@ -318,8 +319,7 @@ export class KyveSDK {
       | "PausePoolProposal"
       | "UnpausePoolProposal",
     content: Object,
-    amount: BigNumber,
-    fee = KYVE_DEFAULT_FEE
+    amount: BigNumber
   ): Promise<{
     transactionHash: string;
     transactionBroadcast: Promise<DeliverTxResponse>;
@@ -368,6 +368,7 @@ export class KyveSDK {
       },
     };
 
+    const fee = await this.fetchFee([msg]);
     const txRaw = await client.sign(creator, [msg], fee, "");
     const txBytes = TxRaw.encode(txRaw).finish();
 
@@ -379,8 +380,7 @@ export class KyveSDK {
 
   async govDeposit(
     id: string,
-    amount: BigNumber,
-    fee = KYVE_DEFAULT_FEE
+    amount: BigNumber
   ): Promise<{
     transactionHash: string;
     transactionBroadcast: Promise<DeliverTxResponse>;
@@ -397,6 +397,7 @@ export class KyveSDK {
       },
     };
 
+    const fee = await this.fetchFee([msg]);
     const txRaw = await client.sign(creator, [msg], fee, "");
     const txBytes = TxRaw.encode(txRaw).finish();
 
@@ -408,8 +409,7 @@ export class KyveSDK {
 
   async govVote(
     id: string,
-    option: "Yes" | "Abstain" | "No" | "NoWithVeto",
-    fee = KYVE_DEFAULT_FEE
+    option: "Yes" | "Abstain" | "No" | "NoWithVeto"
   ): Promise<{
     transactionHash: string;
     transactionBroadcast: Promise<DeliverTxResponse>;
@@ -442,6 +442,7 @@ export class KyveSDK {
       },
     };
 
+    const fee = await this.fetchFee([msg]);
     const txRaw = await client.sign(creator, [msg], fee, "");
     const txBytes = TxRaw.encode(txRaw).finish();
 
@@ -455,8 +456,7 @@ export class KyveSDK {
     id: number | string,
     bundleId: string,
     byteSize: number,
-    bundleSize: number,
-    fee = KYVE_DEFAULT_FEE
+    bundleSize: number
   ): Promise<{
     transactionHash: string;
     transactionBroadcast: Promise<DeliverTxResponse>;
@@ -475,6 +475,7 @@ export class KyveSDK {
       },
     };
 
+    const fee = await this.fetchFee([msg]);
     const txRaw = await client.sign(creator, [msg], fee, "");
     const txBytes = TxRaw.encode(txRaw).finish();
 
@@ -487,8 +488,7 @@ export class KyveSDK {
   async voteProposal(
     id: number | string,
     bundleId: string,
-    support: boolean,
-    fee = KYVE_DEFAULT_FEE
+    support: boolean
   ): Promise<{
     transactionHash: string;
     transactionBroadcast: Promise<DeliverTxResponse>;
@@ -506,6 +506,7 @@ export class KyveSDK {
       },
     };
 
+    const fee = await this.fetchFee([msg]);
     const txRaw = await client.sign(creator, [msg], fee, "");
     const txBytes = TxRaw.encode(txRaw).finish();
 
@@ -515,10 +516,7 @@ export class KyveSDK {
     };
   }
 
-  async claimUploaderRole(
-    id: number | string,
-    fee = KYVE_DEFAULT_FEE
-  ): Promise<{
+  async claimUploaderRole(id: number | string): Promise<{
     transactionHash: string;
     transactionBroadcast: Promise<DeliverTxResponse>;
   }> {
@@ -533,6 +531,7 @@ export class KyveSDK {
       },
     };
 
+    const fee = await this.fetchFee([msg]);
     const txRaw = await client.sign(creator, [msg], fee, "");
     const txBytes = TxRaw.encode(txRaw).finish();
 
@@ -542,11 +541,7 @@ export class KyveSDK {
     };
   }
 
-  async transfer(
-    recipient: string,
-    amount: number,
-    fee = KYVE_DEFAULT_FEE
-  ): Promise<string> {
+  async transfer(recipient: string, amount: number): Promise<string> {
     const client = await this.getClient();
     const creator = await this.wallet.getAddress();
 
@@ -558,7 +553,7 @@ export class KyveSDK {
       creator,
       recipient,
       coins(parsedAmount, "tkyve"),
-      fee
+      "auto"
     );
     return tx.transactionHash;
   }
@@ -791,5 +786,19 @@ export class KyveSDK {
       { type: "tendermint/PubKeySecp256k1", value: pubKey },
       "kyve"
     );
+  }
+
+  private async fetchFee(messages: EncodeObject[]): Promise<StdFee> {
+    const client = await this.getClient();
+    const signer = await this.wallet.getAddress();
+
+    // TODO: Make memo and multiplier more dynamic.
+    const estimation = await client.simulate(signer, messages, "");
+    const multiplier = 1.5;
+
+    return {
+      amount: coins(0, "tkyve"),
+      gas: (estimation * multiplier).toString(),
+    };
   }
 }

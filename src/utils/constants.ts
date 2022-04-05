@@ -4,11 +4,6 @@ import { ChainInfo } from "@keplr-wallet/types";
 
 export const KYVE_DECIMALS = 9;
 
-export const KYVE_DEFAULT_FEE = {
-  amount: coins(0, "tkyve"),
-  gas: "200000",
-};
-
 export const KYVE_ENDPOINTS = {
   local: {
     rpc: "http://localhost:26657",

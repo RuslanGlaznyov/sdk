@@ -11,111 +11,67 @@ export declare class KyveSDK {
     constructor(wallet: KyveWallet);
     getClient(): Promise<SigningStargateClient>;
     fetchPoolState(id: number): Promise<any>;
-    fund(id: number | string, amount: BigNumber, fee?: {
-        amount: import("@cosmjs/stargate").Coin[];
-        gas: string;
-    }): Promise<{
+    fund(id: number | string, amount: BigNumber): Promise<{
         transactionHash: string;
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;
-    defund(id: number | string, amount: BigNumber, fee?: {
-        amount: import("@cosmjs/stargate").Coin[];
-        gas: string;
-    }): Promise<{
+    defund(id: number | string, amount: BigNumber): Promise<{
         transactionHash: string;
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;
-    stake(id: number | string, amount: BigNumber, fee?: {
-        amount: import("@cosmjs/stargate").Coin[];
-        gas: string;
-    }): Promise<{
+    stake(id: number | string, amount: BigNumber): Promise<{
         transactionHash: string;
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;
-    unstake(id: number | string, amount: BigNumber, fee?: {
-        amount: import("@cosmjs/stargate").Coin[];
-        gas: string;
-    }): Promise<{
+    unstake(id: number | string, amount: BigNumber): Promise<{
         transactionHash: string;
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;
-    delegate(id: number | string, staker: string, amount: BigNumber, fee?: {
-        amount: import("@cosmjs/stargate").Coin[];
-        gas: string;
-    }): Promise<{
+    delegate(id: number | string, staker: string, amount: BigNumber): Promise<{
         transactionHash: string;
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;
-    undelegate(id: number | string, staker: string, amount: BigNumber, fee?: {
-        amount: import("@cosmjs/stargate").Coin[];
-        gas: string;
-    }): Promise<{
+    undelegate(id: number | string, staker: string, amount: BigNumber): Promise<{
         transactionHash: string;
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;
-    withdrawRewards(id: number | string, staker: string, fee?: {
-        amount: import("@cosmjs/stargate").Coin[];
-        gas: string;
-    }): Promise<{
+    withdrawRewards(id: number | string, staker: string): Promise<{
         transactionHash: string;
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;
-    updateMetadata(id: number | string, commission: string, moniker: string, website: string, logo: string, fee?: {
-        amount: import("@cosmjs/stargate").Coin[];
-        gas: string;
-    }): Promise<{
+    updateMetadata(id: number | string, commission: string, moniker: string, website: string, logo: string): Promise<{
         transactionHash: string;
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;
-    govSubmitProposal(type: "TextProposal" | "ParameterChangeProposal" | "CreatePoolProposal" | "UpdatePoolProposal" | "PausePoolProposal" | "UnpausePoolProposal", content: Object, amount: BigNumber, fee?: {
-        amount: import("@cosmjs/stargate").Coin[];
-        gas: string;
-    }): Promise<{
+    govSubmitProposal(type: "TextProposal" | "ParameterChangeProposal" | "CreatePoolProposal" | "UpdatePoolProposal" | "PausePoolProposal" | "UnpausePoolProposal", content: Object, amount: BigNumber): Promise<{
         transactionHash: string;
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;
-    govDeposit(id: string, amount: BigNumber, fee?: {
-        amount: import("@cosmjs/stargate").Coin[];
-        gas: string;
-    }): Promise<{
+    govDeposit(id: string, amount: BigNumber): Promise<{
         transactionHash: string;
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;
-    govVote(id: string, option: "Yes" | "Abstain" | "No" | "NoWithVeto", fee?: {
-        amount: import("@cosmjs/stargate").Coin[];
-        gas: string;
-    }): Promise<{
+    govVote(id: string, option: "Yes" | "Abstain" | "No" | "NoWithVeto"): Promise<{
         transactionHash: string;
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;
-    submitBundleProposal(id: number | string, bundleId: string, byteSize: number, bundleSize: number, fee?: {
-        amount: import("@cosmjs/stargate").Coin[];
-        gas: string;
-    }): Promise<{
+    submitBundleProposal(id: number | string, bundleId: string, byteSize: number, bundleSize: number): Promise<{
         transactionHash: string;
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;
-    voteProposal(id: number | string, bundleId: string, support: boolean, fee?: {
-        amount: import("@cosmjs/stargate").Coin[];
-        gas: string;
-    }): Promise<{
+    voteProposal(id: number | string, bundleId: string, support: boolean): Promise<{
         transactionHash: string;
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;
-    claimUploaderRole(id: number | string, fee?: {
-        amount: import("@cosmjs/stargate").Coin[];
-        gas: string;
-    }): Promise<{
+    claimUploaderRole(id: number | string): Promise<{
         transactionHash: string;
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;
-    transfer(recipient: string, amount: number, fee?: {
-        amount: import("@cosmjs/stargate").Coin[];
-        gas: string;
-    }): Promise<string>;
+    transfer(recipient: string, amount: number): Promise<string>;
     getMessageEventLogs(fromBlock: number, toBlock: number): Promise<MessageEvent[]>;
     isValidAddress(address: string): boolean;
     signString(message: string): Promise<StdSignature>;
     verifyString(signature: string, data: string, pubKey: string): Promise<boolean>;
     getAddressFromPubKey(pubKey: string): string;
+    private fetchFee;
 }

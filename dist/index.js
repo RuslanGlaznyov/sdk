@@ -67,6 +67,7 @@ var addresses_1 = require("@cosmjs/amino/build/addresses");
 var tx_1 = require("cosmjs-types/cosmos/tx/v1beta1/tx");
 var long_1 = __importDefault(require("long"));
 var tendermint_rpc_1 = require("@cosmjs/tendermint-rpc");
+var math_1 = require("@cosmjs/math");
 var constants_2 = require("./utils/constants");
 __createBinding(exports, constants_2, "KYVE_DECIMALS");
 var wallet_1 = require("./wallet");
@@ -77,12 +78,13 @@ var KyveSDK = /** @class */ (function () {
     }
     KyveSDK.prototype.getClient = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, _b, _c, _d;
+            var gasPrice, _a, _b, _c, _d;
             var _e;
             return __generator(this, function (_f) {
                 switch (_f.label) {
                     case 0:
                         if (!!this.client) return [3 /*break*/, 4];
+                        gasPrice = new stargate_1.GasPrice(math_1.Decimal.fromUserInput("0", 0), "tkyve");
                         _a = this;
                         _c = (_b = stargate_1.SigningStargateClient).connectWithSigner;
                         _d = [constants_1.KYVE_ENDPOINTS[this.wallet.network].rpc];
@@ -91,7 +93,7 @@ var KyveSDK = /** @class */ (function () {
                         _d = _d.concat([_f.sent()]);
                         _e = {};
                         return [4 /*yield*/, (0, registry_1.createRegistry)()];
-                    case 2: return [4 /*yield*/, _c.apply(_b, _d.concat([(_e.registry = _f.sent(), _e)]))];
+                    case 2: return [4 /*yield*/, _c.apply(_b, _d.concat([(_e.registry = _f.sent(), _e.gasPrice = gasPrice, _e)]))];
                     case 3:
                         _a.client = _f.sent();
                         _f.label = 4;
@@ -113,10 +115,9 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
-    KyveSDK.prototype.fund = function (id, amount, fee) {
-        if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
+    KyveSDK.prototype.fund = function (id, amount) {
         return __awaiter(this, void 0, void 0, function () {
-            var client, creator, msg, txRaw, txBytes;
+            var client, creator, msg, fee, txRaw, txBytes;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getClient()];
@@ -133,8 +134,11 @@ var KyveSDK = /** @class */ (function () {
                                 amount: amount.toString()
                             }
                         };
-                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                        return [4 /*yield*/, this.fetchFee([msg])];
                     case 3:
+                        fee = _a.sent();
+                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                    case 4:
                         txRaw = _a.sent();
                         txBytes = tx_1.TxRaw.encode(txRaw).finish();
                         return [2 /*return*/, {
@@ -145,10 +149,9 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
-    KyveSDK.prototype.defund = function (id, amount, fee) {
-        if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
+    KyveSDK.prototype.defund = function (id, amount) {
         return __awaiter(this, void 0, void 0, function () {
-            var client, creator, msg, txRaw, txBytes;
+            var client, creator, msg, fee, txRaw, txBytes;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getClient()];
@@ -165,8 +168,11 @@ var KyveSDK = /** @class */ (function () {
                                 amount: amount.toString()
                             }
                         };
-                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                        return [4 /*yield*/, this.fetchFee([msg])];
                     case 3:
+                        fee = _a.sent();
+                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                    case 4:
                         txRaw = _a.sent();
                         txBytes = tx_1.TxRaw.encode(txRaw).finish();
                         return [2 /*return*/, {
@@ -177,10 +183,9 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
-    KyveSDK.prototype.stake = function (id, amount, fee) {
-        if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
+    KyveSDK.prototype.stake = function (id, amount) {
         return __awaiter(this, void 0, void 0, function () {
-            var client, creator, msg, txRaw, txBytes;
+            var client, creator, msg, fee, txRaw, txBytes;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getClient()];
@@ -197,8 +202,11 @@ var KyveSDK = /** @class */ (function () {
                                 amount: amount.toString()
                             }
                         };
-                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                        return [4 /*yield*/, this.fetchFee([msg])];
                     case 3:
+                        fee = _a.sent();
+                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                    case 4:
                         txRaw = _a.sent();
                         txBytes = tx_1.TxRaw.encode(txRaw).finish();
                         return [2 /*return*/, {
@@ -209,10 +217,9 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
-    KyveSDK.prototype.unstake = function (id, amount, fee) {
-        if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
+    KyveSDK.prototype.unstake = function (id, amount) {
         return __awaiter(this, void 0, void 0, function () {
-            var client, creator, msg, txRaw, txBytes;
+            var client, creator, msg, fee, txRaw, txBytes;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getClient()];
@@ -229,8 +236,11 @@ var KyveSDK = /** @class */ (function () {
                                 amount: amount.toString()
                             }
                         };
-                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                        return [4 /*yield*/, this.fetchFee([msg])];
                     case 3:
+                        fee = _a.sent();
+                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                    case 4:
                         txRaw = _a.sent();
                         txBytes = tx_1.TxRaw.encode(txRaw).finish();
                         return [2 /*return*/, {
@@ -241,10 +251,9 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
-    KyveSDK.prototype.delegate = function (id, staker, amount, fee) {
-        if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
+    KyveSDK.prototype.delegate = function (id, staker, amount) {
         return __awaiter(this, void 0, void 0, function () {
-            var client, creator, msg, txRaw, txBytes;
+            var client, creator, msg, fee, txRaw, txBytes;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getClient()];
@@ -262,8 +271,11 @@ var KyveSDK = /** @class */ (function () {
                                 amount: amount.toString()
                             }
                         };
-                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                        return [4 /*yield*/, this.fetchFee([msg])];
                     case 3:
+                        fee = _a.sent();
+                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                    case 4:
                         txRaw = _a.sent();
                         txBytes = tx_1.TxRaw.encode(txRaw).finish();
                         return [2 /*return*/, {
@@ -274,10 +286,9 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
-    KyveSDK.prototype.undelegate = function (id, staker, amount, fee) {
-        if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
+    KyveSDK.prototype.undelegate = function (id, staker, amount) {
         return __awaiter(this, void 0, void 0, function () {
-            var client, creator, msg, txRaw, txBytes;
+            var client, creator, msg, fee, txRaw, txBytes;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getClient()];
@@ -295,8 +306,11 @@ var KyveSDK = /** @class */ (function () {
                                 amount: amount.toString()
                             }
                         };
-                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                        return [4 /*yield*/, this.fetchFee([msg])];
                     case 3:
+                        fee = _a.sent();
+                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                    case 4:
                         txRaw = _a.sent();
                         txBytes = tx_1.TxRaw.encode(txRaw).finish();
                         return [2 /*return*/, {
@@ -307,10 +321,9 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
-    KyveSDK.prototype.withdrawRewards = function (id, staker, fee) {
-        if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
+    KyveSDK.prototype.withdrawRewards = function (id, staker) {
         return __awaiter(this, void 0, void 0, function () {
-            var client, creator, msg, txRaw, txBytes;
+            var client, creator, msg, fee, txRaw, txBytes;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getClient()];
@@ -327,8 +340,11 @@ var KyveSDK = /** @class */ (function () {
                                 staker: staker
                             }
                         };
-                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                        return [4 /*yield*/, this.fetchFee([msg])];
                     case 3:
+                        fee = _a.sent();
+                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                    case 4:
                         txRaw = _a.sent();
                         txBytes = tx_1.TxRaw.encode(txRaw).finish();
                         return [2 /*return*/, {
@@ -339,10 +355,9 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
-    KyveSDK.prototype.updateMetadata = function (id, commission, moniker, website, logo, fee) {
-        if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
+    KyveSDK.prototype.updateMetadata = function (id, commission, moniker, website, logo) {
         return __awaiter(this, void 0, void 0, function () {
-            var client, creator, msg, txRaw, txBytes;
+            var client, creator, msg, fee, txRaw, txBytes;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getClient()];
@@ -362,8 +377,11 @@ var KyveSDK = /** @class */ (function () {
                                 logo: logo
                             }
                         };
-                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                        return [4 /*yield*/, this.fetchFee([msg])];
                     case 3:
+                        fee = _a.sent();
+                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                    case 4:
                         txRaw = _a.sent();
                         txBytes = tx_1.TxRaw.encode(txRaw).finish();
                         return [2 /*return*/, {
@@ -374,10 +392,9 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
-    KyveSDK.prototype.govSubmitProposal = function (type, content, amount, fee) {
-        if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
+    KyveSDK.prototype.govSubmitProposal = function (type, content, amount) {
         return __awaiter(this, void 0, void 0, function () {
-            var client, creator, typeUrl, encodedContent, msg, txRaw, txBytes;
+            var client, creator, typeUrl, encodedContent, msg, fee, txRaw, txBytes;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getClient()];
@@ -423,8 +440,11 @@ var KyveSDK = /** @class */ (function () {
                                 proposer: creator
                             }
                         };
-                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                        return [4 /*yield*/, this.fetchFee([msg])];
                     case 3:
+                        fee = _a.sent();
+                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                    case 4:
                         txRaw = _a.sent();
                         txBytes = tx_1.TxRaw.encode(txRaw).finish();
                         return [2 /*return*/, {
@@ -435,10 +455,9 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
-    KyveSDK.prototype.govDeposit = function (id, amount, fee) {
-        if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
+    KyveSDK.prototype.govDeposit = function (id, amount) {
         return __awaiter(this, void 0, void 0, function () {
-            var client, creator, msg, txRaw, txBytes;
+            var client, creator, msg, fee, txRaw, txBytes;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getClient()];
@@ -455,8 +474,11 @@ var KyveSDK = /** @class */ (function () {
                                 amount: (0, stargate_1.coins)(amount.toString(), "tkyve")
                             }
                         };
-                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                        return [4 /*yield*/, this.fetchFee([msg])];
                     case 3:
+                        fee = _a.sent();
+                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                    case 4:
                         txRaw = _a.sent();
                         txBytes = tx_1.TxRaw.encode(txRaw).finish();
                         return [2 /*return*/, {
@@ -467,10 +489,9 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
-    KyveSDK.prototype.govVote = function (id, option, fee) {
-        if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
+    KyveSDK.prototype.govVote = function (id, option) {
         return __awaiter(this, void 0, void 0, function () {
-            var client, creator, _option, msg, txRaw, txBytes;
+            var client, creator, _option, msg, fee, txRaw, txBytes;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getClient()];
@@ -502,8 +523,11 @@ var KyveSDK = /** @class */ (function () {
                                 option: _option
                             }
                         };
-                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                        return [4 /*yield*/, this.fetchFee([msg])];
                     case 3:
+                        fee = _a.sent();
+                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                    case 4:
                         txRaw = _a.sent();
                         txBytes = tx_1.TxRaw.encode(txRaw).finish();
                         return [2 /*return*/, {
@@ -514,10 +538,9 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
-    KyveSDK.prototype.submitBundleProposal = function (id, bundleId, byteSize, bundleSize, fee) {
-        if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
+    KyveSDK.prototype.submitBundleProposal = function (id, bundleId, byteSize, bundleSize) {
         return __awaiter(this, void 0, void 0, function () {
-            var client, creator, msg, txRaw, txBytes;
+            var client, creator, msg, fee, txRaw, txBytes;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getClient()];
@@ -536,8 +559,11 @@ var KyveSDK = /** @class */ (function () {
                                 bundleSize: bundleSize
                             }
                         };
-                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                        return [4 /*yield*/, this.fetchFee([msg])];
                     case 3:
+                        fee = _a.sent();
+                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                    case 4:
                         txRaw = _a.sent();
                         txBytes = tx_1.TxRaw.encode(txRaw).finish();
                         return [2 /*return*/, {
@@ -548,10 +574,9 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
-    KyveSDK.prototype.voteProposal = function (id, bundleId, support, fee) {
-        if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
+    KyveSDK.prototype.voteProposal = function (id, bundleId, support) {
         return __awaiter(this, void 0, void 0, function () {
-            var client, creator, msg, txRaw, txBytes;
+            var client, creator, msg, fee, txRaw, txBytes;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getClient()];
@@ -569,8 +594,11 @@ var KyveSDK = /** @class */ (function () {
                                 support: support
                             }
                         };
-                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                        return [4 /*yield*/, this.fetchFee([msg])];
                     case 3:
+                        fee = _a.sent();
+                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                    case 4:
                         txRaw = _a.sent();
                         txBytes = tx_1.TxRaw.encode(txRaw).finish();
                         return [2 /*return*/, {
@@ -581,10 +609,9 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
-    KyveSDK.prototype.claimUploaderRole = function (id, fee) {
-        if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
+    KyveSDK.prototype.claimUploaderRole = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var client, creator, msg, txRaw, txBytes;
+            var client, creator, msg, fee, txRaw, txBytes;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getClient()];
@@ -600,8 +627,11 @@ var KyveSDK = /** @class */ (function () {
                                 id: id
                             }
                         };
-                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                        return [4 /*yield*/, this.fetchFee([msg])];
                     case 3:
+                        fee = _a.sent();
+                        return [4 /*yield*/, client.sign(creator, [msg], fee, "")];
+                    case 4:
                         txRaw = _a.sent();
                         txBytes = tx_1.TxRaw.encode(txRaw).finish();
                         return [2 /*return*/, {
@@ -612,8 +642,7 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
-    KyveSDK.prototype.transfer = function (recipient, amount, fee) {
-        if (fee === void 0) { fee = constants_1.KYVE_DEFAULT_FEE; }
+    KyveSDK.prototype.transfer = function (recipient, amount) {
         return __awaiter(this, void 0, void 0, function () {
             var client, creator, parsedAmount, tx;
             return __generator(this, function (_a) {
@@ -627,7 +656,7 @@ var KyveSDK = /** @class */ (function () {
                         parsedAmount = new bignumber_js_1.BigNumber(amount)
                             .multipliedBy(new bignumber_js_1.BigNumber(10).pow(constants_1.KYVE_DECIMALS))
                             .toNumber();
-                        return [4 /*yield*/, client.sendTokens(creator, recipient, (0, stargate_1.coins)(parsedAmount, "tkyve"), fee)];
+                        return [4 /*yield*/, client.sendTokens(creator, recipient, (0, stargate_1.coins)(parsedAmount, "tkyve"), "auto")];
                     case 3:
                         tx = _a.sent();
                         return [2 /*return*/, tx.transactionHash];
@@ -839,6 +868,29 @@ var KyveSDK = /** @class */ (function () {
     };
     KyveSDK.prototype.getAddressFromPubKey = function (pubKey) {
         return (0, addresses_1.pubkeyToAddress)({ type: "tendermint/PubKeySecp256k1", value: pubKey }, "kyve");
+    };
+    KyveSDK.prototype.fetchFee = function (messages) {
+        return __awaiter(this, void 0, void 0, function () {
+            var client, signer, estimation, multiplier;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getClient()];
+                    case 1:
+                        client = _a.sent();
+                        return [4 /*yield*/, this.wallet.getAddress()];
+                    case 2:
+                        signer = _a.sent();
+                        return [4 /*yield*/, client.simulate(signer, messages, "")];
+                    case 3:
+                        estimation = _a.sent();
+                        multiplier = 1.5;
+                        return [2 /*return*/, {
+                                amount: (0, stargate_1.coins)(0, "tkyve"),
+                                gas: (estimation * multiplier).toString()
+                            }];
+                }
+            });
+        });
     };
     return KyveSDK;
 }());

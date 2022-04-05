@@ -1,13 +1,8 @@
 "use strict";
 exports.__esModule = true;
-exports.KYVE_WALLET_OPTIONS = exports.KYVE_KEPLR_CONFIG = exports.KYVE_ENDPOINTS = exports.KYVE_DEFAULT_FEE = exports.KYVE_DECIMALS = void 0;
-var proto_signing_1 = require("@cosmjs/proto-signing");
+exports.KYVE_WALLET_OPTIONS = exports.KYVE_KEPLR_CONFIG = exports.KYVE_ENDPOINTS = exports.KYVE_DECIMALS = void 0;
 var cosmos_1 = require("@keplr-wallet/cosmos");
 exports.KYVE_DECIMALS = 9;
-exports.KYVE_DEFAULT_FEE = {
-    amount: (0, proto_signing_1.coins)(0, "tkyve"),
-    gas: "200000"
-};
 exports.KYVE_ENDPOINTS = {
     local: {
         rpc: "http://localhost:26657",
