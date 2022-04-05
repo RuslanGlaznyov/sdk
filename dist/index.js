@@ -67,7 +67,6 @@ var addresses_1 = require("@cosmjs/amino/build/addresses");
 var tx_1 = require("cosmjs-types/cosmos/tx/v1beta1/tx");
 var long_1 = __importDefault(require("long"));
 var tendermint_rpc_1 = require("@cosmjs/tendermint-rpc");
-var math_1 = require("@cosmjs/math");
 var constants_2 = require("./utils/constants");
 __createBinding(exports, constants_2, "KYVE_DECIMALS");
 var wallet_1 = require("./wallet");
@@ -84,7 +83,7 @@ var KyveSDK = /** @class */ (function () {
                 switch (_f.label) {
                     case 0:
                         if (!!this.client) return [3 /*break*/, 4];
-                        gasPrice = new stargate_1.GasPrice(math_1.Decimal.fromUserInput("0", 0), "tkyve");
+                        gasPrice = stargate_1.GasPrice.fromString("0tkyve");
                         _a = this;
                         _c = (_b = stargate_1.SigningStargateClient).connectWithSigner;
                         _d = [constants_1.KYVE_ENDPOINTS[this.wallet.network].rpc];
