@@ -47,7 +47,7 @@ export class KyveSDK {
 
   async getClient(): Promise<SigningStargateClient> {
     if (!this.client) {
-      const gasPrice = new GasPrice(Decimal.fromUserInput("0", 0), "tkyve");
+      const gasPrice = GasPrice.fromString("0tkyve");
 
       this.client = await SigningStargateClient.connectWithSigner(
         KYVE_ENDPOINTS[this.wallet.network].rpc,
@@ -798,7 +798,7 @@ export class KyveSDK {
 
     return {
       amount: coins(0, "tkyve"),
-      gas: (estimation * multiplier).toString(),
+      gas: Math.floor(estimation * multiplier).toString(),
     };
   }
 }

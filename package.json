@@ -1,6 +1,6 @@
 {
-  "name": "@kyve/sdk-test",
-  "version": "1.0.1",
+  "name": "@kyve/sdk",
+  "version": "1.0.3",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "repository": {
