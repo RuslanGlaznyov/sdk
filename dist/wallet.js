@@ -51,6 +51,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 exports.__esModule = true;
 exports.KyveWallet = void 0;
+var amino_1 = require("@cosmjs/amino");
 var proto_signing_1 = require("@cosmjs/proto-signing");
 var axios_1 = __importDefault(require("axios"));
 var bignumber_js_1 = require("bignumber.js");
@@ -62,6 +63,27 @@ var KyveWallet = /** @class */ (function () {
         this.network = network;
         this.mnemonic = mnemonic;
     }
+    KyveWallet.prototype.getAminoSigner = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        if (!!this.aminoSigner) return [3 /*break*/, 3];
+                        if (!this.mnemonic) return [3 /*break*/, 2];
+                        _a = this;
+                        return [4 /*yield*/, amino_1.Secp256k1HdWallet.fromMnemonic(this.mnemonic, {
+                                prefix: "kyve"
+                            })];
+                    case 1:
+                        _a.aminoSigner = _b.sent();
+                        return [3 /*break*/, 3];
+                    case 2: throw new Error("Unsupported.");
+                    case 3: return [2 /*return*/, this.aminoSigner];
+                }
+            });
+        });
+    };
     KyveWallet.prototype.getSigner = function () {
         return __awaiter(this, void 0, void 0, function () {
             var _a;
@@ -71,7 +93,7 @@ var KyveWallet = /** @class */ (function () {
                         if (!!this.signer) return [3 /*break*/, 8];
                         if (!this.mnemonic) return [3 /*break*/, 2];
                         _a = this;
-                        return [4 /*yield*/, proto_signing_1.DirectSecp256k1HdWallet.fromMnemonic(this.mnemonic, constants_1.KYVE_WALLET_OPTIONS)];
+                        return [4 /*yield*/, proto_signing_1.DirectSecp256k1HdWallet.fromMnemonic(this.mnemonic, { prefix: "kyve" })];
                     case 1:
                         _a.signer = _b.sent();
                         return [3 /*break*/, 8];
@@ -166,7 +188,9 @@ var KyveWallet = /** @class */ (function () {
             var mnemonic;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, proto_signing_1.DirectSecp256k1HdWallet.generate(24, constants_1.KYVE_WALLET_OPTIONS)];
+                    case 0: return [4 /*yield*/, proto_signing_1.DirectSecp256k1HdWallet.generate(24, {
+                            prefix: "kyve"
+                        })];
                     case 1:
                         mnemonic = (_a.sent()).mnemonic;
                         return [2 /*return*/, new KyveWallet(network, mnemonic)];

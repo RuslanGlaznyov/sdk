@@ -65,7 +65,3 @@ export const KYVE_KEPLR_CONFIG: ChainInfo = {
 };
 
 export type KYVE_NETWORK = "local" | "alpha" | "beta" | "korellia";
-
-export const KYVE_WALLET_OPTIONS: Partial<DirectSecp256k1HdWalletOptions> = {
-  prefix: "kyve",
-};

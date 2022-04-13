@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.KYVE_WALLET_OPTIONS = exports.KYVE_KEPLR_CONFIG = exports.KYVE_ENDPOINTS = exports.KYVE_DECIMALS = void 0;
+exports.KYVE_KEPLR_CONFIG = exports.KYVE_ENDPOINTS = exports.KYVE_DECIMALS = void 0;
 var cosmos_1 = require("@keplr-wallet/cosmos");
 exports.KYVE_DECIMALS = 9;
 exports.KYVE_ENDPOINTS = {
@@ -60,7 +60,4 @@ exports.KYVE_KEPLR_CONFIG = {
     coinType: 118,
     gasPriceStep: { low: 0, average: 0, high: 0 },
     features: ["ibc-transfer", "ibc-go"]
-};
-exports.KYVE_WALLET_OPTIONS = {
-    prefix: "kyve"
 };

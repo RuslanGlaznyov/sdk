@@ -1,3 +1,4 @@
+import { OfflineAminoSigner, Secp256k1HdWallet } from "@cosmjs/amino";
 import {
   Coin,
   DirectSecp256k1HdWallet,
@@ -13,7 +14,6 @@ import {
   KYVE_ENDPOINTS,
   KYVE_KEPLR_CONFIG,
   KYVE_NETWORK,
-  KYVE_WALLET_OPTIONS,
 } from "./utils/constants";
 
 declare global {
@@ -23,9 +23,11 @@ declare global {
 interface BalanceResponse {
   balance: Coin;
 }
+type AminoSigner = Secp256k1HdWallet | OfflineAminoSigner;
 type Signer = DirectSecp256k1HdWallet | OfflineDirectSigner;
 
 export class KyveWallet {
+  private aminoSigner?: AminoSigner;
   private signer?: Signer;
   private address?: string;
 
@@ -34,12 +36,26 @@ export class KyveWallet {
     private readonly mnemonic?: string
   ) {}
 
+  async getAminoSigner(): Promise<AminoSigner> {
+    if (!this.aminoSigner) {
+      if (this.mnemonic) {
+        this.aminoSigner = await Secp256k1HdWallet.fromMnemonic(this.mnemonic, {
+          prefix: "kyve",
+        });
+      } else {
+        throw new Error("Unsupported.");
+      }
+    }
+
+    return this.aminoSigner;
+  }
+
   async getSigner(): Promise<Signer> {
     if (!this.signer) {
       if (this.mnemonic) {
         this.signer = await DirectSecp256k1HdWallet.fromMnemonic(
           this.mnemonic,
-          KYVE_WALLET_OPTIONS
+          { prefix: "kyve" }
         );
       } else {
         if (window) {
@@ -122,10 +138,9 @@ export class KyveWallet {
   }
 
   static async generate(network: KYVE_NETWORK): Promise<KyveWallet> {
-    const { mnemonic } = await DirectSecp256k1HdWallet.generate(
-      24,
-      KYVE_WALLET_OPTIONS
-    );
+    const { mnemonic } = await DirectSecp256k1HdWallet.generate(24, {
+      prefix: "kyve",
+    });
     return new KyveWallet(network, mnemonic);
   }
 }

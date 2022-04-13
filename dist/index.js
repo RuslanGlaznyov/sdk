@@ -837,23 +837,23 @@ var KyveSDK = /** @class */ (function () {
     };
     KyveSDK.prototype.signString = function (message) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, _b, _c, _d;
-            return __generator(this, function (_e) {
-                switch (_e.label) {
-                    case 0:
-                        if (!window.keplr) return [3 /*break*/, 4];
-                        if (!(window === null || window === void 0)) return [3 /*break*/, 1];
-                        _a = void 0;
-                        return [3 /*break*/, 3];
+            var address, signDoc, signer, signature;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.wallet.getAddress()];
                     case 1:
-                        _c = (_b = window.keplr).signArbitrary;
-                        _d = [this.wallet.getChainId()];
-                        return [4 /*yield*/, this.wallet.getAddress()];
+                        address = _a.sent();
+                        if (!window.keplr) return [3 /*break*/, 2];
+                        return [2 /*return*/, window === null || window === void 0 ? void 0 : window.keplr.signArbitrary(this.wallet.getChainId(), address, message)];
                     case 2:
-                        _a = _c.apply(_b, _d.concat([_e.sent(), message]));
-                        _e.label = 3;
-                    case 3: return [2 /*return*/, _a];
-                    case 4: throw new Error("Keplr wallet not installed.");
+                        signDoc = (0, cosmos_1.makeADR36AminoSignDoc)(address, message);
+                        return [4 /*yield*/, this.wallet.getAminoSigner()];
+                    case 3:
+                        signer = _a.sent();
+                        return [4 /*yield*/, signer.signAmino(address, signDoc)];
+                    case 4:
+                        signature = (_a.sent()).signature;
+                        return [2 /*return*/, signature];
                 }
             });
         });

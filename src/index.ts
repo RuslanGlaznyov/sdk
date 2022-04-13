@@ -24,13 +24,16 @@ import { bech32 } from "bech32";
 import { decodeTxRaw, EncodeObject } from "@cosmjs/proto-signing";
 import { FullDecodedTransaction } from "./types/transactions";
 import { MessageEvent } from "./types/events";
-import { cosmos, verifyADR36Amino } from "@keplr-wallet/cosmos";
+import {
+  cosmos,
+  makeADR36AminoSignDoc,
+  verifyADR36Amino,
+} from "@keplr-wallet/cosmos";
 import { StdSignature } from "@cosmjs/launchpad/build/types";
 import { pubkeyToAddress } from "@cosmjs/amino/build/addresses";
 import { TxRaw } from "cosmjs-types/cosmos/tx/v1beta1/tx";
 import Long from "long";
 import { Tendermint34Client } from "@cosmjs/tendermint-rpc";
-import { Decimal } from "@cosmjs/math";
 
 export { KYVE_DECIMALS } from "./utils/constants";
 export { KyveWallet } from "./wallet";
@@ -757,14 +760,21 @@ export class KyveSDK {
   }
 
   async signString(message: string): Promise<StdSignature> {
+    const address = await this.wallet.getAddress();
+
     if (window.keplr) {
       return window?.keplr.signArbitrary(
         this.wallet.getChainId(),
-        await this.wallet.getAddress(),
+        address,
         message
       );
+    } else {
+      const signDoc = makeADR36AminoSignDoc(address, message);
+      const signer = await this.wallet.getAminoSigner();
+
+      const { signature } = await signer.signAmino(address, signDoc);
+      return signature;
     }
-    throw new Error("Keplr wallet not installed.");
   }
 
   async verifyString(
