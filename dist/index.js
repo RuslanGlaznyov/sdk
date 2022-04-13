@@ -666,7 +666,7 @@ var KyveSDK = /** @class */ (function () {
     KyveSDK.prototype.getMessageEventLogs = function (fromBlock, toBlock) {
         var _a, _b, _c, _d, _e;
         return __awaiter(this, void 0, void 0, function () {
-            var client, _f, tendermint, events, i, block, blockResult, e_1, _i, _g, encodedTransaction, id, fullDecodedTransaction, indexedTx, decodedRaw, _h, _j, msg, rawEventsArrays, _k, _l, eventWrapper, _m, _o, event_1, _p, rawEventsArrays_1, ev, kyveEvent, tx_sender, tx_action, singleEventArray, _q, _r, attr, eventsMessages, attributes, _s, eventsMessages_1, ev, decoder, decodedEvents, _t, attributes_1, ev, kyveEvent, tx_sender, tx_action, singleEventArray, _u, _v, attr;
+            var client, _f, tendermint, events, i, block, blockResult, e_1, _i, _g, encodedTransaction, id, fullDecodedTransaction, indexedTx, e_2, decodedRaw, _h, _j, msg, rawEventsArrays, _k, _l, eventWrapper, _m, _o, event_1, _p, rawEventsArrays_1, ev, kyveEvent, tx_sender, tx_action, singleEventArray, _q, _r, attr, eventsMessages, attributes, _s, eventsMessages_1, ev, decoder, decodedEvents, _t, attributes_1, ev, kyveEvent, tx_sender, tx_action, singleEventArray, _u, _v, attr;
             return __generator(this, function (_w) {
                 switch (_w.label) {
                     case 0:
@@ -686,7 +686,7 @@ var KyveSDK = /** @class */ (function () {
                         i = fromBlock;
                         _w.label = 5;
                     case 5:
-                        if (!(i <= toBlock)) return [3 /*break*/, 16];
+                        if (!(i <= toBlock)) return [3 /*break*/, 19];
                         return [4 /*yield*/, client.getBlock(i)];
                     case 6:
                         block = _w.sent();
@@ -709,13 +709,26 @@ var KyveSDK = /** @class */ (function () {
                         _i = 0, _g = block.txs;
                         _w.label = 11;
                     case 11:
-                        if (!(_i < _g.length)) return [3 /*break*/, 14];
+                        if (!(_i < _g.length)) return [3 /*break*/, 17];
                         encodedTransaction = _g[_i];
                         id = (0, encoding_1.toHex)((0, crypto_1.sha256)(encodedTransaction));
                         fullDecodedTransaction = new transactions_1.FullDecodedTransaction();
-                        return [4 /*yield*/, client.getTx(id)];
+                        indexedTx = null;
+                        _w.label = 12;
                     case 12:
+                        _w.trys.push([12, 14, , 15]);
+                        return [4 /*yield*/, client.getTx(id)];
+                    case 13:
                         indexedTx = _w.sent();
+                        return [3 /*break*/, 15];
+                    case 14:
+                        e_2 = _w.sent();
+                        events.push(new events_1.MessageEvent([
+                            { key: "action", value: "ParsingError" },
+                            { key: "stacktrace", value: JSON.stringify(e_2) },
+                        ], new Date(block.header.time), block.header.height));
+                        return [3 /*break*/, 15];
+                    case 15:
                         if (indexedTx != null) {
                             fullDecodedTransaction.indexedTx = indexedTx;
                             fullDecodedTransaction.blockTime = new Date(block.header.time);
@@ -774,11 +787,11 @@ var KyveSDK = /** @class */ (function () {
                             }
                             catch (e) { }
                         }
-                        _w.label = 13;
-                    case 13:
+                        _w.label = 16;
+                    case 16:
                         _i++;
                         return [3 /*break*/, 11];
-                    case 14:
+                    case 17:
                         // Iterate EndBlockEvents
                         if (blockResult != undefined) {
                             eventsMessages = blockResult.endBlockEvents.filter(function (value) { return value.type == "message"; });
@@ -818,11 +831,11 @@ var KyveSDK = /** @class */ (function () {
                                 }
                             }
                         }
-                        _w.label = 15;
-                    case 15:
+                        _w.label = 18;
+                    case 18:
                         i++;
                         return [3 /*break*/, 5];
-                    case 16: return [2 /*return*/, events];
+                    case 19: return [2 /*return*/, events];
                 }
             });
         });
