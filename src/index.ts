@@ -599,7 +599,21 @@ export class KyveSDK {
         const fullDecodedTransaction = new FullDecodedTransaction();
 
         // Fetch full transaction
-        const indexedTx = await client.getTx(id);
+        let indexedTx = null;
+        try {
+          indexedTx = await client.getTx(id);
+        } catch (e) {
+          events.push(
+            new MessageEvent(
+              [
+                { key: "action", value: "ParsingError" },
+                { key: "stacktrace", value: JSON.stringify(e) },
+              ],
+              new Date(block.header.time),
+              block.header.height
+            )
+          );
+        }
 
         if (indexedTx != null) {
           fullDecodedTransaction.indexedTx = indexedTx;
