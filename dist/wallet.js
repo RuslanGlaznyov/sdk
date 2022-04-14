@@ -52,6 +52,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 exports.__esModule = true;
 exports.KyveWallet = void 0;
 var amino_1 = require("@cosmjs/amino");
+var encoding_1 = require("@cosmjs/encoding");
 var proto_signing_1 = require("@cosmjs/proto-signing");
 var axios_1 = __importDefault(require("axios"));
 var bignumber_js_1 = require("bignumber.js");
@@ -176,7 +177,7 @@ var KyveWallet = /** @class */ (function () {
                     case 0: return [4 /*yield*/, this.getAccount()];
                     case 1:
                         account = _a.sent();
-                        return [2 /*return*/, account.pubkey.toString()];
+                        return [2 /*return*/, (0, encoding_1.toBase64)(account.pubkey)];
                 }
             });
         });

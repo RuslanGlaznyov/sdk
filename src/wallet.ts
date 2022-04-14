@@ -1,4 +1,5 @@
 import { OfflineAminoSigner, Secp256k1HdWallet } from "@cosmjs/amino";
+import { toBase64 } from "@cosmjs/encoding";
 import {
   AccountData,
   Coin,
@@ -110,7 +111,7 @@ export class KyveWallet {
 
   async getPubKey(): Promise<string> {
     const account = await this.getAccount();
-    return account.pubkey.toString();
+    return toBase64(account.pubkey);
   }
 
   async getName(): Promise<string> {
