@@ -40,7 +40,7 @@ export class KyveWallet {
   private async getKeplrSigner(): Promise<
     OfflineAminoSigner & OfflineDirectSigner
   > {
-    if (window) {
+    if (typeof window !== "undefined") {
       if (window.keplr) {
         await window.keplr.experimentalSuggestChain({
           ...KYVE_KEPLR_CONFIG,
@@ -114,11 +114,15 @@ export class KyveWallet {
   }
 
   async getName(): Promise<string> {
-    if (window && window.keplr) {
-      const { name } = await window.keplr.getKey(
-        KYVE_ENDPOINTS[this.network].chainId
-      );
-      return name;
+    if (typeof window !== "undefined") {
+      if (window.keplr) {
+        const { name } = await window.keplr.getKey(
+          KYVE_ENDPOINTS[this.network].chainId
+        );
+        return name;
+      } else {
+        throw new Error("Please install Keplr.");
+      }
     } else {
       throw new Error("Unsupported.");
     }

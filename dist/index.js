@@ -856,7 +856,7 @@ var KyveSDK = /** @class */ (function () {
                     case 0: return [4 /*yield*/, this.wallet.getAddress()];
                     case 1:
                         address = _a.sent();
-                        if (!window) return [3 /*break*/, 2];
+                        if (!(typeof window !== "undefined")) return [3 /*break*/, 2];
                         if (window.keplr) {
                             return [2 /*return*/, window.keplr.signArbitrary(this.wallet.getChainId(), address, message)];
                         }

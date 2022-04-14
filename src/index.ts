@@ -776,7 +776,7 @@ export class KyveSDK {
   async signString(message: string): Promise<StdSignature> {
     const address = await this.wallet.getAddress();
 
-    if (window) {
+    if (typeof window !== "undefined") {
       if (window.keplr) {
         return window.keplr.signArbitrary(
           this.wallet.getChainId(),
