@@ -776,12 +776,16 @@ export class KyveSDK {
   async signString(message: string): Promise<StdSignature> {
     const address = await this.wallet.getAddress();
 
-    if (window.keplr) {
-      return window?.keplr.signArbitrary(
-        this.wallet.getChainId(),
-        address,
-        message
-      );
+    if (window) {
+      if (window.keplr) {
+        return window.keplr.signArbitrary(
+          this.wallet.getChainId(),
+          address,
+          message
+        );
+      } else {
+        throw new Error("Please install Keplr.");
+      }
     } else {
       const signDoc = makeADR36AminoSignDoc(address, message);
       const signer = await this.wallet.getAminoSigner();

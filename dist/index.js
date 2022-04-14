@@ -856,8 +856,14 @@ var KyveSDK = /** @class */ (function () {
                     case 0: return [4 /*yield*/, this.wallet.getAddress()];
                     case 1:
                         address = _a.sent();
-                        if (!window.keplr) return [3 /*break*/, 2];
-                        return [2 /*return*/, window === null || window === void 0 ? void 0 : window.keplr.signArbitrary(this.wallet.getChainId(), address, message)];
+                        if (!window) return [3 /*break*/, 2];
+                        if (window.keplr) {
+                            return [2 /*return*/, window.keplr.signArbitrary(this.wallet.getChainId(), address, message)];
+                        }
+                        else {
+                            throw new Error("Please install Keplr.");
+                        }
+                        return [3 /*break*/, 5];
                     case 2:
                         signDoc = (0, cosmos_1.makeADR36AminoSignDoc)(address, message);
                         return [4 /*yield*/, this.wallet.getAminoSigner()];
@@ -867,6 +873,7 @@ var KyveSDK = /** @class */ (function () {
                     case 4:
                         signature = (_a.sent()).signature;
                         return [2 /*return*/, signature];
+                    case 5: return [2 /*return*/];
                 }
             });
         });

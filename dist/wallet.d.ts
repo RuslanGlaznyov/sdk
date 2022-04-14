@@ -13,11 +13,14 @@ export declare class KyveWallet {
     private readonly mnemonic?;
     private aminoSigner?;
     private signer?;
-    private address?;
+    private account?;
     constructor(network: KYVE_NETWORK, mnemonic?: string | undefined);
+    private getKeplrSigner;
     getAminoSigner(): Promise<AminoSigner>;
     getSigner(): Promise<Signer>;
+    private getAccount;
     getAddress(): Promise<string>;
+    getPubKey(): Promise<string>;
     getName(): Promise<string>;
     getBalance(): Promise<string>;
     getRestEndpoint(): string;

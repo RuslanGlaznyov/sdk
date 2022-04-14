@@ -1,5 +1,6 @@
 import { OfflineAminoSigner, Secp256k1HdWallet } from "@cosmjs/amino";
 import {
+  AccountData,
   Coin,
   DirectSecp256k1HdWallet,
   OfflineDirectSigner,
@@ -29,12 +30,38 @@ type Signer = DirectSecp256k1HdWallet | OfflineDirectSigner;
 export class KyveWallet {
   private aminoSigner?: AminoSigner;
   private signer?: Signer;
-  private address?: string;
+  private account?: AccountData;
 
   constructor(
     public readonly network: KYVE_NETWORK,
     private readonly mnemonic?: string
   ) {}
+
+  private async getKeplrSigner(): Promise<
+    OfflineAminoSigner & OfflineDirectSigner
+  > {
+    if (window) {
+      if (window.keplr) {
+        await window.keplr.experimentalSuggestChain({
+          ...KYVE_KEPLR_CONFIG,
+          rpc: KYVE_ENDPOINTS[this.network].rpc,
+          rest: KYVE_ENDPOINTS[this.network].rest,
+          chainId: KYVE_ENDPOINTS[this.network].chainId,
+          chainName: KYVE_ENDPOINTS[this.network].chainName,
+        });
+
+        await window.keplr.enable(KYVE_ENDPOINTS[this.network].chainId);
+
+        return window.keplr.getOfflineSigner(
+          KYVE_ENDPOINTS[this.network].chainId
+        );
+      } else {
+        throw new Error("Please install Keplr.");
+      }
+    } else {
+      throw new Error("Unsupported.");
+    }
+  }
 
   async getAminoSigner(): Promise<AminoSigner> {
     if (!this.aminoSigner) {
@@ -43,7 +70,7 @@ export class KyveWallet {
           prefix: "kyve",
         });
       } else {
-        throw new Error("Unsupported.");
+        this.aminoSigner = await this.getKeplrSigner();
       }
     }
 
@@ -58,40 +85,32 @@ export class KyveWallet {
           { prefix: "kyve" }
         );
       } else {
-        if (window) {
-          if (window.keplr) {
-            await window.keplr.experimentalSuggestChain({
-              ...KYVE_KEPLR_CONFIG,
-              rpc: KYVE_ENDPOINTS[this.network].rpc,
-              rest: KYVE_ENDPOINTS[this.network].rest,
-              chainId: KYVE_ENDPOINTS[this.network].chainId,
-              chainName: KYVE_ENDPOINTS[this.network].chainName,
-            });
-            await window.keplr.enable(KYVE_ENDPOINTS[this.network].chainId);
-            this.signer = window.keplr.getOfflineSigner(
-              KYVE_ENDPOINTS[this.network].chainId
-            );
-          } else {
-            throw new Error("Please install Keplr.");
-          }
-        } else {
-          throw new Error("Unsupported.");
-        }
+        this.signer = await this.getKeplrSigner();
       }
     }
 
     return this.signer;
   }
 
-  async getAddress(): Promise<string> {
-    if (!this.address) {
+  private async getAccount(): Promise<AccountData> {
+    if (!this.account) {
       const signer = await this.getSigner();
-      const account = (await signer.getAccounts())[0];
+      const accounts = await signer.getAccounts();
 
-      this.address = account.address;
+      this.account = accounts[0];
     }
 
-    return this.address;
+    return this.account;
+  }
+
+  async getAddress(): Promise<string> {
+    const account = await this.getAccount();
+    return account.address;
+  }
+
+  async getPubKey(): Promise<string> {
+    const account = await this.getAccount();
+    return account.pubkey.toString();
   }
 
   async getName(): Promise<string> {

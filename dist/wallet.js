@@ -63,75 +63,120 @@ var KyveWallet = /** @class */ (function () {
         this.network = network;
         this.mnemonic = mnemonic;
     }
+    KyveWallet.prototype.getKeplrSigner = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!window) return [3 /*break*/, 5];
+                        if (!window.keplr) return [3 /*break*/, 3];
+                        return [4 /*yield*/, window.keplr.experimentalSuggestChain(__assign(__assign({}, constants_1.KYVE_KEPLR_CONFIG), { rpc: constants_1.KYVE_ENDPOINTS[this.network].rpc, rest: constants_1.KYVE_ENDPOINTS[this.network].rest, chainId: constants_1.KYVE_ENDPOINTS[this.network].chainId, chainName: constants_1.KYVE_ENDPOINTS[this.network].chainName }))];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, window.keplr.enable(constants_1.KYVE_ENDPOINTS[this.network].chainId)];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/, window.keplr.getOfflineSigner(constants_1.KYVE_ENDPOINTS[this.network].chainId)];
+                    case 3: throw new Error("Please install Keplr.");
+                    case 4: return [3 /*break*/, 6];
+                    case 5: throw new Error("Unsupported.");
+                    case 6: return [2 /*return*/];
+                }
+            });
+        });
+    };
     KyveWallet.prototype.getAminoSigner = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var _a, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0:
-                        if (!!this.aminoSigner) return [3 /*break*/, 3];
+                        if (!!this.aminoSigner) return [3 /*break*/, 4];
                         if (!this.mnemonic) return [3 /*break*/, 2];
                         _a = this;
                         return [4 /*yield*/, amino_1.Secp256k1HdWallet.fromMnemonic(this.mnemonic, {
                                 prefix: "kyve"
                             })];
                     case 1:
-                        _a.aminoSigner = _b.sent();
-                        return [3 /*break*/, 3];
-                    case 2: throw new Error("Unsupported.");
-                    case 3: return [2 /*return*/, this.aminoSigner];
+                        _a.aminoSigner = _c.sent();
+                        return [3 /*break*/, 4];
+                    case 2:
+                        _b = this;
+                        return [4 /*yield*/, this.getKeplrSigner()];
+                    case 3:
+                        _b.aminoSigner = _c.sent();
+                        _c.label = 4;
+                    case 4: return [2 /*return*/, this.aminoSigner];
                 }
             });
         });
     };
     KyveWallet.prototype.getSigner = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var _a, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0:
-                        if (!!this.signer) return [3 /*break*/, 8];
+                        if (!!this.signer) return [3 /*break*/, 4];
                         if (!this.mnemonic) return [3 /*break*/, 2];
                         _a = this;
                         return [4 /*yield*/, proto_signing_1.DirectSecp256k1HdWallet.fromMnemonic(this.mnemonic, { prefix: "kyve" })];
                     case 1:
-                        _a.signer = _b.sent();
-                        return [3 /*break*/, 8];
+                        _a.signer = _c.sent();
+                        return [3 /*break*/, 4];
                     case 2:
-                        if (!window) return [3 /*break*/, 7];
-                        if (!window.keplr) return [3 /*break*/, 5];
-                        return [4 /*yield*/, window.keplr.experimentalSuggestChain(__assign(__assign({}, constants_1.KYVE_KEPLR_CONFIG), { rpc: constants_1.KYVE_ENDPOINTS[this.network].rpc, rest: constants_1.KYVE_ENDPOINTS[this.network].rest, chainId: constants_1.KYVE_ENDPOINTS[this.network].chainId, chainName: constants_1.KYVE_ENDPOINTS[this.network].chainName }))];
+                        _b = this;
+                        return [4 /*yield*/, this.getKeplrSigner()];
                     case 3:
-                        _b.sent();
-                        return [4 /*yield*/, window.keplr.enable(constants_1.KYVE_ENDPOINTS[this.network].chainId)];
-                    case 4:
-                        _b.sent();
-                        this.signer = window.keplr.getOfflineSigner(constants_1.KYVE_ENDPOINTS[this.network].chainId);
-                        return [3 /*break*/, 6];
-                    case 5: throw new Error("Please install Keplr.");
-                    case 6: return [3 /*break*/, 8];
-                    case 7: throw new Error("Unsupported.");
-                    case 8: return [2 /*return*/, this.signer];
+                        _b.signer = _c.sent();
+                        _c.label = 4;
+                    case 4: return [2 /*return*/, this.signer];
+                }
+            });
+        });
+    };
+    KyveWallet.prototype.getAccount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var signer, accounts;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!!this.account) return [3 /*break*/, 3];
+                        return [4 /*yield*/, this.getSigner()];
+                    case 1:
+                        signer = _a.sent();
+                        return [4 /*yield*/, signer.getAccounts()];
+                    case 2:
+                        accounts = _a.sent();
+                        this.account = accounts[0];
+                        _a.label = 3;
+                    case 3: return [2 /*return*/, this.account];
                 }
             });
         });
     };
     KyveWallet.prototype.getAddress = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var signer, account;
+            var account;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        if (!!this.address) return [3 /*break*/, 3];
-                        return [4 /*yield*/, this.getSigner()];
+                    case 0: return [4 /*yield*/, this.getAccount()];
                     case 1:
-                        signer = _a.sent();
-                        return [4 /*yield*/, signer.getAccounts()];
-                    case 2:
-                        account = (_a.sent())[0];
-                        this.address = account.address;
-                        _a.label = 3;
-                    case 3: return [2 /*return*/, this.address];
+                        account = _a.sent();
+                        return [2 /*return*/, account.address];
+                }
+            });
+        });
+    };
+    KyveWallet.prototype.getPubKey = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var account;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getAccount()];
+                    case 1:
+                        account = _a.sent();
+                        return [2 /*return*/, account.pubkey.toString()];
                 }
             });
         });
