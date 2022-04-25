@@ -459,6 +459,7 @@ export class KyveSDK {
     id: number | string,
     bundleId: string,
     byteSize: number,
+    fromHeight: number,
     bundleSize: number
   ): Promise<{
     transactionHash: string;
@@ -474,6 +475,7 @@ export class KyveSDK {
         id,
         bundleId,
         byteSize,
+        fromHeight,
         bundleSize,
       },
     };
