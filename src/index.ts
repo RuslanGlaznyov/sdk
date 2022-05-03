@@ -493,7 +493,7 @@ export class KyveSDK {
   async voteProposal(
     id: number | string,
     bundleId: string,
-    support: boolean
+    vote: number
   ): Promise<{
     transactionHash: string;
     transactionBroadcast: Promise<DeliverTxResponse>;
@@ -507,7 +507,7 @@ export class KyveSDK {
         creator,
         id,
         bundleId,
-        support,
+        vote,
       },
     };
 

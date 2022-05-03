@@ -59,7 +59,7 @@ export declare class KyveSDK {
         transactionHash: string;
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;
-    voteProposal(id: number | string, bundleId: string, support: boolean): Promise<{
+    voteProposal(id: number | string, bundleId: string, vote: number): Promise<{
         transactionHash: string;
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;

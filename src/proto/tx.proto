@@ -171,7 +171,7 @@ message MsgVoteProposal {
   // bundle_id ...
   string bundle_id = 3;
   // support ...
-  bool   support   = 4;
+  uint64   vote   = 4;
 }
 
 // MsgVoteProposalResponse defines the Msg/VoteProposal response type.

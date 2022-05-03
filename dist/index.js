@@ -574,7 +574,7 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
-    KyveSDK.prototype.voteProposal = function (id, bundleId, support) {
+    KyveSDK.prototype.voteProposal = function (id, bundleId, vote) {
         return __awaiter(this, void 0, void 0, function () {
             var client, creator, msg, fee, txRaw, txBytes;
             return __generator(this, function (_a) {
@@ -591,7 +591,7 @@ var KyveSDK = /** @class */ (function () {
                                 creator: creator,
                                 id: id,
                                 bundleId: bundleId,
-                                support: support
+                                vote: vote
                             }
                         };
                         return [4 /*yield*/, this.fetchFee([msg])];
