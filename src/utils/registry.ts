@@ -59,7 +59,8 @@ export const CreatePoolProposal = new Type("CreatePoolProposal")
   .add(new Field("config", 7, "string"))
   .add(new Field("start_height", 8, "uint64"))
   .add(new Field("upload_interval", 9, "uint64"))
-  .add(new Field("operating_cost", 10, "uint64"));
+  .add(new Field("operating_cost", 10, "uint64"))
+  .add(new Field("max_bundle_size", 11, "uint64"));
 
 export const UpdatePoolProposal = new Type("UpdatePoolProposal")
   .add(new Field("title", 1, "string"))
@@ -71,7 +72,8 @@ export const UpdatePoolProposal = new Type("UpdatePoolProposal")
   .add(new Field("versions", 7, "string"))
   .add(new Field("config", 8, "string"))
   .add(new Field("upload_interval", 9, "uint64"))
-  .add(new Field("operating_cost", 10, "uint64"));
+  .add(new Field("operating_cost", 10, "uint64"))
+  .add(new Field("max_bundle_size", 11, "uint64"));
 
 export const PausePoolProposal = new Type("PausePoolProposal")
   .add(new Field("title", 1, "string"))
