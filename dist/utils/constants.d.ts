@@ -1,30 +1,13 @@
 import { ChainInfo } from "@keplr-wallet/types";
 export declare const KYVE_DECIMALS = 9;
 export declare const KYVE_ENDPOINTS: {
-    local: {
-        rpc: string;
-        rest: string;
-        chainId: string;
-        chainName: string;
-    };
-    alpha: {
-        rpc: string;
-        rest: string;
-        chainId: string;
-        chainName: string;
-    };
-    beta: {
-        rpc: string;
-        rest: string;
-        chainId: string;
-        chainName: string;
-    };
-    korellia: {
-        rpc: string;
-        rest: string;
-        chainId: string;
-        chainName: string;
-    };
+    [name: string]: Network;
 };
 export declare const KYVE_KEPLR_CONFIG: ChainInfo;
 export declare type KYVE_NETWORK = "local" | "alpha" | "beta" | "korellia";
+export declare type Network = {
+    rpc: string;
+    rest: string;
+    chainId: string;
+    chainName: string;
+};

@@ -16,6 +16,7 @@ import {
   KYVE_ENDPOINTS,
   KYVE_KEPLR_CONFIG,
   KYVE_NETWORK,
+  Network,
 } from "./utils/constants";
 
 declare global {
@@ -29,14 +30,21 @@ type AminoSigner = Secp256k1HdWallet | OfflineAminoSigner;
 type Signer = DirectSecp256k1HdWallet | OfflineDirectSigner;
 
 export class KyveWallet {
+  public readonly network: Network;
   private aminoSigner?: AminoSigner;
   private signer?: Signer;
   private account?: AccountData;
 
   constructor(
-    public readonly network: KYVE_NETWORK,
+    network: KYVE_NETWORK | Network,
     private readonly mnemonic?: string
-  ) {}
+  ) {
+    if (typeof network === "string") {
+      this.network = KYVE_ENDPOINTS[network];
+    } else {
+      this.network = network;
+    }
+  }
 
   private async getKeplrSigner(): Promise<
     OfflineAminoSigner & OfflineDirectSigner
@@ -45,17 +53,15 @@ export class KyveWallet {
       if (window.keplr) {
         await window.keplr.experimentalSuggestChain({
           ...KYVE_KEPLR_CONFIG,
-          rpc: KYVE_ENDPOINTS[this.network].rpc,
-          rest: KYVE_ENDPOINTS[this.network].rest,
-          chainId: KYVE_ENDPOINTS[this.network].chainId,
-          chainName: KYVE_ENDPOINTS[this.network].chainName,
+          rpc: this.network.rpc,
+          rest: this.network.rest,
+          chainId: this.network.chainId,
+          chainName: this.network.chainName,
         });
 
-        await window.keplr.enable(KYVE_ENDPOINTS[this.network].chainId);
+        await window.keplr.enable(this.network.chainId);
 
-        return window.keplr.getOfflineSigner(
-          KYVE_ENDPOINTS[this.network].chainId
-        );
+        return window.keplr.getOfflineSigner(this.network.chainId);
       } else {
         throw new Error("Please install Keplr.");
       }
@@ -117,9 +123,7 @@ export class KyveWallet {
   async getName(): Promise<string> {
     if (typeof window !== "undefined") {
       if (window.keplr) {
-        const { name } = await window.keplr.getKey(
-          KYVE_ENDPOINTS[this.network].chainId
-        );
+        const { name } = await window.keplr.getKey(this.network.chainId);
         return name;
       } else {
         throw new Error("Please install Keplr.");
@@ -133,24 +137,22 @@ export class KyveWallet {
     const address = await this.getAddress();
 
     const { data } = await axios.get<BalanceResponse>(
-      `${
-        KYVE_ENDPOINTS[this.network].rest
-      }/cosmos/bank/v1beta1/balances/${address}/by_denom?denom=tkyve`
+      `${this.network.rest}/cosmos/bank/v1beta1/balances/${address}/by_denom?denom=tkyve`
     );
 
     return data.balance.amount;
   }
 
   getRestEndpoint(): string {
-    return KYVE_ENDPOINTS[this.network].rest;
+    return this.network.rest;
   }
 
   getRpcEndpoint(): string {
-    return KYVE_ENDPOINTS[this.network].rpc;
+    return this.network.rpc;
   }
 
   getChainId(): string {
-    return KYVE_ENDPOINTS[this.network].chainId;
+    return this.network.chainId;
   }
 
   formatBalance(balance: string, decimals: number = 2): string {
@@ -161,7 +163,7 @@ export class KyveWallet {
     );
   }
 
-  static async generate(network: KYVE_NETWORK): Promise<KyveWallet> {
+  static async generate(network: KYVE_NETWORK | Network): Promise<KyveWallet> {
     const { mnemonic } = await DirectSecp256k1HdWallet.generate(24, {
       prefix: "kyve",
     });

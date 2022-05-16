@@ -86,7 +86,7 @@ var KyveSDK = /** @class */ (function () {
                         gasPrice = stargate_1.GasPrice.fromString("0tkyve");
                         _a = this;
                         _c = (_b = stargate_1.SigningStargateClient).connectWithSigner;
-                        _d = [constants_1.KYVE_ENDPOINTS[this.wallet.network].rpc];
+                        _d = [this.wallet.network.rpc];
                         return [4 /*yield*/, this.wallet.getSigner()];
                     case 1:
                         _d = _d.concat([_f.sent()]);
@@ -106,7 +106,7 @@ var KyveSDK = /** @class */ (function () {
             var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, axios_1["default"].get("".concat(constants_1.KYVE_ENDPOINTS[this.wallet.network].rest, "/kyve/registry/v1beta1/pool/").concat(id))];
+                    case 0: return [4 /*yield*/, axios_1["default"].get("".concat(this.wallet.network.rest, "/kyve/registry/v1beta1/pool/").concat(id))];
                     case 1:
                         data = (_a.sent()).data;
                         return [2 /*return*/, data.Pool];
@@ -680,7 +680,7 @@ var KyveSDK = /** @class */ (function () {
                         _w.label = 3;
                     case 3:
                         client = _f;
-                        return [4 /*yield*/, tendermint_rpc_1.Tendermint34Client.connect(constants_1.KYVE_ENDPOINTS[this.wallet.network].rpc)];
+                        return [4 /*yield*/, tendermint_rpc_1.Tendermint34Client.connect(this.wallet.network.rpc)];
                     case 4:
                         tendermint = _w.sent();
                         events = [];

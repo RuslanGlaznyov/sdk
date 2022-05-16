@@ -61,8 +61,13 @@ var humanize_number_1 = __importDefault(require("humanize-number"));
 var constants_1 = require("./utils/constants");
 var KyveWallet = /** @class */ (function () {
     function KyveWallet(network, mnemonic) {
-        this.network = network;
         this.mnemonic = mnemonic;
+        if (typeof network === "string") {
+            this.network = constants_1.KYVE_ENDPOINTS[network];
+        }
+        else {
+            this.network = network;
+        }
     }
     KyveWallet.prototype.getKeplrSigner = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -71,13 +76,13 @@ var KyveWallet = /** @class */ (function () {
                     case 0:
                         if (!(typeof window !== "undefined")) return [3 /*break*/, 5];
                         if (!window.keplr) return [3 /*break*/, 3];
-                        return [4 /*yield*/, window.keplr.experimentalSuggestChain(__assign(__assign({}, constants_1.KYVE_KEPLR_CONFIG), { rpc: constants_1.KYVE_ENDPOINTS[this.network].rpc, rest: constants_1.KYVE_ENDPOINTS[this.network].rest, chainId: constants_1.KYVE_ENDPOINTS[this.network].chainId, chainName: constants_1.KYVE_ENDPOINTS[this.network].chainName }))];
+                        return [4 /*yield*/, window.keplr.experimentalSuggestChain(__assign(__assign({}, constants_1.KYVE_KEPLR_CONFIG), { rpc: this.network.rpc, rest: this.network.rest, chainId: this.network.chainId, chainName: this.network.chainName }))];
                     case 1:
                         _a.sent();
-                        return [4 /*yield*/, window.keplr.enable(constants_1.KYVE_ENDPOINTS[this.network].chainId)];
+                        return [4 /*yield*/, window.keplr.enable(this.network.chainId)];
                     case 2:
                         _a.sent();
-                        return [2 /*return*/, window.keplr.getOfflineSigner(constants_1.KYVE_ENDPOINTS[this.network].chainId)];
+                        return [2 /*return*/, window.keplr.getOfflineSigner(this.network.chainId)];
                     case 3: throw new Error("Please install Keplr.");
                     case 4: return [3 /*break*/, 6];
                     case 5: throw new Error("Unsupported.");
@@ -190,7 +195,7 @@ var KyveWallet = /** @class */ (function () {
                     case 0:
                         if (!(typeof window !== "undefined")) return [3 /*break*/, 4];
                         if (!window.keplr) return [3 /*break*/, 2];
-                        return [4 /*yield*/, window.keplr.getKey(constants_1.KYVE_ENDPOINTS[this.network].chainId)];
+                        return [4 /*yield*/, window.keplr.getKey(this.network.chainId)];
                     case 1:
                         name_1 = (_a.sent()).name;
                         return [2 /*return*/, name_1];
@@ -210,7 +215,7 @@ var KyveWallet = /** @class */ (function () {
                     case 0: return [4 /*yield*/, this.getAddress()];
                     case 1:
                         address = _a.sent();
-                        return [4 /*yield*/, axios_1["default"].get("".concat(constants_1.KYVE_ENDPOINTS[this.network].rest, "/cosmos/bank/v1beta1/balances/").concat(address, "/by_denom?denom=tkyve"))];
+                        return [4 /*yield*/, axios_1["default"].get("".concat(this.network.rest, "/cosmos/bank/v1beta1/balances/").concat(address, "/by_denom?denom=tkyve"))];
                     case 2:
                         data = (_a.sent()).data;
                         return [2 /*return*/, data.balance.amount];
@@ -219,13 +224,13 @@ var KyveWallet = /** @class */ (function () {
         });
     };
     KyveWallet.prototype.getRestEndpoint = function () {
-        return constants_1.KYVE_ENDPOINTS[this.network].rest;
+        return this.network.rest;
     };
     KyveWallet.prototype.getRpcEndpoint = function () {
-        return constants_1.KYVE_ENDPOINTS[this.network].rpc;
+        return this.network.rpc;
     };
     KyveWallet.prototype.getChainId = function () {
-        return constants_1.KYVE_ENDPOINTS[this.network].chainId;
+        return this.network.chainId;
     };
     KyveWallet.prototype.formatBalance = function (balance, decimals) {
         if (decimals === void 0) { decimals = 2; }

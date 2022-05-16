@@ -104,7 +104,8 @@ exports.CreatePoolProposal = new protobufjs_1.Type("CreatePoolProposal")
     .add(new protobufjs_1.Field("config", 7, "string"))
     .add(new protobufjs_1.Field("start_height", 8, "uint64"))
     .add(new protobufjs_1.Field("upload_interval", 9, "uint64"))
-    .add(new protobufjs_1.Field("operating_cost", 10, "uint64"));
+    .add(new protobufjs_1.Field("operating_cost", 10, "uint64"))
+    .add(new protobufjs_1.Field("max_bundle_size", 11, "uint64"));
 exports.UpdatePoolProposal = new protobufjs_1.Type("UpdatePoolProposal")
     .add(new protobufjs_1.Field("title", 1, "string"))
     .add(new protobufjs_1.Field("description", 2, "string"))
@@ -115,7 +116,8 @@ exports.UpdatePoolProposal = new protobufjs_1.Type("UpdatePoolProposal")
     .add(new protobufjs_1.Field("versions", 7, "string"))
     .add(new protobufjs_1.Field("config", 8, "string"))
     .add(new protobufjs_1.Field("upload_interval", 9, "uint64"))
-    .add(new protobufjs_1.Field("operating_cost", 10, "uint64"));
+    .add(new protobufjs_1.Field("operating_cost", 10, "uint64"))
+    .add(new protobufjs_1.Field("max_bundle_size", 11, "uint64"));
 exports.PausePoolProposal = new protobufjs_1.Type("PausePoolProposal")
     .add(new protobufjs_1.Field("title", 1, "string"))
     .add(new protobufjs_1.Field("description", 2, "string"))

@@ -1,10 +1,9 @@
-import { DirectSecp256k1HdWalletOptions } from "@cosmjs/proto-signing";
 import { Bech32Address } from "@keplr-wallet/cosmos";
 import { ChainInfo } from "@keplr-wallet/types";
 
 export const KYVE_DECIMALS = 9;
 
-export const KYVE_ENDPOINTS = {
+export const KYVE_ENDPOINTS: { [name: string]: Network } = {
   local: {
     rpc: "http://localhost:26657",
     rest: "http://localhost:1317",
@@ -65,3 +64,10 @@ export const KYVE_KEPLR_CONFIG: ChainInfo = {
 };
 
 export type KYVE_NETWORK = "local" | "alpha" | "beta" | "korellia";
+
+export type Network = {
+  rpc: string;
+  rest: string;
+  chainId: string;
+  chainName: string;
+};

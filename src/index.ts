@@ -7,7 +7,7 @@ import {
 } from "@cosmjs/stargate";
 import axios from "axios";
 import { BigNumber } from "bignumber.js";
-import { KYVE_DECIMALS, KYVE_ENDPOINTS } from "./utils/constants";
+import { KYVE_DECIMALS } from "./utils/constants";
 import {
   CreatePoolProposal,
   createRegistry,
@@ -53,7 +53,7 @@ export class KyveSDK {
       const gasPrice = GasPrice.fromString("0tkyve");
 
       this.client = await SigningStargateClient.connectWithSigner(
-        KYVE_ENDPOINTS[this.wallet.network].rpc,
+        this.wallet.network.rpc,
         await this.wallet.getSigner(),
         { registry: await createRegistry(), gasPrice }
       );
@@ -64,9 +64,7 @@ export class KyveSDK {
 
   async fetchPoolState(id: number): Promise<any> {
     const { data } = await axios.get<PoolResponse>(
-      `${
-        KYVE_ENDPOINTS[this.wallet.network].rest
-      }/kyve/registry/v1beta1/pool/${id}`
+      `${this.wallet.network.rest}/kyve/registry/v1beta1/pool/${id}`
     );
     return data.Pool;
   }
@@ -570,7 +568,7 @@ export class KyveSDK {
     const client = this.client ?? (await this.getClient());
 
     const tendermint = await Tendermint34Client.connect(
-      KYVE_ENDPOINTS[this.wallet.network].rpc
+      this.wallet.network.rpc
     );
 
     const events = [];
