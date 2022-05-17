@@ -427,6 +427,14 @@ var KyveSDK = /** @class */ (function () {
                                 typeUrl = "/kyve.registry.v1beta1.UnpausePoolProposal";
                                 encodedContent = registry_1.UnpausePoolProposal.encode(content).finish();
                                 break;
+                            case "SchedulePoolUpgradeProposal":
+                                typeUrl = "/kyve.registry.v1beta1.SchedulePoolUpgradeProposal";
+                                encodedContent = registry_1.SchedulePoolUpgradeProposal.encode(content).finish();
+                                break;
+                            case "CancelPoolUpgradeProposal":
+                                typeUrl = "/kyve.registry.v1beta1.CancelPoolUpgradeProposal";
+                                encodedContent = registry_1.CancelPoolUpgradeProposal.encode(content).finish();
+                                break;
                         }
                         msg = {
                             typeUrl: "/cosmos.gov.v1beta1.MsgSubmitProposal",

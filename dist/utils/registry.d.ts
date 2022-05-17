@@ -6,4 +6,6 @@ export declare const CreatePoolProposal: Type;
 export declare const UpdatePoolProposal: Type;
 export declare const PausePoolProposal: Type;
 export declare const UnpausePoolProposal: Type;
+export declare const SchedulePoolUpgradeProposal: Type;
+export declare const CancelPoolUpgradeProposal: Type;
 export declare const createRegistry: () => Promise<Registry>;

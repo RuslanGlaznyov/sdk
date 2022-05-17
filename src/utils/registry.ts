@@ -55,12 +55,13 @@ export const CreatePoolProposal = new Type("CreatePoolProposal")
   .add(new Field("name", 3, "string"))
   .add(new Field("runtime", 4, "string"))
   .add(new Field("logo", 5, "string"))
-  .add(new Field("versions", 6, "string"))
-  .add(new Field("config", 7, "string"))
-  .add(new Field("start_height", 8, "uint64"))
-  .add(new Field("upload_interval", 9, "uint64"))
-  .add(new Field("operating_cost", 10, "uint64"))
-  .add(new Field("max_bundle_size", 11, "uint64"));
+  .add(new Field("config", 6, "string"))
+  .add(new Field("start_height", 7, "uint64"))
+  .add(new Field("upload_interval", 8, "uint64"))
+  .add(new Field("operating_cost", 9, "uint64"))
+  .add(new Field("max_bundle_size", 10, "uint64"))
+  .add(new Field("version", 11, "string"))
+  .add(new Field("binaries", 12, "string"));
 
 export const UpdatePoolProposal = new Type("UpdatePoolProposal")
   .add(new Field("title", 1, "string"))
@@ -69,11 +70,10 @@ export const UpdatePoolProposal = new Type("UpdatePoolProposal")
   .add(new Field("name", 4, "string"))
   .add(new Field("runtime", 5, "string"))
   .add(new Field("logo", 6, "string"))
-  .add(new Field("versions", 7, "string"))
-  .add(new Field("config", 8, "string"))
-  .add(new Field("upload_interval", 9, "uint64"))
-  .add(new Field("operating_cost", 10, "uint64"))
-  .add(new Field("max_bundle_size", 11, "uint64"));
+  .add(new Field("config", 7, "string"))
+  .add(new Field("upload_interval", 8, "uint64"))
+  .add(new Field("operating_cost", 9, "uint64"))
+  .add(new Field("max_bundle_size", 10, "uint64"));
 
 export const PausePoolProposal = new Type("PausePoolProposal")
   .add(new Field("title", 1, "string"))
@@ -81,6 +81,22 @@ export const PausePoolProposal = new Type("PausePoolProposal")
   .add(new Field("id", 3, "uint64"));
 
 export const UnpausePoolProposal = new Type("UnpausePoolProposal")
+  .add(new Field("title", 1, "string"))
+  .add(new Field("description", 2, "string"))
+  .add(new Field("id", 3, "uint64"));
+
+export const SchedulePoolUpgradeProposal = new Type(
+  "SchedulePoolUpgradeProposal"
+)
+  .add(new Field("title", 1, "string"))
+  .add(new Field("description", 2, "string"))
+  .add(new Field("id", 3, "uint64"))
+  .add(new Field("version", 4, "uint64"))
+  .add(new Field("scheduled_at", 5, "uint64"))
+  .add(new Field("duration", 6, "uint64"))
+  .add(new Field("binaries", 7, "string"));
+
+export const CancelPoolUpgradeProposal = new Type("CancelPoolUpgradeProposal")
   .add(new Field("title", 1, "string"))
   .add(new Field("description", 2, "string"))
   .add(new Field("id", 3, "uint64"));

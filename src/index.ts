@@ -9,10 +9,12 @@ import axios from "axios";
 import { BigNumber } from "bignumber.js";
 import { KYVE_DECIMALS } from "./utils/constants";
 import {
+  CancelPoolUpgradeProposal,
   CreatePoolProposal,
   createRegistry,
   ParameterChangeProposal,
   PausePoolProposal,
+  SchedulePoolUpgradeProposal,
   TextProposal,
   UnpausePoolProposal,
   UpdatePoolProposal,
@@ -318,7 +320,9 @@ export class KyveSDK {
       | "CreatePoolProposal"
       | "UpdatePoolProposal"
       | "PausePoolProposal"
-      | "UnpausePoolProposal",
+      | "UnpausePoolProposal"
+      | "SchedulePoolUpgradeProposal"
+      | "CancelPoolUpgradeProposal",
     content: Object,
     amount: BigNumber
   ): Promise<{
@@ -354,6 +358,14 @@ export class KyveSDK {
       case "UnpausePoolProposal":
         typeUrl = "/kyve.registry.v1beta1.UnpausePoolProposal";
         encodedContent = UnpausePoolProposal.encode(content).finish();
+        break;
+      case "SchedulePoolUpgradeProposal":
+        typeUrl = "/kyve.registry.v1beta1.SchedulePoolUpgradeProposal";
+        encodedContent = SchedulePoolUpgradeProposal.encode(content).finish();
+        break;
+      case "CancelPoolUpgradeProposal":
+        typeUrl = "/kyve.registry.v1beta1.CancelPoolUpgradeProposal";
+        encodedContent = CancelPoolUpgradeProposal.encode(content).finish();
         break;
     }
 

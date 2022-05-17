@@ -48,7 +48,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.createRegistry = exports.UnpausePoolProposal = exports.PausePoolProposal = exports.UpdatePoolProposal = exports.CreatePoolProposal = exports.ParameterChangeProposal = exports.TextProposal = void 0;
+exports.createRegistry = exports.CancelPoolUpgradeProposal = exports.SchedulePoolUpgradeProposal = exports.UnpausePoolProposal = exports.PausePoolProposal = exports.UpdatePoolProposal = exports.CreatePoolProposal = exports.ParameterChangeProposal = exports.TextProposal = void 0;
 var proto_signing_1 = require("@cosmjs/proto-signing");
 var stargate_1 = require("@cosmjs/stargate");
 var path_1 = __importDefault(require("path"));
@@ -100,12 +100,13 @@ exports.CreatePoolProposal = new protobufjs_1.Type("CreatePoolProposal")
     .add(new protobufjs_1.Field("name", 3, "string"))
     .add(new protobufjs_1.Field("runtime", 4, "string"))
     .add(new protobufjs_1.Field("logo", 5, "string"))
-    .add(new protobufjs_1.Field("versions", 6, "string"))
-    .add(new protobufjs_1.Field("config", 7, "string"))
-    .add(new protobufjs_1.Field("start_height", 8, "uint64"))
-    .add(new protobufjs_1.Field("upload_interval", 9, "uint64"))
-    .add(new protobufjs_1.Field("operating_cost", 10, "uint64"))
-    .add(new protobufjs_1.Field("max_bundle_size", 11, "uint64"));
+    .add(new protobufjs_1.Field("config", 6, "string"))
+    .add(new protobufjs_1.Field("start_height", 7, "uint64"))
+    .add(new protobufjs_1.Field("upload_interval", 8, "uint64"))
+    .add(new protobufjs_1.Field("operating_cost", 9, "uint64"))
+    .add(new protobufjs_1.Field("max_bundle_size", 10, "uint64"))
+    .add(new protobufjs_1.Field("version", 11, "string"))
+    .add(new protobufjs_1.Field("binaries", 12, "string"));
 exports.UpdatePoolProposal = new protobufjs_1.Type("UpdatePoolProposal")
     .add(new protobufjs_1.Field("title", 1, "string"))
     .add(new protobufjs_1.Field("description", 2, "string"))
@@ -113,16 +114,27 @@ exports.UpdatePoolProposal = new protobufjs_1.Type("UpdatePoolProposal")
     .add(new protobufjs_1.Field("name", 4, "string"))
     .add(new protobufjs_1.Field("runtime", 5, "string"))
     .add(new protobufjs_1.Field("logo", 6, "string"))
-    .add(new protobufjs_1.Field("versions", 7, "string"))
-    .add(new protobufjs_1.Field("config", 8, "string"))
-    .add(new protobufjs_1.Field("upload_interval", 9, "uint64"))
-    .add(new protobufjs_1.Field("operating_cost", 10, "uint64"))
-    .add(new protobufjs_1.Field("max_bundle_size", 11, "uint64"));
+    .add(new protobufjs_1.Field("config", 7, "string"))
+    .add(new protobufjs_1.Field("upload_interval", 8, "uint64"))
+    .add(new protobufjs_1.Field("operating_cost", 9, "uint64"))
+    .add(new protobufjs_1.Field("max_bundle_size", 10, "uint64"));
 exports.PausePoolProposal = new protobufjs_1.Type("PausePoolProposal")
     .add(new protobufjs_1.Field("title", 1, "string"))
     .add(new protobufjs_1.Field("description", 2, "string"))
     .add(new protobufjs_1.Field("id", 3, "uint64"));
 exports.UnpausePoolProposal = new protobufjs_1.Type("UnpausePoolProposal")
+    .add(new protobufjs_1.Field("title", 1, "string"))
+    .add(new protobufjs_1.Field("description", 2, "string"))
+    .add(new protobufjs_1.Field("id", 3, "uint64"));
+exports.SchedulePoolUpgradeProposal = new protobufjs_1.Type("SchedulePoolUpgradeProposal")
+    .add(new protobufjs_1.Field("title", 1, "string"))
+    .add(new protobufjs_1.Field("description", 2, "string"))
+    .add(new protobufjs_1.Field("id", 3, "uint64"))
+    .add(new protobufjs_1.Field("version", 4, "uint64"))
+    .add(new protobufjs_1.Field("scheduled_at", 5, "uint64"))
+    .add(new protobufjs_1.Field("duration", 6, "uint64"))
+    .add(new protobufjs_1.Field("binaries", 7, "string"));
+exports.CancelPoolUpgradeProposal = new protobufjs_1.Type("CancelPoolUpgradeProposal")
     .add(new protobufjs_1.Field("title", 1, "string"))
     .add(new protobufjs_1.Field("description", 2, "string"))
     .add(new protobufjs_1.Field("id", 3, "uint64"));

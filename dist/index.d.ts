@@ -43,7 +43,7 @@ export declare class KyveSDK {
         transactionHash: string;
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;
-    govSubmitProposal(type: "TextProposal" | "ParameterChangeProposal" | "CreatePoolProposal" | "UpdatePoolProposal" | "PausePoolProposal" | "UnpausePoolProposal", content: Object, amount: BigNumber): Promise<{
+    govSubmitProposal(type: "TextProposal" | "ParameterChangeProposal" | "CreatePoolProposal" | "UpdatePoolProposal" | "PausePoolProposal" | "UnpausePoolProposal" | "SchedulePoolUpgradeProposal" | "CancelPoolUpgradeProposal", content: Object, amount: BigNumber): Promise<{
         transactionHash: string;
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;
