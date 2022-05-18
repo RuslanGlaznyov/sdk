@@ -91,7 +91,7 @@ export const SchedulePoolUpgradeProposal = new Type(
   .add(new Field("title", 1, "string"))
   .add(new Field("description", 2, "string"))
   .add(new Field("id", 3, "uint64"))
-  .add(new Field("version", 4, "uint64"))
+  .add(new Field("version", 4, "string"))
   .add(new Field("scheduled_at", 5, "uint64"))
   .add(new Field("duration", 6, "uint64"))
   .add(new Field("binaries", 7, "string"));

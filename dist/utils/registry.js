@@ -130,7 +130,7 @@ exports.SchedulePoolUpgradeProposal = new protobufjs_1.Type("SchedulePoolUpgrade
     .add(new protobufjs_1.Field("title", 1, "string"))
     .add(new protobufjs_1.Field("description", 2, "string"))
     .add(new protobufjs_1.Field("id", 3, "uint64"))
-    .add(new protobufjs_1.Field("version", 4, "uint64"))
+    .add(new protobufjs_1.Field("version", 4, "string"))
     .add(new protobufjs_1.Field("scheduled_at", 5, "uint64"))
     .add(new protobufjs_1.Field("duration", 6, "uint64"))
     .add(new protobufjs_1.Field("binaries", 7, "string"));
