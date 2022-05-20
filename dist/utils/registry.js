@@ -129,7 +129,7 @@ exports.UnpausePoolProposal = new protobufjs_1.Type("UnpausePoolProposal")
 exports.SchedulePoolUpgradeProposal = new protobufjs_1.Type("SchedulePoolUpgradeProposal")
     .add(new protobufjs_1.Field("title", 1, "string"))
     .add(new protobufjs_1.Field("description", 2, "string"))
-    .add(new protobufjs_1.Field("id", 3, "uint64"))
+    .add(new protobufjs_1.Field("runtime", 3, "string"))
     .add(new protobufjs_1.Field("version", 4, "string"))
     .add(new protobufjs_1.Field("scheduled_at", 5, "uint64"))
     .add(new protobufjs_1.Field("duration", 6, "uint64"))
@@ -137,7 +137,7 @@ exports.SchedulePoolUpgradeProposal = new protobufjs_1.Type("SchedulePoolUpgrade
 exports.CancelPoolUpgradeProposal = new protobufjs_1.Type("CancelPoolUpgradeProposal")
     .add(new protobufjs_1.Field("title", 1, "string"))
     .add(new protobufjs_1.Field("description", 2, "string"))
-    .add(new protobufjs_1.Field("id", 3, "uint64"));
+    .add(new protobufjs_1.Field("runtime", 3, "string"));
 var createRegistry = function () { return __awaiter(void 0, void 0, void 0, function () {
     var root;
     return __generator(this, function (_a) {

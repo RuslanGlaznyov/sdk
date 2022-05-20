@@ -90,7 +90,7 @@ export const SchedulePoolUpgradeProposal = new Type(
 )
   .add(new Field("title", 1, "string"))
   .add(new Field("description", 2, "string"))
-  .add(new Field("id", 3, "uint64"))
+  .add(new Field("runtime", 3, "string"))
   .add(new Field("version", 4, "string"))
   .add(new Field("scheduled_at", 5, "uint64"))
   .add(new Field("duration", 6, "uint64"))
@@ -99,7 +99,7 @@ export const SchedulePoolUpgradeProposal = new Type(
 export const CancelPoolUpgradeProposal = new Type("CancelPoolUpgradeProposal")
   .add(new Field("title", 1, "string"))
   .add(new Field("description", 2, "string"))
-  .add(new Field("id", 3, "uint64"));
+  .add(new Field("runtime", 3, "string"));
 
 export const createRegistry = async (): Promise<Registry> => {
   const root = await load(path.join(__dirname, "../proto/tx.proto"));
