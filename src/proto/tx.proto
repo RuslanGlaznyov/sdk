@@ -146,17 +146,19 @@ message MsgUndelegatePoolResponse {}
 // MsgSubmitBundleProposal defines a SDK message for submitting a bundle proposal.
 message MsgSubmitBundleProposal {
   // creator ...
-  string creator     = 1;
+  string creator = 1;
   // id ...
-  uint64 id          = 2;
+  uint64 id = 2;
   // bundle_id ...
-  string bundle_id   = 3;
+  string bundle_id = 3;
+  // bundle_instructions ...
+  string bundle_instructions = 4;
   // byte_size ...
-  uint64 byte_size   = 4;
+  uint64 byte_size = 5;
   // from_height ...
-  uint64 from_height = 5;
+  uint64 from_height = 6;
   // bundle_size ...
-  uint64 bundle_size = 6;
+  uint64 bundle_size = 7;
 }
 
 // MsgSubmitBundleProposalResponse defines the Msg/SubmitBundleProposal response type.
