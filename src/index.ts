@@ -468,7 +468,6 @@ export class KyveSDK {
   async submitBundleProposal(
     id: number | string,
     bundleId: string,
-    bundleInstructions: string,
     byteSize: number,
     fromHeight: number,
     bundleSize: number
@@ -485,7 +484,6 @@ export class KyveSDK {
         creator,
         id,
         bundleId,
-        bundleInstructions,
         byteSize,
         fromHeight,
         bundleSize,

@@ -545,7 +545,7 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
-    KyveSDK.prototype.submitBundleProposal = function (id, bundleId, bundleInstructions, byteSize, fromHeight, bundleSize) {
+    KyveSDK.prototype.submitBundleProposal = function (id, bundleId, byteSize, fromHeight, bundleSize) {
         return __awaiter(this, void 0, void 0, function () {
             var client, creator, msg, fee, txRaw, txBytes;
             return __generator(this, function (_a) {
@@ -562,7 +562,6 @@ var KyveSDK = /** @class */ (function () {
                                 creator: creator,
                                 id: id,
                                 bundleId: bundleId,
-                                bundleInstructions: bundleInstructions,
                                 byteSize: byteSize,
                                 fromHeight: fromHeight,
                                 bundleSize: bundleSize
