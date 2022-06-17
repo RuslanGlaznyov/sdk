@@ -31,6 +31,7 @@ export const KYVE_ENDPOINTS: Networks = {
   },
 };
 export const PREFIX = "kyve";
+export const DENOM = "tkyve";
 export const KYVE_KEPLR_CONFIG: ChainInfo = {
   rpc: "",
   rest: "",

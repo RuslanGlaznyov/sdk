@@ -309,6 +309,11 @@
   resolved "https://registry.yarnpkg.com/@cosmjs/utils/-/utils-0.24.1.tgz#0adfefe63b7f17222bc2bc12f71296f35e7ad378"
   integrity sha512-VA3WFx1lMFb7esp9BqHWkDgMvHoA3D9w+uDRvWhVRpUpDc7RYHxMbWExASjz+gNblTCg556WJGzF64tXnf9tdQ==
 
+"@cosmostation/extension-client@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@cosmostation/extension-client/-/extension-client-0.0.6.tgz#a04420c1c3d68b83d197e48e79787a3484fb8d2c"
+  integrity sha512-3N7NOz8JMOpJlVaGS++zha4AZoijJTnPkq8djEfpk/mJ6+laUNo4a1/mxANFm9i1KUZcU9HX6GKKx9v9nL/VDg==
+
 "@iov/crypto@2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@iov/crypto/-/crypto-2.1.0.tgz#10e91b6692e154958c11626dfd096a80e8a481a4"
@@ -400,7 +405,7 @@
 
 "@kyve/proto@git+ssh://git@github.com:KYVENetwork/proto.git#feature/proto-protoc":
   version "1.0.0"
-  resolved "git+ssh://git@github.com:KYVENetwork/proto.git#3e1c604f153d43ce6d542edf350d7c61a5070a89"
+  resolved "git+ssh://git@github.com:KYVENetwork/proto.git#2818dc531b5ffff93259ac7067e6fa5ed20d4944"
   dependencies:
     "@protobufs/cosmos" "^0.0.9"
     "@protobufs/gogoproto" "^0.0.9"
@@ -518,9 +523,9 @@
   integrity sha512-Exw4yUWMBXM3X+8oqzJNRqZSwUAaS4+7NdvHqQuFi/d+synz++xmX3QIf+BFqneW8N31R8Ky+sikfZUXq07ggQ==
 
 "@types/node@>=13.7.0":
-  version "17.0.41"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.41.tgz#1607b2fd3da014ae5d4d1b31bc792a39348dfb9b"
-  integrity sha512-xA6drNNeqb5YyV5fO3OAEsnXLfO7uF0whiOfPTz5AeDo8KeZFmODKnvwPymMNO8qE/an8pVY/O50tig2SQCrGw==
+  version "18.0.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.0.0.tgz#67c7b724e1bcdd7a8821ce0d5ee184d3b4dd525a"
+  integrity sha512-cHlGmko4gWLVI27cGJntjs/Sj8th9aYwplmZFwmmgYQQvL5NUsgVJG7OddLvNfLqYS31KFN0s3qlaD9qCaxACA==
 
 "@types/node@^13.7.0":
   version "13.13.52"
@@ -1389,9 +1394,9 @@ tiny-secp256k1@^1.1.3:
     nan "^2.13.2"
 
 ts-poet@^4.11.0:
-  version "4.12.0"
-  resolved "https://registry.yarnpkg.com/ts-poet/-/ts-poet-4.12.0.tgz#84fbd95c30fae3e87c7d4c5f2961a19b45bf645f"
-  integrity sha512-faSedZm8S0ophkGm9VenV3P2e7IoUwReMLzLaBb4JBPsHTk/nuwWj4iQcs3D9bI5bdnTmCq0xnAgj2MU5y4BBQ==
+  version "4.13.0"
+  resolved "https://registry.yarnpkg.com/ts-poet/-/ts-poet-4.13.0.tgz#60bc7cc1c7121c51920207d6cee692955a0d6eae"
+  integrity sha512-8BUxvsSdLaygDFhhamjfR+/bZ72eVJQHPhv4ADr8HmG3BbNbDORV63JxDcB3oNVMm1KeuQj+T0UrcKDqoPtc+w==
   dependencies:
     lodash "^4.17.15"
     prettier "^2.5.1"

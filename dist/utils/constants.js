@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.KYVE_KEPLR_CONFIG = exports.KYVE_ENDPOINTS = exports.KYVE_DECIMALS = void 0;
+exports.KYVE_KEPLR_CONFIG = exports.PREFIX = exports.KYVE_ENDPOINTS = exports.KYVE_DECIMALS = void 0;
 var cosmos_1 = require("@keplr-wallet/cosmos");
 exports.KYVE_DECIMALS = 9;
 exports.KYVE_ENDPOINTS = {
@@ -29,6 +29,7 @@ exports.KYVE_ENDPOINTS = {
         chainName: "Korellia"
     }
 };
+exports.PREFIX = 'kyve';
 exports.KYVE_KEPLR_CONFIG = {
     rpc: "",
     rest: "",

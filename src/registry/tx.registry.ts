@@ -1,431 +1,427 @@
-import {GeneratedType, Registry} from "@cosmjs/proto-signing";
+import { GeneratedType, Registry } from "@cosmjs/proto-signing";
 import {
-    MsgFundPool,
-    MsgDefundPool,
-    MsgStakePool,
-    MsgUnstakePool,
-    MsgDelegatePool,
-    MsgWithdrawPool,
-    MsgUndelegatePool,
-    MsgSubmitBundleProposal,
-    MsgVoteProposal,
-    MsgClaimUploaderRole,
-    MsgUpdateMetadata
-} from "@kyve/proto/dist/proto/kyve/registry/v1beta1/tx"
+  MsgFundPool,
+  MsgDefundPool,
+  MsgStakePool,
+  MsgUnstakePool,
+  MsgDelegatePool,
+  MsgWithdrawPool,
+  MsgUndelegatePool,
+  MsgSubmitBundleProposal,
+  MsgVoteProposal,
+  MsgClaimUploaderRole,
+  MsgUpdateMetadata,
+} from "@kyve/proto/dist/proto/kyve/registry/v1beta1/tx";
 
-export const registry: ReadonlyArray<[string, GeneratedType]> =
-    [["/kyve.registry.v1beta1.MsgFundPool", MsgFundPool],
-        ["/kyve.registry.v1beta1.MsgDefundPool", MsgDefundPool],
-        ["/kyve.registry.v1beta1.MsgStakePool", MsgStakePool],
-        ["/kyve.registry.v1beta1.MsgUnstakePool", MsgUnstakePool],
-        ["/kyve.registry.v1beta1.MsgDelegatePool", MsgDelegatePool],
-        ["/kyve.registry.v1beta1.MsgWithdrawPool", MsgWithdrawPool],
-        ["/kyve.registry.v1beta1.MsgUndelegatePool", MsgUndelegatePool],
-        ["/kyve.registry.v1beta1.MsgSubmitBundleProposal", MsgSubmitBundleProposal],
-        ["/kyve.registry.v1beta1.MsgVoteProposal", MsgVoteProposal],
-        ["/kyve.registry.v1beta1.MsgClaimUploaderRole", MsgClaimUploaderRole],
-        ["/kyve.registry.v1beta1.MsgUpdateMetadata", MsgUpdateMetadata]];
+export const registry: ReadonlyArray<[string, GeneratedType]> = [
+  ["/kyve.registry.v1beta1.MsgFundPool", MsgFundPool],
+  ["/kyve.registry.v1beta1.MsgDefundPool", MsgDefundPool],
+  ["/kyve.registry.v1beta1.MsgStakePool", MsgStakePool],
+  ["/kyve.registry.v1beta1.MsgUnstakePool", MsgUnstakePool],
+  ["/kyve.registry.v1beta1.MsgDelegatePool", MsgDelegatePool],
+  ["/kyve.registry.v1beta1.MsgWithdrawPool", MsgWithdrawPool],
+  ["/kyve.registry.v1beta1.MsgUndelegatePool", MsgUndelegatePool],
+  ["/kyve.registry.v1beta1.MsgSubmitBundleProposal", MsgSubmitBundleProposal],
+  ["/kyve.registry.v1beta1.MsgVoteProposal", MsgVoteProposal],
+  ["/kyve.registry.v1beta1.MsgClaimUploaderRole", MsgClaimUploaderRole],
+  ["/kyve.registry.v1beta1.MsgUpdateMetadata", MsgUpdateMetadata],
+];
 export const load = (protoRegistry: Registry) => {
-    registry.forEach(([typeUrl, mod]) => {
-        protoRegistry.register(typeUrl, mod);
-    });
+  registry.forEach(([typeUrl, mod]) => {
+    protoRegistry.register(typeUrl, mod);
+  });
 };
 export const encodeTxMsg = {
-    fundPool(value: MsgFundPool) {
-        return {
-            type_url: "/kyve.registry.v1beta1.MsgFundPool",
-            value: MsgFundPool.encode(value).finish(),
-        };
-    },
+  fundPool(value: MsgFundPool) {
+    return {
+      type_url: "/kyve.registry.v1beta1.MsgFundPool",
+      value: MsgFundPool.encode(value).finish(),
+    };
+  },
 
-    defundPool(value: MsgDefundPool) {
-        return {
-            type_url: "/kyve.registry.v1beta1.MsgDefundPool",
-            value: MsgDefundPool.encode(value).finish()
-        };
-    },
+  defundPool(value: MsgDefundPool) {
+    return {
+      type_url: "/kyve.registry.v1beta1.MsgDefundPool",
+      value: MsgDefundPool.encode(value).finish(),
+    };
+  },
 
-    stakePool(value: MsgStakePool) {
-        return {
-            type_url: "/kyve.registry.v1beta1.MsgStakePool",
-            value: MsgStakePool.encode(value).finish()
-        };
-    },
+  stakePool(value: MsgStakePool) {
+    return {
+      type_url: "/kyve.registry.v1beta1.MsgStakePool",
+      value: MsgStakePool.encode(value).finish(),
+    };
+  },
 
-    unstakePool(value: MsgUnstakePool) {
-        return {
-            type_url: "/kyve.registry.v1beta1.MsgUnstakePool",
-            value: MsgUnstakePool.encode(value).finish()
-        };
-    },
+  unstakePool(value: MsgUnstakePool) {
+    return {
+      type_url: "/kyve.registry.v1beta1.MsgUnstakePool",
+      value: MsgUnstakePool.encode(value).finish(),
+    };
+  },
 
-    delegatePool(value: MsgDelegatePool) {
-        return {
-            type_url: "/kyve.registry.v1beta1.MsgDelegatePool",
-            value: MsgDelegatePool.encode(value).finish()
-        };
-    },
+  delegatePool(value: MsgDelegatePool) {
+    return {
+      type_url: "/kyve.registry.v1beta1.MsgDelegatePool",
+      value: MsgDelegatePool.encode(value).finish(),
+    };
+  },
 
-    withdrawPool(value: MsgWithdrawPool) {
-        return {
-            type_url: "/kyve.registry.v1beta1.MsgWithdrawPool",
-            value: MsgWithdrawPool.encode(value).finish()
-        };
-    },
+  withdrawPool(value: MsgWithdrawPool) {
+    return {
+      type_url: "/kyve.registry.v1beta1.MsgWithdrawPool",
+      value: MsgWithdrawPool.encode(value).finish(),
+    };
+  },
 
-    undelegatePool(value: MsgUndelegatePool) {
-        return {
-            type_url: "/kyve.registry.v1beta1.MsgUndelegatePool",
-            value: MsgUndelegatePool.encode(value).finish()
-        };
-    },
+  undelegatePool(value: MsgUndelegatePool) {
+    return {
+      type_url: "/kyve.registry.v1beta1.MsgUndelegatePool",
+      value: MsgUndelegatePool.encode(value).finish(),
+    };
+  },
 
-    submitBundleProposal(value: MsgSubmitBundleProposal) {
-        return {
-            type_url: "/kyve.registry.v1beta1.MsgSubmitBundleProposal",
-            value: MsgSubmitBundleProposal.encode(value).finish()
-        };
-    },
+  submitBundleProposal(value: MsgSubmitBundleProposal) {
+    return {
+      type_url: "/kyve.registry.v1beta1.MsgSubmitBundleProposal",
+      value: MsgSubmitBundleProposal.encode(value).finish(),
+    };
+  },
 
-    voteProposal(value: MsgVoteProposal) {
-        return {
-            type_url: "/kyve.registry.v1beta1.MsgVoteProposal",
-            value: MsgVoteProposal.encode(value).finish()
-        };
-    },
+  voteProposal(value: MsgVoteProposal) {
+    return {
+      type_url: "/kyve.registry.v1beta1.MsgVoteProposal",
+      value: MsgVoteProposal.encode(value).finish(),
+    };
+  },
 
-    claimUploaderRole(value: MsgClaimUploaderRole) {
-        return {
-            type_url: "/kyve.registry.v1beta1.MsgClaimUploaderRole",
-            value: MsgClaimUploaderRole.encode(value).finish()
-        };
-    },
+  claimUploaderRole(value: MsgClaimUploaderRole) {
+    return {
+      type_url: "/kyve.registry.v1beta1.MsgClaimUploaderRole",
+      value: MsgClaimUploaderRole.encode(value).finish(),
+    };
+  },
 
-    updateMetadata(value: MsgUpdateMetadata) {
-        return {
-            type_url: "/kyve.registry.v1beta1.MsgUpdateMetadata",
-            value: MsgUpdateMetadata.encode(value).finish()
-        };
-    }
-
+  updateMetadata(value: MsgUpdateMetadata) {
+    return {
+      type_url: "/kyve.registry.v1beta1.MsgUpdateMetadata",
+      value: MsgUpdateMetadata.encode(value).finish(),
+    };
+  },
 };
 export const withTypeUrl = {
+  fundPool(value: MsgFundPool) {
+    return {
+      typeUrl: "/kyve.registry.v1beta1.MsgFundPool",
+      value,
+    };
+  },
+
+  defundPool(value: MsgDefundPool) {
+    return {
+      typeUrl: "/kyve.registry.v1beta1.MsgDefundPool",
+      value,
+    };
+  },
+
+  stakePool(value: MsgStakePool) {
+    return {
+      typeUrl: "/kyve.registry.v1beta1.MsgStakePool",
+      value,
+    };
+  },
+
+  unstakePool(value: MsgUnstakePool) {
+    return {
+      typeUrl: "/kyve.registry.v1beta1.MsgUnstakePool",
+      value,
+    };
+  },
+
+  delegatePool(value: MsgDelegatePool) {
+    return {
+      typeUrl: "/kyve.registry.v1beta1.MsgDelegatePool",
+      value,
+    };
+  },
+
+  withdrawPool(value: MsgWithdrawPool) {
+    return {
+      typeUrl: "/kyve.registry.v1beta1.MsgWithdrawPool",
+      value,
+    };
+  },
+
+  undelegatePool(value: MsgUndelegatePool) {
+    return {
+      typeUrl: "/kyve.registry.v1beta1.MsgUndelegatePool",
+      value,
+    };
+  },
+
+  submitBundleProposal(value: MsgSubmitBundleProposal) {
+    return {
+      typeUrl: "/kyve.registry.v1beta1.MsgSubmitBundleProposal",
+      value,
+    };
+  },
+
+  voteProposal(value: MsgVoteProposal) {
+    return {
+      typeUrl: "/kyve.registry.v1beta1.MsgVoteProposal",
+      value,
+    };
+  },
+
+  claimUploaderRole(value: MsgClaimUploaderRole) {
+    return {
+      typeUrl: "/kyve.registry.v1beta1.MsgClaimUploaderRole",
+      value,
+    };
+  },
+
+  updateMetadata(value: MsgUpdateMetadata) {
+    return {
+      typeUrl: "/kyve.registry.v1beta1.MsgUpdateMetadata",
+      value,
+    };
+  },
+};
+export const MessageComposer = {
+  encoded: encodeTxMsg,
+  withTypeUrl,
+  toJSON: {
     fundPool(value: MsgFundPool) {
-        return {
-            typeUrl: "/kyve.registry.v1beta1.MsgFundPool",
-            value
-        };
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgFundPool",
+        value: MsgFundPool.toJSON(value),
+      };
     },
 
     defundPool(value: MsgDefundPool) {
-        return {
-            typeUrl: "/kyve.registry.v1beta1.MsgDefundPool",
-            value
-        };
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgDefundPool",
+        value: MsgDefundPool.toJSON(value),
+      };
     },
 
     stakePool(value: MsgStakePool) {
-        return {
-            typeUrl: "/kyve.registry.v1beta1.MsgStakePool",
-            value
-        };
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgStakePool",
+        value: MsgStakePool.toJSON(value),
+      };
     },
 
     unstakePool(value: MsgUnstakePool) {
-        return {
-            typeUrl: "/kyve.registry.v1beta1.MsgUnstakePool",
-            value
-        };
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgUnstakePool",
+        value: MsgUnstakePool.toJSON(value),
+      };
     },
 
     delegatePool(value: MsgDelegatePool) {
-        return {
-            typeUrl: "/kyve.registry.v1beta1.MsgDelegatePool",
-            value
-        };
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgDelegatePool",
+        value: MsgDelegatePool.toJSON(value),
+      };
     },
 
     withdrawPool(value: MsgWithdrawPool) {
-        return {
-            typeUrl: "/kyve.registry.v1beta1.MsgWithdrawPool",
-            value
-        };
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgWithdrawPool",
+        value: MsgWithdrawPool.toJSON(value),
+      };
     },
 
     undelegatePool(value: MsgUndelegatePool) {
-        return {
-            typeUrl: "/kyve.registry.v1beta1.MsgUndelegatePool",
-            value
-        };
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgUndelegatePool",
+        value: MsgUndelegatePool.toJSON(value),
+      };
     },
 
     submitBundleProposal(value: MsgSubmitBundleProposal) {
-        return {
-            typeUrl: "/kyve.registry.v1beta1.MsgSubmitBundleProposal",
-            value
-        };
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgSubmitBundleProposal",
+        value: MsgSubmitBundleProposal.toJSON(value),
+      };
     },
 
     voteProposal(value: MsgVoteProposal) {
-        return {
-            typeUrl: "/kyve.registry.v1beta1.MsgVoteProposal",
-            value
-        };
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgVoteProposal",
+        value: MsgVoteProposal.toJSON(value),
+      };
     },
 
     claimUploaderRole(value: MsgClaimUploaderRole) {
-        return {
-            typeUrl: "/kyve.registry.v1beta1.MsgClaimUploaderRole",
-            value
-        };
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgClaimUploaderRole",
+        value: MsgClaimUploaderRole.toJSON(value),
+      };
     },
 
     updateMetadata(value: MsgUpdateMetadata) {
-        return {
-            typeUrl: "/kyve.registry.v1beta1.MsgUpdateMetadata",
-            value
-        };
-    }
-
-};
-export const MessageComposer = {
-    encoded: encodeTxMsg,
-    withTypeUrl,
-    toJSON: {
-        fundPool(value: MsgFundPool) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgFundPool",
-                value: MsgFundPool.toJSON(value)
-            };
-        },
-
-        defundPool(value: MsgDefundPool) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgDefundPool",
-                value: MsgDefundPool.toJSON(value)
-            };
-        },
-
-        stakePool(value: MsgStakePool) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgStakePool",
-                value: MsgStakePool.toJSON(value)
-            };
-        },
-
-        unstakePool(value: MsgUnstakePool) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgUnstakePool",
-                value: MsgUnstakePool.toJSON(value)
-            };
-        },
-
-        delegatePool(value: MsgDelegatePool) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgDelegatePool",
-                value: MsgDelegatePool.toJSON(value)
-            };
-        },
-
-        withdrawPool(value: MsgWithdrawPool) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgWithdrawPool",
-                value: MsgWithdrawPool.toJSON(value)
-            };
-        },
-
-        undelegatePool(value: MsgUndelegatePool) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgUndelegatePool",
-                value: MsgUndelegatePool.toJSON(value)
-            };
-        },
-
-        submitBundleProposal(value: MsgSubmitBundleProposal) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgSubmitBundleProposal",
-                value: MsgSubmitBundleProposal.toJSON(value)
-            };
-        },
-
-        voteProposal(value: MsgVoteProposal) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgVoteProposal",
-                value: MsgVoteProposal.toJSON(value)
-            };
-        },
-
-        claimUploaderRole(value: MsgClaimUploaderRole) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgClaimUploaderRole",
-                value: MsgClaimUploaderRole.toJSON(value)
-            };
-        },
-
-        updateMetadata(value: MsgUpdateMetadata) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgUpdateMetadata",
-                value: MsgUpdateMetadata.toJSON(value)
-            };
-        }
-
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgUpdateMetadata",
+        value: MsgUpdateMetadata.toJSON(value),
+      };
     },
-    fromJSON: {
-        fundPool(value: any) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgFundPool",
-                value: MsgFundPool.fromJSON(value)
-            };
-        },
-
-        defundPool(value: any) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgDefundPool",
-                value: MsgDefundPool.fromJSON(value)
-            };
-        },
-
-        stakePool(value: any) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgStakePool",
-                value: MsgStakePool.fromJSON(value)
-            };
-        },
-
-        unstakePool(value: any) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgUnstakePool",
-                value: MsgUnstakePool.fromJSON(value)
-            };
-        },
-
-        delegatePool(value: any) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgDelegatePool",
-                value: MsgDelegatePool.fromJSON(value)
-            };
-        },
-
-        withdrawPool(value: any) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgWithdrawPool",
-                value: MsgWithdrawPool.fromJSON(value)
-            };
-        },
-
-        undelegatePool(value: any) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgUndelegatePool",
-                value: MsgUndelegatePool.fromJSON(value)
-            };
-        },
-
-        submitBundleProposal(value: any) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgSubmitBundleProposal",
-                value: MsgSubmitBundleProposal.fromJSON(value)
-            };
-        },
-
-        voteProposal(value: any) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgVoteProposal",
-                value: MsgVoteProposal.fromJSON(value)
-            };
-        },
-
-        claimUploaderRole(value: any) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgClaimUploaderRole",
-                value: MsgClaimUploaderRole.fromJSON(value)
-            };
-        },
-
-        updateMetadata(value: any) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgUpdateMetadata",
-                value: MsgUpdateMetadata.fromJSON(value)
-            };
-        }
-
+  },
+  fromJSON: {
+    fundPool(value: any) {
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgFundPool",
+        value: MsgFundPool.fromJSON(value),
+      };
     },
-    fromPartial: {
-        fundPool(value: MsgFundPool) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgFundPool",
-                value: MsgFundPool.fromPartial(value)
-            };
-        },
 
-        defundPool(value: MsgDefundPool) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgDefundPool",
-                value: MsgDefundPool.fromPartial(value)
-            };
-        },
+    defundPool(value: any) {
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgDefundPool",
+        value: MsgDefundPool.fromJSON(value),
+      };
+    },
 
-        stakePool(value: MsgStakePool) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgStakePool",
-                value: MsgStakePool.fromPartial(value)
-            };
-        },
+    stakePool(value: any) {
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgStakePool",
+        value: MsgStakePool.fromJSON(value),
+      };
+    },
 
-        unstakePool(value: MsgUnstakePool) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgUnstakePool",
-                value: MsgUnstakePool.fromPartial(value)
-            };
-        },
+    unstakePool(value: any) {
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgUnstakePool",
+        value: MsgUnstakePool.fromJSON(value),
+      };
+    },
 
-        delegatePool(value: MsgDelegatePool) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgDelegatePool",
-                value: MsgDelegatePool.fromPartial(value)
-            };
-        },
+    delegatePool(value: any) {
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgDelegatePool",
+        value: MsgDelegatePool.fromJSON(value),
+      };
+    },
 
-        withdrawPool(value: MsgWithdrawPool) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgWithdrawPool",
-                value: MsgWithdrawPool.fromPartial(value)
-            };
-        },
+    withdrawPool(value: any) {
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgWithdrawPool",
+        value: MsgWithdrawPool.fromJSON(value),
+      };
+    },
 
-        undelegatePool(value: MsgUndelegatePool) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgUndelegatePool",
-                value: MsgUndelegatePool.fromPartial(value)
-            };
-        },
+    undelegatePool(value: any) {
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgUndelegatePool",
+        value: MsgUndelegatePool.fromJSON(value),
+      };
+    },
 
-        submitBundleProposal(value: MsgSubmitBundleProposal) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgSubmitBundleProposal",
-                value: MsgSubmitBundleProposal.fromPartial(value)
-            };
-        },
+    submitBundleProposal(value: any) {
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgSubmitBundleProposal",
+        value: MsgSubmitBundleProposal.fromJSON(value),
+      };
+    },
 
-        voteProposal(value: MsgVoteProposal) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgVoteProposal",
-                value: MsgVoteProposal.fromPartial(value)
-            };
-        },
+    voteProposal(value: any) {
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgVoteProposal",
+        value: MsgVoteProposal.fromJSON(value),
+      };
+    },
 
-        claimUploaderRole(value: MsgClaimUploaderRole) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgClaimUploaderRole",
-                value: MsgClaimUploaderRole.fromPartial(value)
-            };
-        },
+    claimUploaderRole(value: any) {
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgClaimUploaderRole",
+        value: MsgClaimUploaderRole.fromJSON(value),
+      };
+    },
 
-        updateMetadata(value: MsgUpdateMetadata) {
-            return {
-                typeUrl: "/kyve.registry.v1beta1.MsgUpdateMetadata",
-                value: MsgUpdateMetadata.fromPartial(value)
-            };
-        }
+    updateMetadata(value: any) {
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgUpdateMetadata",
+        value: MsgUpdateMetadata.fromJSON(value),
+      };
+    },
+  },
+  fromPartial: {
+    fundPool(value: MsgFundPool) {
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgFundPool",
+        value: MsgFundPool.fromPartial(value),
+      };
+    },
 
-    }
+    defundPool(value: MsgDefundPool) {
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgDefundPool",
+        value: MsgDefundPool.fromPartial(value),
+      };
+    },
+
+    stakePool(value: MsgStakePool) {
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgStakePool",
+        value: MsgStakePool.fromPartial(value),
+      };
+    },
+
+    unstakePool(value: MsgUnstakePool) {
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgUnstakePool",
+        value: MsgUnstakePool.fromPartial(value),
+      };
+    },
+
+    delegatePool(value: MsgDelegatePool) {
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgDelegatePool",
+        value: MsgDelegatePool.fromPartial(value),
+      };
+    },
+
+    withdrawPool(value: MsgWithdrawPool) {
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgWithdrawPool",
+        value: MsgWithdrawPool.fromPartial(value),
+      };
+    },
+
+    undelegatePool(value: MsgUndelegatePool) {
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgUndelegatePool",
+        value: MsgUndelegatePool.fromPartial(value),
+      };
+    },
+
+    submitBundleProposal(value: MsgSubmitBundleProposal) {
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgSubmitBundleProposal",
+        value: MsgSubmitBundleProposal.fromPartial(value),
+      };
+    },
+
+    voteProposal(value: MsgVoteProposal) {
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgVoteProposal",
+        value: MsgVoteProposal.fromPartial(value),
+      };
+    },
+
+    claimUploaderRole(value: MsgClaimUploaderRole) {
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgClaimUploaderRole",
+        value: MsgClaimUploaderRole.fromPartial(value),
+      };
+    },
+
+    updateMetadata(value: MsgUpdateMetadata) {
+      return {
+        typeUrl: "/kyve.registry.v1beta1.MsgUpdateMetadata",
+        value: MsgUpdateMetadata.fromPartial(value),
+      };
+    },
+  },
 };

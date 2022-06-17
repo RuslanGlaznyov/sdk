@@ -30,6 +30,7 @@
     "@cosmjs/proto-signing": "0.28.0",
     "@cosmjs/stargate": "0.28.0",
     "@cosmjs/tendermint-rpc": "0.28.0",
+    "@cosmostation/extension-client": "^0.0.6",
     "@keplr-wallet/cosmos": "0.9.16",
     "@kyve/proto": "git+ssh://git@github.com:KYVENetwork/proto.git#feature/proto-protoc",
     "axios": "0.25.0",

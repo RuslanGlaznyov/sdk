@@ -1,17 +1,19 @@
-import {SigningStargateClient} from "@cosmjs/stargate";
-import {AccountData} from "@cosmjs/amino/build/signer";
-import MsgMethods from "./main.msg";
+import { SigningStargateClient } from "@cosmjs/stargate";
+import { AccountData } from "@cosmjs/amino/build/signer";
+import BaseMethods from "./kyve-base.msg";
+import GovMethods from "./gov.msg";
+import { extendedClientType } from "./faces";
 
 export default class KyveClient {
-    private nativeClient: SigningStargateClient;
-    public readonly account: AccountData;
-    public readonly msg: MsgMethods;
-    public readonly gov: () => any;
+  public nativeClient: extendedClientType;
+  public readonly account: AccountData;
+  public readonly base: BaseMethods;
+  public readonly gov: GovMethods;
 
-    constructor(client: SigningStargateClient, account: AccountData) {
-        this.account = account
-        this.nativeClient = client;
-        this.msg = new MsgMethods(this.nativeClient, this.account)
-        this.gov = () => { throw "Need to implement"}
-    }
+  constructor(client: extendedClientType, account: AccountData) {
+    this.account = account;
+    this.nativeClient = client;
+    this.base = new BaseMethods(this.nativeClient, this.account);
+    this.gov = new GovMethods(this.nativeClient, this.account);
+  }
 }
