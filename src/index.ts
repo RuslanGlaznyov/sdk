@@ -23,11 +23,13 @@ class CosmostationSigner implements OfflineDirectSigner {
     private cosmostationProvider: Tendermint;
     private network: Network;
     private cosmostationAccount: RequestAccountResponse;
+    private cosmostationOption: SignOptions | undefined;
 
     constructor(cosmostationProvider: Tendermint, cosmostationAccount: RequestAccountResponse, network: Network, cosmostationOption?: SignOptions) {
         this.cosmostationProvider = cosmostationProvider;
         this.network = network
         this.cosmostationAccount = cosmostationAccount;
+        this.cosmostationOption = cosmostationOption
     }
 
     async getAccounts(): Promise<readonly AccountData[]> {
@@ -45,7 +47,7 @@ class CosmostationSigner implements OfflineDirectSigner {
             body_bytes: signDoc.bodyBytes,
             auth_info_bytes: signDoc.authInfoBytes,
             account_number: signDoc.accountNumber.toString()
-        })
+        }, this.cosmostationOption ? this.cosmostationOption : undefined )
 
         return {
             signed: makeSignDoc(signedResult.signed_doc.body_bytes, signedResult.signed_doc.auth_info_bytes, signedResult.signed_doc.chain_id, Number(signedResult.signed_doc.account_number)),

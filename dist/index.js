@@ -56,6 +56,7 @@ var CosmostationSigner = /** @class */ (function () {
         this.cosmostationProvider = cosmostationProvider;
         this.network = network;
         this.cosmostationAccount = cosmostationAccount;
+        this.cosmostationOption = cosmostationOption;
     }
     CosmostationSigner.prototype.getAccounts = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -80,7 +81,7 @@ var CosmostationSigner = /** @class */ (function () {
                             body_bytes: signDoc.bodyBytes,
                             auth_info_bytes: signDoc.authInfoBytes,
                             account_number: signDoc.accountNumber.toString()
-                        })];
+                        }, this.cosmostationOption ? this.cosmostationOption : undefined)];
                     case 1:
                         signedResult = _a.sent();
                         return [2 /*return*/, {
