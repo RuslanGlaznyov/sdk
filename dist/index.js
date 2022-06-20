@@ -46,14 +46,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 exports.__esModule = true;
 var constants_1 = require("./constants");
 var full_client_1 = require("./client/full-client");
 var proto_signing_1 = require("@cosmjs/proto-signing");
-var extension_client_1 = require("@cosmostation/extension-client");
+var cosmostation_helper_1 = __importDefault(require("./cosmostation-helper"));
 var CosmostationSigner = /** @class */ (function () {
-    function CosmostationSigner(cosmostationProvider, cosmostationAccount, network, cosmostationOption) {
-        this.cosmostationProvider = cosmostationProvider;
+    function CosmostationSigner(cosmostationAccount, network, cosmostationOption) {
         this.network = network;
         this.cosmostationAccount = cosmostationAccount;
         this.cosmostationOption = cosmostationOption;
@@ -76,12 +78,12 @@ var CosmostationSigner = /** @class */ (function () {
             var signedResult;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.cosmostationProvider.signDirect(this.network.chainId, {
+                    case 0: return [4 /*yield*/, cosmostation_helper_1["default"].signDirect(this.network.chainId, {
                             chain_id: signDoc.chainId,
                             body_bytes: signDoc.bodyBytes,
                             auth_info_bytes: signDoc.authInfoBytes,
                             account_number: signDoc.accountNumber.toString()
-                        }, this.cosmostationOption ? this.cosmostationOption : undefined)];
+                        }, this.cosmostationOption)];
                     case 1:
                         signedResult = _a.sent();
                         return [2 /*return*/, {
@@ -145,40 +147,30 @@ var KyveSDK = /** @class */ (function () {
     };
     KyveSDK.prototype.fromCosmostation = function (config) {
         return __awaiter(this, void 0, void 0, function () {
-            var provider, chain, cosmostationAccount, cosmostationSigner, e_1;
+            var chain, cosmostationAccount, cosmostationSigner;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 8, , 9]);
-                        return [4 /*yield*/, (0, extension_client_1.tendermint)()];
+                        if (!window.cosmostation)
+                            throw new Error("Please install cosmostation.");
+                        return [4 /*yield*/, cosmostation_helper_1["default"].getSupportedChains()];
                     case 1:
-                        provider = _a.sent();
-                        return [4 /*yield*/, provider.getSupportedChains()];
-                    case 2:
                         chain = _a.sent();
-                        cosmostationAccount = void 0;
-                        if (!chain.unofficial.includes(this.network.chainName)) return [3 /*break*/, 4];
-                        return [4 /*yield*/, provider.getAccount(this.network.chainName)];
-                    case 3:
+                        if (!chain.unofficial.includes(this.network.chainName.toLowerCase().trim())) return [3 /*break*/, 3];
+                        return [4 /*yield*/, cosmostation_helper_1["default"].requestAccount(this.network.chainName)];
+                    case 2:
                         cosmostationAccount = _a.sent();
-                        return [3 /*break*/, 7];
-                    case 4: return [4 /*yield*/, provider.addChain(__assign(__assign({}, constants_1.KYVE_COSMOSTATION_CONFIG), { restURL: this.network.rest, chainId: this.network.chainId, chainName: this.network.chainName }))];
-                    case 5:
+                        return [3 /*break*/, 6];
+                    case 3: return [4 /*yield*/, cosmostation_helper_1["default"].addChain(__assign(__assign({}, constants_1.KYVE_COSMOSTATION_CONFIG), { restURL: this.network.rest, chainId: this.network.chainId, chainName: this.network.chainName }))];
+                    case 4:
                         _a.sent();
-                        return [4 /*yield*/, provider.getAccount(this.network.chainName)];
-                    case 6:
+                        return [4 /*yield*/, cosmostation_helper_1["default"].requestAccount(this.network.chainName)];
+                    case 5:
                         cosmostationAccount = _a.sent();
-                        _a.label = 7;
-                    case 7:
-                        cosmostationSigner = new CosmostationSigner(provider, cosmostationAccount, this.network, config ? config : {});
+                        _a.label = 6;
+                    case 6:
+                        cosmostationSigner = new CosmostationSigner(cosmostationAccount, this.network, config ? config : {});
                         return [2 /*return*/, (0, full_client_1.getSigningKyveClient)(this.network.rpc, cosmostationSigner)];
-                    case 8:
-                        e_1 = _a.sent();
-                        if (e_1 instanceof extension_client_1.InstallError) {
-                            console.log("not installed");
-                        }
-                        throw e_1;
-                    case 9: return [2 /*return*/];
                 }
             });
         });

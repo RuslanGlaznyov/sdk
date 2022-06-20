@@ -7,26 +7,18 @@ import {
     PREFIX,
 } from "./constants";
 import {getSigningKyveClient} from "./client/full-client";
-import {DirectSecp256k1HdWallet, makeSignDoc } from "@cosmjs/proto-signing";
-import {Window as KeplrWindow} from "@keplr-wallet/types";
-import {InstallError, Tendermint, tendermint} from "@cosmostation/extension-client";
-import {AccountData, DirectSignResponse, OfflineDirectSigner} from "@cosmjs/proto-signing/build/signer";
+import {DirectSecp256k1HdWallet, makeSignDoc} from "@cosmjs/proto-signing";
+import {AccountData, OfflineDirectSigner} from "@cosmjs/proto-signing/build/signer";
 import {SignDoc} from "cosmjs-types/cosmos/tx/v1beta1/tx";
 import {RequestAccountResponse, SignOptions} from "@cosmostation/extension-client/types/message";
-
-declare global {
-    interface Window extends KeplrWindow {
-    }
-}
+import cosmostationHelper from "./cosmostation-helper";
 
 class CosmostationSigner implements OfflineDirectSigner {
-    private cosmostationProvider: Tendermint;
     private network: Network;
     private cosmostationAccount: RequestAccountResponse;
     private cosmostationOption: SignOptions | undefined;
 
-    constructor(cosmostationProvider: Tendermint, cosmostationAccount: RequestAccountResponse, network: Network, cosmostationOption?: SignOptions) {
-        this.cosmostationProvider = cosmostationProvider;
+    constructor(cosmostationAccount: RequestAccountResponse, network: Network, cosmostationOption?: SignOptions) {
         this.network = network
         this.cosmostationAccount = cosmostationAccount;
         this.cosmostationOption = cosmostationOption
@@ -41,13 +33,13 @@ class CosmostationSigner implements OfflineDirectSigner {
         }]
     };
 
-    async signDirect(signerAddress: string, signDoc: SignDoc): Promise<DirectSignResponse> {
-        const signedResult = await this.cosmostationProvider.signDirect(this.network.chainId, {
+    async signDirect(signerAddress: string, signDoc: SignDoc) {
+        const signedResult = await cosmostationHelper.signDirect(this.network.chainId, {
             chain_id: signDoc.chainId,
             body_bytes: signDoc.bodyBytes,
             auth_info_bytes: signDoc.authInfoBytes,
             account_number: signDoc.accountNumber.toString()
-        }, this.cosmostationOption ? this.cosmostationOption : undefined )
+        }, this.cosmostationOption)
 
         return {
             signed: makeSignDoc(signedResult.signed_doc.body_bytes, signedResult.signed_doc.auth_info_bytes, signedResult.signed_doc.chain_id, Number(signedResult.signed_doc.account_number)),
@@ -95,28 +87,21 @@ export default class KyveSDK {
     }
 
     async fromCosmostation(config?: SignOptions) {
-        try {
-            const provider = await tendermint();
-            const chain = await provider.getSupportedChains();
-            let cosmostationAccount: RequestAccountResponse;
-            if (chain.unofficial.includes(this.network.chainName)) {
-                cosmostationAccount = await provider.getAccount(this.network.chainName);
-            } else {
-                await provider.addChain({
-                    ...KYVE_COSMOSTATION_CONFIG,
-                    restURL: this.network.rest,
-                    chainId: this.network.chainId,
-                    chainName: this.network.chainName,
-                })
-                cosmostationAccount = await provider.getAccount(this.network.chainName);
-            }
-            const cosmostationSigner = new CosmostationSigner(provider,cosmostationAccount, this.network, config ? config : {} );
-            return getSigningKyveClient(this.network.rpc, cosmostationSigner);
-        }catch (e) {
-            if (e instanceof InstallError) {
-                console.log("not installed");
-            }
-            throw e;
+        if (!window.cosmostation) throw new Error("Please install cosmostation.");
+        const chain = await cosmostationHelper.getSupportedChains();
+        let cosmostationAccount: RequestAccountResponse;
+        if (chain.unofficial.includes(this.network.chainName.toLowerCase().trim())) {
+            cosmostationAccount = await cosmostationHelper.requestAccount(this.network.chainName);
+        } else {
+            await cosmostationHelper.addChain({
+                ...KYVE_COSMOSTATION_CONFIG,
+                restURL: this.network.rest,
+                chainId: this.network.chainId,
+                chainName: this.network.chainName,
+            })
+            cosmostationAccount = await cosmostationHelper.requestAccount(this.network.chainName);
         }
+        const cosmostationSigner = new CosmostationSigner(cosmostationAccount, this.network, config ? config : {});
+        return getSigningKyveClient(this.network.rpc, cosmostationSigner);
     }
 }

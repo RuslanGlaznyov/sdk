@@ -13,8 +13,6 @@ export async function getSigningKyveClient(
   signer: OfflineSigner,
   defaultTypes = defaultRegistryTypes
 ) {
-  //TODO
-  // - add support for Amino
   const registry = new Registry([...defaultTypes, ...KyveRegistryTx.registry]);
   const gasPrice = GasPrice.fromString("0tkyve");
   const client: SigningStargateClient =

@@ -5,6 +5,8 @@
     "outDir": "dist",
     "strict": true
   },
-  "include": ["src/declarations.d.ts"],
-  "files": ["src/index.ts"]
+  "include": [
+    "src/types/global.d.ts"
+  ],
+  "files": ["src/index.ts"],
 }
