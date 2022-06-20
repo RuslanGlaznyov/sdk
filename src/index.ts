@@ -54,8 +54,9 @@ class CosmostationSigner implements OfflineDirectSigner {
 
 export default class KyveSDK {
     public readonly network: Network;
-
+    private wallet: 'kepler' | 'cosmostation' | null
     constructor(network: KYVE_NETWORK | Network) {
+        this.wallet = null;
         if (typeof network === "string") {
             this.network = KYVE_ENDPOINTS[network];
         } else {
@@ -83,16 +84,14 @@ export default class KyveSDK {
 
         await window.keplr.enable(this.network.chainId);
         const signer = window.keplr.getOfflineSigner(this.network.chainId);
-        return {
-            client: await getSigningKyveClient(this.network.rpc, signer),
-            onAccountChange: (cb: () => void) => {
-                return window.addEventListener("keplr_keystorechange", cb)
+        const client = getSigningKyveClient(this.network.rpc, signer);
+        this.wallet = 'kepler'
+        return client
 
-            }
-        }
     }
 
     async fromCosmostation(config?: SignOptions) {
+        if (typeof window === "undefined") throw new Error("Unsupported.");
         if (!window.cosmostation) throw new Error("Please install cosmostation.");
         const chain = await cosmostationHelper.getSupportedChains();
         let cosmostationAccount: RequestAccountResponse;
@@ -108,11 +107,20 @@ export default class KyveSDK {
             cosmostationAccount = await cosmostationHelper.requestAccount(this.network.chainName);
         }
         const cosmostationSigner = new CosmostationSigner(cosmostationAccount, this.network, config ? config : {});
-        return {
-            client: await getSigningKyveClient(this.network.rpc, cosmostationSigner),
-            onAccountChange: (cb: () => void) => {
+        const client = getSigningKyveClient(this.network.rpc, cosmostationSigner);
+        this.wallet = 'cosmostation'
+        return client
+    }
+
+    async onAccountChange(cb: () => void) {
+        switch (this.wallet) {
+            case 'cosmostation':
                 return window.cosmostation.tendermint.on("accountChanged", cb)
-            }
+            case 'kepler':
+                return window.addEventListener("keplr_keystorechange", cb)
+            default:
+                throw new Error('Need to initiate from wallet')
         }
+
     }
 }
