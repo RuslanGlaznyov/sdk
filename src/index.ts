@@ -470,7 +470,9 @@ export class KyveSDK {
     bundleId: string,
     byteSize: number,
     fromHeight: number,
-    bundleSize: number
+    bundleSize: number,
+    latestKey: string,
+    latestValue: string
   ): Promise<{
     transactionHash: string;
     transactionBroadcast: Promise<DeliverTxResponse>;
@@ -487,6 +489,8 @@ export class KyveSDK {
         byteSize,
         fromHeight,
         bundleSize,
+        latestKey,
+        latestValue,
       },
     };
 

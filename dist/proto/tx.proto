@@ -157,6 +157,10 @@ message MsgSubmitBundleProposal {
   uint64 from_height = 5;
   // bundle_size ...
   uint64 bundle_size = 6;
+  // latest_key ...
+  string latest_key = 7;
+  // latest_value ...
+  string latest_value = 8;
 }
 
 // MsgSubmitBundleProposalResponse defines the Msg/SubmitBundleProposal response type.
