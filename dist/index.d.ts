@@ -55,7 +55,7 @@ export declare class KyveSDK {
         transactionHash: string;
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;
-    submitBundleProposal(id: number | string, bundleId: string, byteSize: number, fromHeight: number, bundleSize: number, latestKey: string, latestValue: string): Promise<{
+    submitBundleProposal(id: number | string, bundleId: string, byteSize: number, fromHeight: number, toHeight: number, toKey: string, toValue: string): Promise<{
         transactionHash: string;
         transactionBroadcast: Promise<DeliverTxResponse>;
     }>;
