@@ -1,4 +1,4 @@
-import {AddChainParams} from "@cosmostation/extension-client/types/message";
+import {AddChainParams, SignOptions} from "@cosmostation/extension-client/types/message";
 
 export default {
     getSupportedChains() {
@@ -16,13 +16,13 @@ export default {
             params: { chainName: chainId },
         });
     },
-    signDirect(chainName: string, doc: Object, options?: Object) {
+    signDirect(chainName: string, doc: Object, options?: SignOptions) {
         return window.cosmostation.tendermint.request({
             method: "ten_signDirect",
             params: {
                 chainName,
                 doc,
-                ...options
+                isEditMemo: !!options?.memo, isEditFee: !!options?.fee, gasRate: options?.gasRate
             },
         });
     }
