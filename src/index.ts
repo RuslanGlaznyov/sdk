@@ -83,7 +83,13 @@ export default class KyveSDK {
 
         await window.keplr.enable(this.network.chainId);
         const signer = window.keplr.getOfflineSigner(this.network.chainId);
-        return getSigningKyveClient(this.network.rpc, signer);
+        return {
+            client: await getSigningKyveClient(this.network.rpc, signer),
+            onAccountChange: (cb: () => void) => {
+                return window.addEventListener("keplr_keystorechange", cb)
+
+            }
+        }
     }
 
     async fromCosmostation(config?: SignOptions) {
@@ -102,6 +108,11 @@ export default class KyveSDK {
             cosmostationAccount = await cosmostationHelper.requestAccount(this.network.chainName);
         }
         const cosmostationSigner = new CosmostationSigner(cosmostationAccount, this.network, config ? config : {});
-        return getSigningKyveClient(this.network.rpc, cosmostationSigner);
+        return {
+            client: await getSigningKyveClient(this.network.rpc, cosmostationSigner),
+            onAccountChange: (cb: () => void) => {
+                return window.cosmostation.tendermint.on("accountChanged", cb)
+            }
+        }
     }
 }
