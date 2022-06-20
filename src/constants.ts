@@ -1,6 +1,8 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
 import { ChainInfo } from "@keplr-wallet/types";
+import {AddChainParams} from "@cosmostation/extension-client/types/message";
 export const KYVE_DECIMALS = 9;
+export const DENOM = 'tkyve'
 
 type Networks = Record<KYVE_NETWORK, Network>;
 
@@ -31,7 +33,6 @@ export const KYVE_ENDPOINTS: Networks = {
   },
 };
 export const PREFIX = "kyve";
-export const DENOM = "tkyve";
 export const KYVE_KEPLR_CONFIG: ChainInfo = {
   rpc: "",
   rest: "",
@@ -64,6 +65,17 @@ export const KYVE_KEPLR_CONFIG: ChainInfo = {
   gasPriceStep: { low: 0, average: 0, high: 0 },
   features: ["ibc-transfer", "ibc-go"],
 };
+
+export const KYVE_COSMOSTATION_CONFIG: AddChainParams= {
+  chainId: "",
+  restURL: "",
+  chainName: "",
+  baseDenom: "tkyve",
+  displayDenom: "KYVE",
+  addressPrefix: PREFIX,
+  coinType: "118",
+  decimals: KYVE_DECIMALS
+}
 
 export type KYVE_NETWORK = "local" | "alpha" | "beta" | "korellia";
 

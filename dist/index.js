@@ -47,12 +47,58 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var constants_1 = require("./utils/constants");
+var constants_1 = require("./constants");
 var full_client_1 = require("./client/full-client");
 var proto_signing_1 = require("@cosmjs/proto-signing");
+var extension_client_1 = require("@cosmostation/extension-client");
+var CosmostationSigner = /** @class */ (function () {
+    function CosmostationSigner(cosmostationProvider, cosmostationAccount, network, cosmostationOption) {
+        this.cosmostationProvider = cosmostationProvider;
+        this.network = network;
+        this.cosmostationAccount = cosmostationAccount;
+    }
+    CosmostationSigner.prototype.getAccounts = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, [{
+                            address: this.cosmostationAccount.address,
+                            // Currently, only secp256k1 is supported.
+                            algo: "secp256k1",
+                            pubkey: this.cosmostationAccount.publicKey
+                        }]];
+            });
+        });
+    };
+    ;
+    CosmostationSigner.prototype.signDirect = function (signerAddress, signDoc) {
+        return __awaiter(this, void 0, void 0, function () {
+            var signedResult;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.cosmostationProvider.signDirect(this.network.chainId, {
+                            chain_id: signDoc.chainId,
+                            body_bytes: signDoc.bodyBytes,
+                            auth_info_bytes: signDoc.authInfoBytes,
+                            account_number: signDoc.accountNumber.toString()
+                        })];
+                    case 1:
+                        signedResult = _a.sent();
+                        return [2 /*return*/, {
+                                signed: (0, proto_signing_1.makeSignDoc)(signedResult.signed_doc.body_bytes, signedResult.signed_doc.auth_info_bytes, signedResult.signed_doc.chain_id, Number(signedResult.signed_doc.account_number)),
+                                signature: {
+                                    pub_key: signedResult.pub_key,
+                                    signature: signedResult.signature
+                                }
+                            }];
+                }
+            });
+        });
+    };
+    return CosmostationSigner;
+}());
 var KyveSDK = /** @class */ (function () {
     function KyveSDK(network) {
-        if (typeof network === 'string') {
+        if (typeof network === "string") {
             this.network = constants_1.KYVE_ENDPOINTS[network];
         }
         else {
@@ -64,7 +110,9 @@ var KyveSDK = /** @class */ (function () {
             var signedClient;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, proto_signing_1.DirectSecp256k1HdWallet.fromMnemonic(mnemonic, { prefix: constants_1.PREFIX })];
+                    case 0: return [4 /*yield*/, proto_signing_1.DirectSecp256k1HdWallet.fromMnemonic(mnemonic, {
+                            prefix: constants_1.PREFIX
+                        })];
                     case 1:
                         signedClient = _a.sent();
                         return [2 /*return*/, (0, full_client_1.getSigningKyveClient)(this.network.rpc, signedClient)];
@@ -94,10 +142,46 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
-    KyveSDK.prototype.fromCosmostation = function () {
-        throw new Error("Need to implement");
+    KyveSDK.prototype.fromCosmostation = function (config) {
+        return __awaiter(this, void 0, void 0, function () {
+            var provider, chain, cosmostationAccount, cosmostationSigner, e_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 8, , 9]);
+                        return [4 /*yield*/, (0, extension_client_1.tendermint)()];
+                    case 1:
+                        provider = _a.sent();
+                        return [4 /*yield*/, provider.getSupportedChains()];
+                    case 2:
+                        chain = _a.sent();
+                        cosmostationAccount = void 0;
+                        if (!chain.unofficial.includes(this.network.chainName)) return [3 /*break*/, 4];
+                        return [4 /*yield*/, provider.getAccount(this.network.chainName)];
+                    case 3:
+                        cosmostationAccount = _a.sent();
+                        return [3 /*break*/, 7];
+                    case 4: return [4 /*yield*/, provider.addChain(__assign(__assign({}, constants_1.KYVE_COSMOSTATION_CONFIG), { restURL: this.network.rest, chainId: this.network.chainId, chainName: this.network.chainName }))];
+                    case 5:
+                        _a.sent();
+                        return [4 /*yield*/, provider.getAccount(this.network.chainName)];
+                    case 6:
+                        cosmostationAccount = _a.sent();
+                        _a.label = 7;
+                    case 7:
+                        cosmostationSigner = new CosmostationSigner(provider, cosmostationAccount, this.network, config ? config : {});
+                        return [2 /*return*/, (0, full_client_1.getSigningKyveClient)(this.network.rpc, cosmostationSigner)];
+                    case 8:
+                        e_1 = _a.sent();
+                        if (e_1 instanceof extension_client_1.InstallError) {
+                            console.log("not installed");
+                        }
+                        throw e_1;
+                    case 9: return [2 /*return*/];
+                }
+            });
+        });
     };
     return KyveSDK;
 }());
 exports["default"] = KyveSDK;
-// SigningCosmosClient

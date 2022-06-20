@@ -25,7 +25,7 @@ var GovMethods = /** @class */ (function () {
             value: gov_1.TextProposal.encode(value).finish()
         };
         var tx = this.createGovTx(amount, content);
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : 'auto', memo);
+        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : "auto", memo);
     };
     GovMethods.prototype.parameterChangeProposal = function (amount, value, fee, memo) {
         var content = {
@@ -33,7 +33,7 @@ var GovMethods = /** @class */ (function () {
             value: params_1.ParameterChangeProposal.encode(value).finish()
         };
         var tx = this.createGovTx(amount, content);
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : 'auto', memo);
+        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : "auto", memo);
     };
     GovMethods.prototype.createPoolProposal = function (amount, value, fee, memo) {
         var content = {
@@ -41,7 +41,7 @@ var GovMethods = /** @class */ (function () {
             value: gov_2.CreatePoolProposal.encode(value).finish()
         };
         var tx = this.createGovTx(amount, content);
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : 'auto', memo);
+        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : "auto", memo);
     };
     GovMethods.prototype.updatePoolProposal = function (amount, value, fee, memo) {
         var content = {
@@ -49,7 +49,7 @@ var GovMethods = /** @class */ (function () {
             value: gov_2.UpdatePoolProposal.encode(value).finish()
         };
         var tx = this.createGovTx(amount, content);
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : 'auto', memo);
+        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : "auto", memo);
     };
     GovMethods.prototype.pausePoolProposal = function (amount, value, fee, memo) {
         var content = {
@@ -57,7 +57,7 @@ var GovMethods = /** @class */ (function () {
             value: gov_2.PausePoolProposal.encode(value).finish()
         };
         var tx = this.createGovTx(amount, content);
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : 'auto', memo);
+        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : "auto", memo);
     };
     GovMethods.prototype.unpausePoolProposal = function (amount, value, fee, memo) {
         var content = {
@@ -65,7 +65,7 @@ var GovMethods = /** @class */ (function () {
             value: gov_2.UnpausePoolProposal.encode(value).finish()
         };
         var tx = this.createGovTx(amount, content);
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : 'auto', memo);
+        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : "auto", memo);
     };
     GovMethods.prototype.schedulePoolUpgradeProposal = function (amount, value, fee, memo) {
         var content = {
@@ -73,7 +73,7 @@ var GovMethods = /** @class */ (function () {
             value: gov_2.SchedulePoolUpgradeProposal.encode(value).finish()
         };
         var tx = this.createGovTx(amount, content);
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : 'auto', memo);
+        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : "auto", memo);
     };
     GovMethods.prototype.cancelPoolUpgradeProposal = function (amount, value, fee, memo) {
         var content = {
@@ -81,7 +81,7 @@ var GovMethods = /** @class */ (function () {
             value: gov_2.CancelPoolUpgradeProposal.encode(value).finish()
         };
         var tx = this.createGovTx(amount, content);
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : 'auto', memo);
+        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : "auto", memo);
     };
     return GovMethods;
 }());

@@ -17,7 +17,7 @@ import {
   KYVE_KEPLR_CONFIG,
   KYVE_NETWORK,
   Network,
-} from "./utils/constants";
+} from "./constants";
 
 declare global {
   interface Window extends KeplrWindow {}

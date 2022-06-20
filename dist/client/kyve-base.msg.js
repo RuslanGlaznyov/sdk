@@ -39,13 +39,14 @@ exports.__esModule = true;
 var stargate_1 = require("@cosmjs/stargate");
 var tx_registry_1 = require("../registry/tx.registry");
 var bignumber_js_1 = require("bignumber.js");
-var constants_1 = require("../utils/constants");
+var constants_1 = require("../constants");
 var events_1 = require("../types/events");
 var tendermint_rpc_1 = require("@cosmjs/tendermint-rpc");
 var encoding_1 = require("@cosmjs/encoding");
 var crypto_1 = require("@cosmjs/crypto");
 var transactions_1 = require("../types/transactions");
 var proto_signing_1 = require("@cosmjs/proto-signing");
+var constants_2 = require("../constants");
 var KyveBaseMsg = /** @class */ (function () {
     function KyveBaseMsg(client, account) {
         this.account = account;
@@ -53,50 +54,50 @@ var KyveBaseMsg = /** @class */ (function () {
     }
     KyveBaseMsg.prototype.foundPool = function (value, fee, memo) {
         var tx = tx_registry_1.withTypeUrl.fundPool(value);
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : 'auto', memo);
+        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : "auto", memo);
     };
     KyveBaseMsg.prototype.defundPool = function (value, fee, memo) {
         var tx = tx_registry_1.withTypeUrl.defundPool(value);
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : 'auto', memo);
+        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : "auto", memo);
     };
     KyveBaseMsg.prototype.stakePool = function (value, fee, memo) {
         var tx = tx_registry_1.withTypeUrl.stakePool(value);
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : 'auto', memo);
+        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : "auto", memo);
     };
     KyveBaseMsg.prototype.unstakePool = function (value, fee, memo) {
         var tx = tx_registry_1.withTypeUrl.unstakePool(value);
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : 'auto', memo);
+        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : "auto", memo);
     };
     KyveBaseMsg.prototype.delegatePool = function (value, fee, memo) {
         var tx = tx_registry_1.withTypeUrl.delegatePool(value);
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : 'auto', memo);
+        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : "auto", memo);
     };
     KyveBaseMsg.prototype.withdrawPool = function (value, fee, memo) {
         var tx = tx_registry_1.withTypeUrl.withdrawPool(value);
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : 'auto', memo);
+        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : "auto", memo);
     };
     //submitBundleProposal
     KyveBaseMsg.prototype.undelegatePool = function (value, fee, memo) {
         var tx = tx_registry_1.withTypeUrl.undelegatePool(value);
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : 'auto', memo);
+        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : "auto", memo);
     };
     KyveBaseMsg.prototype.submitBundleProposal = function (value, fee, memo) {
         var tx = tx_registry_1.withTypeUrl.submitBundleProposal(value);
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : 'auto', memo);
+        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : "auto", memo);
     };
     KyveBaseMsg.prototype.voteProposal = function (value, fee, memo) {
         var newValue = value;
         newValue.creator = this.account.address;
         var tx = tx_registry_1.withTypeUrl.voteProposal(newValue);
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : 'auto', memo);
+        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : "auto", memo);
     };
     KyveBaseMsg.prototype.claimUploaderRole = function (value, fee, memo) {
         var tx = tx_registry_1.withTypeUrl.claimUploaderRole(value);
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : 'auto', memo);
+        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : "auto", memo);
     };
     KyveBaseMsg.prototype.updateMetadata = function (value, fee, memo) {
         var tx = tx_registry_1.withTypeUrl.updateMetadata(value);
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : 'auto', memo);
+        return this.nativeClient.signAndBroadcast(this.account.address, [tx], fee ? fee : "auto", memo);
     };
     KyveBaseMsg.prototype.transfer = function (recipient, amount, fee, memo) {
         return __awaiter(this, void 0, void 0, function () {
@@ -105,9 +106,7 @@ var KyveBaseMsg = /** @class */ (function () {
                 parsedAmount = new bignumber_js_1.BigNumber(amount)
                     .multipliedBy(new bignumber_js_1.BigNumber(10).pow(constants_1.KYVE_DECIMALS))
                     .toNumber();
-                return [2 /*return*/, this.nativeClient.sendTokens(this.account.address, recipient, 
-                    //TODO move `tkyve` to constant
-                    (0, stargate_1.coins)(parsedAmount, "tkyve"), fee ? fee : 'auto')];
+                return [2 /*return*/, this.nativeClient.sendTokens(this.account.address, recipient, (0, stargate_1.coins)(parsedAmount, constants_2.DENOM), fee ? fee : "auto", memo)];
             });
         });
     };

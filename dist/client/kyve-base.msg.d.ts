@@ -15,7 +15,7 @@ export default class KyveBaseMsg {
     withdrawPool(value: MsgWithdrawPool, fee?: StdFee | "auto" | number, memo?: string): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
     undelegatePool(value: MsgUndelegatePool, fee?: StdFee | "auto" | number, memo?: string): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
     submitBundleProposal(value: MsgSubmitBundleProposal, fee?: StdFee | "auto" | number, memo?: string): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
-    voteProposal(value: Omit<MsgVoteProposal, 'creator'>, fee?: StdFee | "auto" | number, memo?: string): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
+    voteProposal(value: Omit<MsgVoteProposal, "creator">, fee?: StdFee | "auto" | number, memo?: string): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
     claimUploaderRole(value: MsgClaimUploaderRole, fee?: StdFee | "auto" | number, memo?: string): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
     updateMetadata(value: MsgUpdateMetadata, fee?: StdFee | "auto" | number, memo?: string): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
     transfer(recipient: string, amount: string, fee?: StdFee | "auto" | number, memo?: string): Promise<import("@cosmjs/stargate").DeliverTxResponse>;

@@ -16,7 +16,7 @@ import { StdFee } from "@cosmjs/amino/build/signdoc";
 import { withTypeUrl } from "../registry/tx.registry";
 import { AccountData } from "@cosmjs/amino/build/signer";
 import { BigNumber } from "bignumber.js";
-import { KYVE_DECIMALS } from "../utils/constants";
+import { KYVE_DECIMALS } from "../constants";
 import { MessageEvent } from "../types/events";
 import { Tendermint34Client } from "@cosmjs/tendermint-rpc";
 import { toHex } from "@cosmjs/encoding";

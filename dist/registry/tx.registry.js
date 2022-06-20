@@ -2,7 +2,8 @@
 exports.__esModule = true;
 exports.MessageComposer = exports.withTypeUrl = exports.encodeTxMsg = exports.load = exports.registry = void 0;
 var tx_1 = require("@kyve/proto/dist/proto/kyve/registry/v1beta1/tx");
-exports.registry = [["/kyve.registry.v1beta1.MsgFundPool", tx_1.MsgFundPool],
+exports.registry = [
+    ["/kyve.registry.v1beta1.MsgFundPool", tx_1.MsgFundPool],
     ["/kyve.registry.v1beta1.MsgDefundPool", tx_1.MsgDefundPool],
     ["/kyve.registry.v1beta1.MsgStakePool", tx_1.MsgStakePool],
     ["/kyve.registry.v1beta1.MsgUnstakePool", tx_1.MsgUnstakePool],
@@ -12,7 +13,8 @@ exports.registry = [["/kyve.registry.v1beta1.MsgFundPool", tx_1.MsgFundPool],
     ["/kyve.registry.v1beta1.MsgSubmitBundleProposal", tx_1.MsgSubmitBundleProposal],
     ["/kyve.registry.v1beta1.MsgVoteProposal", tx_1.MsgVoteProposal],
     ["/kyve.registry.v1beta1.MsgClaimUploaderRole", tx_1.MsgClaimUploaderRole],
-    ["/kyve.registry.v1beta1.MsgUpdateMetadata", tx_1.MsgUpdateMetadata]];
+    ["/kyve.registry.v1beta1.MsgUpdateMetadata", tx_1.MsgUpdateMetadata],
+];
 var load = function (protoRegistry) {
     exports.registry.forEach(function (_a) {
         var typeUrl = _a[0], mod = _a[1];
