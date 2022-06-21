@@ -72,7 +72,7 @@ type LCDClientType = LcdClient &
   SupplyExtension;
 type WithOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
-export default function createLCDClient(restEndpoint: string) {
+export function createKyveLCDClient(restEndpoint: string) {
   const lcdClient = LcdClient.withExtensions(
     { apiUrl: restEndpoint },
     setupAuthExtension,
@@ -100,7 +100,7 @@ export class KyveLCDClient {
         .then((res) => res.data);
   }
 
-  async params(params: QueryParamsRequest): Promise<QueryParamsResponse> {
+  async params(): Promise<QueryParamsResponse> {
     const endpoint = `kyve/registry/v1beta1/params`;
     return await this.request(endpoint);
   }
@@ -180,9 +180,7 @@ export class KyveLCDClient {
       parameters.pagination = params.pagination;
     }
     const endpoint = `kyve/registry/v1beta1/proposals/${params.poolId}`;
-    return await this.request(endpoint).catch((e) =>
-      console.log("e------->", e)
-    );
+    return await this.request(endpoint);
   }
 
   /* ProposalByHeight ... */

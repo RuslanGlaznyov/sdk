@@ -2,11 +2,11 @@ import { MsgClaimUploaderRole, MsgDefundPool, MsgDelegatePool, MsgFundPool, MsgS
 import { StdFee } from "@cosmjs/amino/build/signdoc";
 import { AccountData } from "@cosmjs/amino/build/signer";
 import { MessageEvent } from "../types/events";
-import { extendedClientType } from "./faces";
+import { Client } from "../types/client";
 export default class KyveBaseMsg {
     private nativeClient;
     readonly account: AccountData;
-    constructor(client: extendedClientType, account: AccountData);
+    constructor(client: Client, account: AccountData);
     foundPool(value: MsgFundPool, fee?: StdFee | "auto" | number, memo?: string): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
     defundPool(value: MsgDefundPool, fee?: StdFee | "auto" | number, memo?: string): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
     stakePool(value: MsgStakePool, fee?: StdFee | "auto" | number, memo?: string): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
@@ -20,4 +20,5 @@ export default class KyveBaseMsg {
     updateMetadata(value: MsgUpdateMetadata, fee?: StdFee | "auto" | number, memo?: string): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
     transfer(recipient: string, amount: string, fee?: StdFee | "auto" | number, memo?: string): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
     getMessageEventLogs(fromBlock: number, toBlock: number): Promise<MessageEvent[]>;
+    getKyveBalance(): Promise<string>;
 }

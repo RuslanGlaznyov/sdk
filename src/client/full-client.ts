@@ -6,7 +6,7 @@ import {
 import { OfflineSigner, Registry } from "@cosmjs/proto-signing";
 import * as KyveRegistryTx from "../registry/tx.registry";
 import KyveClient from "./kyve.client";
-import { extendedClientType } from "./faces";
+import {Client} from "../types/client";
 
 export async function getSigningKyveClient(
   rpcEndpoint: string,
@@ -22,7 +22,7 @@ export async function getSigningKyveClient(
     });
   //@ts-ignore
   client.rpcEndpoint = rpcEndpoint;
-  const newClient = client as extendedClientType;
+  const newClient = client as Client;
   const [account] = await signer.getAccounts();
   return new KyveClient(newClient, account);
 }

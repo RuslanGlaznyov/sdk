@@ -280,6 +280,19 @@ var KyveBaseMsg = /** @class */ (function () {
             });
         });
     };
+    KyveBaseMsg.prototype.getKyveBalance = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.nativeClient.getBalance(this.account.address, 'tkyve')];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, data.amount];
+                }
+            });
+        });
+    };
     return KyveBaseMsg;
 }());
 exports["default"] = KyveBaseMsg;

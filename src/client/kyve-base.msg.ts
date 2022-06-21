@@ -23,14 +23,15 @@ import { toHex } from "@cosmjs/encoding";
 import { sha256 } from "@cosmjs/crypto";
 import { FullDecodedTransaction } from "../types/transactions";
 import { decodeTxRaw } from "@cosmjs/proto-signing";
-import { extendedClientType } from "./faces";
+import { Client } from "../types/client";
 import { DENOM } from "../constants";
+import axios from "axios";
 
 export default class KyveBaseMsg {
-  private nativeClient: extendedClientType;
+  private nativeClient: Client;
   public readonly account: AccountData;
 
-  constructor(client: extendedClientType, account: AccountData) {
+  constructor(client: Client, account: AccountData) {
     this.account = account;
     this.nativeClient = client;
   }
@@ -412,5 +413,9 @@ export default class KyveBaseMsg {
     }
 
     return events;
+  }
+  async getKyveBalance() {
+    const data = await this.nativeClient.getBalance(this.account.address, 'tkyve')
+    return data.amount;
   }
 }

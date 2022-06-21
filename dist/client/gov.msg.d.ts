@@ -3,11 +3,11 @@ import { ParameterChangeProposal } from "@kyve/proto/dist/proto/cosmos/params/v1
 import { StdFee } from "@cosmjs/amino/build/signdoc";
 import { AccountData } from "@cosmjs/amino/build/signer";
 import { CreatePoolProposal, PausePoolProposal, UpdatePoolProposal, UnpausePoolProposal, SchedulePoolUpgradeProposal, CancelPoolUpgradeProposal } from "@kyve/proto/dist/proto/kyve/registry/v1beta1/gov";
-import { extendedClientType } from "./faces";
+import { Client } from "../types/client";
 export default class GovMethods {
     private nativeClient;
     readonly account: AccountData;
-    constructor(client: extendedClientType, account: AccountData);
+    constructor(client: Client, account: AccountData);
     private createGovTx;
     submitTextProposal(amount: string, value: TextProposal, fee?: StdFee | "auto" | number, memo?: string): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
     parameterChangeProposal(amount: string, value: ParameterChangeProposal, fee?: StdFee | "auto" | number, memo?: string): Promise<import("@cosmjs/stargate").DeliverTxResponse>;

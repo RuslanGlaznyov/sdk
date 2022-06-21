@@ -1,4 +1,5 @@
 import { SigningStargateClient } from "@cosmjs/stargate";
-export declare type extendedClientType = SigningStargateClient & {
+
+export type Client = SigningStargateClient & {
     readonly rpcEndpoint: string;
 };

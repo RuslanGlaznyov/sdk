@@ -11,13 +11,13 @@ import {
   SchedulePoolUpgradeProposal,
   CancelPoolUpgradeProposal,
 } from "@kyve/proto/dist/proto/kyve/registry/v1beta1/gov";
-import { extendedClientType } from "./faces";
+import { Client } from "../types/client";
 
 export default class GovMethods {
-  private nativeClient: extendedClientType;
+  private nativeClient: Client;
   public readonly account: AccountData;
 
-  constructor(client: extendedClientType, account: AccountData) {
+  constructor(client: Client, account: AccountData) {
     this.account = account;
     this.nativeClient = client;
   }

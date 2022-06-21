@@ -46,61 +46,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 exports.__esModule = true;
 var constants_1 = require("./constants");
 var full_client_1 = require("./client/full-client");
 var proto_signing_1 = require("@cosmjs/proto-signing");
-var cosmostation_helper_1 = __importDefault(require("./cosmostation-helper"));
-var CosmostationSigner = /** @class */ (function () {
-    function CosmostationSigner(cosmostationAccount, network, cosmostationOption) {
-        this.network = network;
-        this.cosmostationAccount = cosmostationAccount;
-        this.cosmostationOption = cosmostationOption;
-    }
-    CosmostationSigner.prototype.getAccounts = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, [{
-                            address: this.cosmostationAccount.address,
-                            // Currently, only secp256k1 is supported.
-                            algo: "secp256k1",
-                            pubkey: this.cosmostationAccount.publicKey
-                        }]];
-            });
-        });
-    };
-    ;
-    CosmostationSigner.prototype.signDirect = function (signerAddress, signDoc) {
-        return __awaiter(this, void 0, void 0, function () {
-            var signedResult;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, cosmostation_helper_1["default"].signDirect(this.network.chainId, {
-                            chain_id: signDoc.chainId,
-                            body_bytes: signDoc.bodyBytes,
-                            auth_info_bytes: signDoc.authInfoBytes,
-                            account_number: signDoc.accountNumber.toString()
-                        }, this.cosmostationOption)];
-                    case 1:
-                        signedResult = _a.sent();
-                        return [2 /*return*/, {
-                                signed: (0, proto_signing_1.makeSignDoc)(signedResult.signed_doc.body_bytes, signedResult.signed_doc.auth_info_bytes, signedResult.signed_doc.chain_id, Number(signedResult.signed_doc.account_number)),
-                                signature: {
-                                    pub_key: signedResult.pub_key,
-                                    signature: signedResult.signature
-                                }
-                            }];
-                }
-            });
-        });
-    };
-    return CosmostationSigner;
-}());
+var cosmostation_helper_1 = require("./cosmostation-helper");
+var kyveLCD_client_1 = require("./client/kyveLCD.client");
 var KyveSDK = /** @class */ (function () {
     function KyveSDK(network) {
+        this.walletSupports = new Set();
         if (typeof network === "string") {
             this.network = constants_1.KYVE_ENDPOINTS[network];
         }
@@ -125,7 +79,7 @@ var KyveSDK = /** @class */ (function () {
     };
     KyveSDK.prototype.fromKepler = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var signer;
+            var signer, client, newClient, walletName;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -140,40 +94,69 @@ var KyveSDK = /** @class */ (function () {
                     case 2:
                         _a.sent();
                         signer = window.keplr.getOfflineSigner(this.network.chainId);
-                        return [2 /*return*/, (0, full_client_1.getSigningKyveClient)(this.network.rpc, signer)];
+                        client = (0, full_client_1.getSigningKyveClient)(this.network.rpc, signer);
+                        this.walletSupports.add(constants_1.SUPPORTED_WALLETS.KEPLER);
+                        newClient = client;
+                        return [4 /*yield*/, window.keplr.getKey(this.network.chainId)];
+                    case 3:
+                        walletName = (_a.sent()).name;
+                        newClient.getWalletName = function () { return walletName; };
+                        return [2 /*return*/, newClient];
                 }
             });
         });
     };
     KyveSDK.prototype.fromCosmostation = function (config) {
         return __awaiter(this, void 0, void 0, function () {
-            var chain, cosmostationAccount, cosmostationSigner;
+            var chain, cosmostationAccount, cosmostationSigner, client, newClient;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        if (typeof window === "undefined")
+                            throw new Error("Unsupported.");
                         if (!window.cosmostation)
                             throw new Error("Please install cosmostation.");
-                        return [4 /*yield*/, cosmostation_helper_1["default"].getSupportedChains()];
+                        return [4 /*yield*/, cosmostation_helper_1.cosmostationMethods.getSupportedChains()];
                     case 1:
                         chain = _a.sent();
                         if (!chain.unofficial.includes(this.network.chainName.toLowerCase().trim())) return [3 /*break*/, 3];
-                        return [4 /*yield*/, cosmostation_helper_1["default"].requestAccount(this.network.chainName)];
+                        return [4 /*yield*/, cosmostation_helper_1.cosmostationMethods.requestAccount(this.network.chainName)];
                     case 2:
                         cosmostationAccount = _a.sent();
                         return [3 /*break*/, 6];
-                    case 3: return [4 /*yield*/, cosmostation_helper_1["default"].addChain(__assign(__assign({}, constants_1.KYVE_COSMOSTATION_CONFIG), { restURL: this.network.rest, chainId: this.network.chainId, chainName: this.network.chainName }))];
+                    case 3: return [4 /*yield*/, cosmostation_helper_1.cosmostationMethods.addChain(__assign(__assign({}, constants_1.KYVE_COSMOSTATION_CONFIG), { restURL: this.network.rest, chainId: this.network.chainId, chainName: this.network.chainName }))];
                     case 4:
                         _a.sent();
-                        return [4 /*yield*/, cosmostation_helper_1["default"].requestAccount(this.network.chainName)];
+                        return [4 /*yield*/, cosmostation_helper_1.cosmostationMethods.requestAccount(this.network.chainName)];
                     case 5:
                         cosmostationAccount = _a.sent();
                         _a.label = 6;
                     case 6:
-                        cosmostationSigner = new CosmostationSigner(cosmostationAccount, this.network, config ? config : {});
-                        return [2 /*return*/, (0, full_client_1.getSigningKyveClient)(this.network.rpc, cosmostationSigner)];
+                        cosmostationSigner = new cosmostation_helper_1.CosmostationSigner(cosmostationAccount, this.network, config ? config : {});
+                        return [4 /*yield*/, (0, full_client_1.getSigningKyveClient)(this.network.rpc, cosmostationSigner)];
+                    case 7:
+                        client = _a.sent();
+                        newClient = client;
+                        newClient.getWalletName = function () { return cosmostationAccount.name; };
+                        this.walletSupports.add(constants_1.SUPPORTED_WALLETS.COSMOSTATION);
+                        return [2 /*return*/, newClient];
                 }
             });
         });
+    };
+    KyveSDK.prototype.onAccountChange = function (cb) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                if (this.walletSupports.has(constants_1.SUPPORTED_WALLETS.COSMOSTATION))
+                    return [2 /*return*/, window.cosmostation.tendermint.on("accountChanged", cb)];
+                if (this.walletSupports.has(constants_1.SUPPORTED_WALLETS.KEPLER))
+                    return [2 /*return*/, window.addEventListener("keplr_keystorechange", cb)];
+                throw new Error('Need to initiate from wallet');
+            });
+        });
+    };
+    KyveSDK.prototype.createLCDClient = function () {
+        return (0, kyveLCD_client_1.createKyveLCDClient)(this.network.rest);
     };
     return KyveSDK;
 }());

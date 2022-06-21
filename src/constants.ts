@@ -3,7 +3,10 @@ import { ChainInfo } from "@keplr-wallet/types";
 import {AddChainParams} from "@cosmostation/extension-client/types/message";
 export const KYVE_DECIMALS = 9;
 export const DENOM = 'tkyve'
-
+export const SUPPORTED_WALLETS = {
+  KEPLER: 'KEPLER',
+  COSMOSTATION: 'COSMOSTATION'
+} as const;
 type Networks = Record<KYVE_NETWORK, Network>;
 
 export const KYVE_ENDPOINTS: Networks = {
