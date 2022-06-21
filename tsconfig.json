@@ -6,7 +6,7 @@
     "strict": true
   },
   "include": [
-    "src/types/global.d.ts"
+    "src/types/"
   ],
   "files": ["src/index.ts"],
 }
