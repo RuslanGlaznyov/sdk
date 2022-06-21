@@ -61,7 +61,8 @@ export const CreatePoolProposal = new Type("CreatePoolProposal")
   .add(new Field("upload_interval", 9, "uint64"))
   .add(new Field("operating_cost", 10, "uint64"))
   .add(new Field("max_bundle_size", 11, "uint64"))
-  .add(new Field("binaries", 12, "string"));
+  .add(new Field("binaries", 12, "string"))
+  .add(new Field("start_key", 13, "string"));
 
 export const UpdatePoolProposal = new Type("UpdatePoolProposal")
   .add(new Field("title", 1, "string"))
