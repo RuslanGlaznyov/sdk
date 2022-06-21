@@ -11,10 +11,11 @@ import {DirectSecp256k1HdWallet} from "@cosmjs/proto-signing";
 import {RequestAccountResponse, SignOptions} from "@cosmostation/extension-client/types/message";
 import {cosmostationMethods, CosmostationSigner} from "./cosmostation-helper";
 import {createKyveLCDClient} from "./client/kyveLCD.client";
-import {ClientWebWallet} from "./types/clientWebWallet";
 import {BigNumber} from "bignumber.js";
 // @ts-ignore
 import humanize from "humanize-number";
+import KyveWebClient from "./client/kyve.web.client";
+import KyveClient from "./client/kyve.client";
 
 export default class KyveSDK {
     public readonly network: Network;
@@ -28,14 +29,14 @@ export default class KyveSDK {
         }
     }
 
-    async fromMnemonic(mnemonic: string) {
+    async fromMnemonic(mnemonic: string): Promise<KyveClient> {
         const signedClient = await DirectSecp256k1HdWallet.fromMnemonic(mnemonic, {
             prefix: PREFIX,
         });
         return getSigningKyveClient(this.network.rpc, signedClient);
     }
 
-    async fromKepler(): Promise<ClientWebWallet> {
+    async fromKepler(): Promise<KyveWebClient>  {
         if (typeof window === "undefined") throw new Error("Unsupported.");
         if (!window.keplr) throw new Error("Please install Keplr.");
         await window.keplr.experimentalSuggestChain({
@@ -48,16 +49,13 @@ export default class KyveSDK {
 
         await window.keplr.enable(this.network.chainId);
         const signer = window.keplr.getOfflineSigner(this.network.chainId);
-        const client = getSigningKyveClient(this.network.rpc, signer);
-        this.walletSupports.add(SUPPORTED_WALLETS.KEPLER);
-        const newClient = client as unknown as ClientWebWallet
         const walletName = (await window.keplr.getKey(this.network.chainId)).name
-        newClient.getWalletName =  () => walletName;
-        return newClient
-
+        const client = await getSigningKyveClient(this.network.rpc, signer, walletName);
+        this.walletSupports.add(SUPPORTED_WALLETS.KEPLER);
+        return client
     }
 
-    async fromCosmostation(config?: SignOptions):Promise<ClientWebWallet> {
+    async fromCosmostation(config?: SignOptions): Promise<KyveWebClient> {
         if (typeof window === "undefined") throw new Error("Unsupported.");
         if (!window.cosmostation) throw new Error("Please install cosmostation.");
         const chain = await cosmostationMethods.getSupportedChains();
@@ -74,11 +72,9 @@ export default class KyveSDK {
             cosmostationAccount = await cosmostationMethods.requestAccount(this.network.chainName);
         }
         const cosmostationSigner = new CosmostationSigner(cosmostationAccount, this.network, config ? config : {});
-        const client = await getSigningKyveClient(this.network.rpc, cosmostationSigner);
-        const newClient = client as unknown as ClientWebWallet
-        newClient.getWalletName = () => cosmostationAccount.name;
+        const client = await getSigningKyveClient(this.network.rpc, cosmostationSigner, cosmostationAccount.name);
         this.walletSupports.add(SUPPORTED_WALLETS.COSMOSTATION);
-        return newClient
+        return client
     }
 
     async onAccountChange(cb: () => void) {
@@ -96,7 +92,7 @@ export default class KyveSDK {
         const signer = await DirectSecp256k1HdWallet.generate(24, {
             prefix: PREFIX,
         });
-        return getSigningKyveClient(this.network.rpc, signer);
+        return getSigningKyveClient(this.network.rpc, signer, undefined);
     }
 
     formatBalance(balance: string, decimals: number = 2): string {
