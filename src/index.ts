@@ -471,6 +471,7 @@ export class KyveSDK {
     byteSize: number,
     fromHeight: number,
     toHeight: number,
+    fromKey: string,
     toKey: string,
     toValue: string
   ): Promise<{
@@ -489,6 +490,7 @@ export class KyveSDK {
         byteSize,
         fromHeight,
         toHeight,
+        fromKey,
         toKey,
         toValue,
       },
