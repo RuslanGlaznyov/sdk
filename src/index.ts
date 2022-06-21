@@ -17,9 +17,14 @@ import humanize from "humanize-number";
 import KyveWebClient from "./client/kyve.web.client";
 import KyveClient from "./client/kyve.client";
 
+/** Class representing a KyveSDK. */
 export default class KyveSDK {
     public readonly network: Network;
     private walletSupports: Set<keyof typeof SUPPORTED_WALLETS>;
+    /**
+     * Create sdk instance.
+     * @param network - The network type, e.g mainnet, testnet, etc
+     */
     constructor(network: KYVE_NETWORK | Network) {
         this.walletSupports = new Set<keyof typeof SUPPORTED_WALLETS>()
         if (typeof network === "string") {
@@ -29,6 +34,11 @@ export default class KyveSDK {
         }
     }
 
+    /**
+     * Create a client from mnemonic
+     * @param mnemonic
+     * @return Promise<KyveClient>
+     */
     async fromMnemonic(mnemonic: string): Promise<KyveClient> {
         const signedClient = await DirectSecp256k1HdWallet.fromMnemonic(mnemonic, {
             prefix: PREFIX,
@@ -36,7 +46,11 @@ export default class KyveSDK {
         return getSigningKyveClient(this.network.rpc, signedClient);
     }
 
-    async fromKepler(): Promise<KyveWebClient>  {
+    /**
+     * Crate a client from Keplr wallet if installed
+     * @return Promise<KyveWebClient>
+     */
+    async fromKeplr(): Promise<KyveWebClient>  {
         if (typeof window === "undefined") throw new Error("Unsupported.");
         if (!window.keplr) throw new Error("Please install Keplr.");
         await window.keplr.experimentalSuggestChain({
@@ -55,6 +69,10 @@ export default class KyveSDK {
         return client
     }
 
+    /**
+     * Crate a client from Cosmostaion wallet if installed
+     * @return Promise<KyveWebClient>
+     */
     async fromCosmostation(config?: SignOptions): Promise<KyveWebClient> {
         if (typeof window === "undefined") throw new Error("Unsupported.");
         if (!window.cosmostation) throw new Error("Please install cosmostation.");
@@ -77,6 +95,10 @@ export default class KyveSDK {
         return client
     }
 
+    /**
+     * Listener to detect if account in wallet changed, support fromKeplr and fromCosmostation  instances
+     * @param cb
+     */
     async onAccountChange(cb: () => void) {
         if (this.walletSupports.has(SUPPORTED_WALLETS.COSMOSTATION))
             return window.cosmostation.tendermint.on("accountChanged", cb);
@@ -85,14 +107,21 @@ export default class KyveSDK {
         throw new Error('Need to initiate from wallet')
     }
 
+    /**
+     * create LCD client to get data from Rest api
+     */
     createLCDClient() {
         return createKyveLCDClient(this.network.rest)
     }
+
+    /**
+     * generate KyveClient instance without mnemonic
+     */
     async generate() {
         const signer = await DirectSecp256k1HdWallet.generate(24, {
             prefix: PREFIX,
         });
-        return getSigningKyveClient(this.network.rpc, signer, undefined);
+        return getSigningKyveClient(this.network.rpc, signer);
     }
 
     formatBalance(balance: string, decimals: number = 2): string {
