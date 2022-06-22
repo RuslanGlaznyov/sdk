@@ -63,7 +63,7 @@ export default class KyveSDK {
    */
   async fromPrivateKey(privateKey: string): Promise<KyveClient> {
     const signedClient = await DirectSecp256k1Wallet.fromKey(
-      fromHex(privateKey.startsWith("0x") ? privateKey : `0x${privateKey}`),
+      fromHex(privateKey.startsWith("0x") ? privateKey.slice(2) : privateKey),
       PREFIX
     );
     return getSigningKyveClient(this.network.rpc, signedClient);

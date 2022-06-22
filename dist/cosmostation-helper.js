@@ -40,7 +40,9 @@ exports.CosmostationSigner = exports.cosmostationMethods = void 0;
 var proto_signing_1 = require("@cosmjs/proto-signing");
 exports.cosmostationMethods = {
     getSupportedChains: function () {
-        return window.cosmostation.tendermint.request({ method: "ten_supportedChainNames" });
+        return window.cosmostation.tendermint.request({
+            method: "ten_supportedChainNames"
+        });
     },
     addChain: function (params) {
         return window.cosmostation.tendermint.request({
@@ -60,7 +62,9 @@ exports.cosmostationMethods = {
             params: {
                 chainName: chainName,
                 doc: doc,
-                isEditMemo: !!(options === null || options === void 0 ? void 0 : options.memo), isEditFee: !!(options === null || options === void 0 ? void 0 : options.fee), gasRate: options === null || options === void 0 ? void 0 : options.gasRate
+                isEditMemo: !!(options === null || options === void 0 ? void 0 : options.memo),
+                isEditFee: !!(options === null || options === void 0 ? void 0 : options.fee),
+                gasRate: options === null || options === void 0 ? void 0 : options.gasRate
             }
         });
     }
@@ -74,16 +78,17 @@ var CosmostationSigner = /** @class */ (function () {
     CosmostationSigner.prototype.getAccounts = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, [{
+                return [2 /*return*/, [
+                        {
                             address: this.cosmostationAccount.address,
                             // Currently, only secp256k1 is supported.
                             algo: "secp256k1",
                             pubkey: this.cosmostationAccount.publicKey
-                        }]];
+                        },
+                    ]];
             });
         });
     };
-    ;
     CosmostationSigner.prototype.signDirect = function (signerAddress, signDoc) {
         return __awaiter(this, void 0, void 0, function () {
             var signedResult, currentAccountAddress;

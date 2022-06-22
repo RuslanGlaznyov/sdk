@@ -1,9 +1,11 @@
 import { AuthExtension, BankExtension, DistributionExtension, GovExtension, LcdClient, MintExtension, SupplyExtension, SlashingExtension, StakingExtension } from "@cosmjs/launchpad";
 import { QueryAccountAssetsRequest, QueryAccountAssetsResponse, QueryAccountDelegationListRequest, QueryAccountDelegationListResponse, QueryAccountFundedListRequest, QueryAccountFundedListResponse, QueryAccountStakedListRequest, QueryAccountStakedListResponse, QueryCanProposeRequest, QueryCanProposeResponse, QueryCanVoteRequest, QueryCanVoteResponse, QueryDelegatorRequest, QueryDelegatorResponse, QueryDelegatorsByPoolAndStakerRequest, QueryDelegatorsByPoolAndStakerResponse, QueryFunderRequest, QueryFunderResponse, QueryFundersListRequest, QueryFundersListResponse, QueryParamsResponse, QueryPoolRequest, QueryPoolResponse, QueryPoolsRequest, QueryPoolsResponse, QueryProposalByHeightRequest, QueryProposalByHeightResponse, QueryProposalRequest, QueryProposalResponse, QueryProposalsRequest, QueryProposalsResponse, QueryStakeInfoRequest, QueryStakeInfoResponse, QueryStakerRequest, QueryStakerResponse, QueryStakersByPoolAndDelegatorRequest, QueryStakersByPoolAndDelegatorResponse, QueryStakersListRequest, QueryStakersListResponse } from "@kyve/proto/dist/proto/kyve/registry/v1beta1/query";
+declare type LCDClientType = LcdClient & AuthExtension & BankExtension & DistributionExtension & GovExtension & MintExtension & SlashingExtension & StakingExtension & SupplyExtension;
 declare type WithOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
-export declare function createKyveLCDClient(restEndpoint: string): LcdClient & AuthExtension & BankExtension & DistributionExtension & GovExtension & MintExtension & SlashingExtension & StakingExtension & SupplyExtension & {
+export declare type LCDKyveClientType = LCDClientType & {
     kyve: KyveLCDClient;
 };
+export declare function createKyveLCDClient(restEndpoint: string): LCDKyveClientType;
 export declare class KyveLCDClient {
     private restEndpoint;
     private request;

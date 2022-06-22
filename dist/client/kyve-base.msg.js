@@ -296,7 +296,7 @@ var KyveBaseMsg = /** @class */ (function () {
             var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.nativeClient.getBalance(this.account.address, 'tkyve')];
+                    case 0: return [4 /*yield*/, this.nativeClient.getBalance(this.account.address, "tkyve")];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, data.amount];

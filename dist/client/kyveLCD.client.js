@@ -120,7 +120,7 @@ var KyveLCDClient = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         parameters = {};
-                        endpoint = "kyve/registry/v1beta1/funders_list/".concat(params.poolId);
+                        endpoint = "kyve/registry/v1beta1/funders_list/".concat(params.pool_id);
                         return [4 /*yield*/, this.request(endpoint, parameters)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -134,7 +134,7 @@ var KyveLCDClient = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        endpoint = "kyve/registry/v1beta1/funder/".concat(params.poolId, "/").concat(params.funder);
+                        endpoint = "kyve/registry/v1beta1/funder/".concat(params.pool_id, "/").concat(params.funder);
                         return [4 /*yield*/, this.request(endpoint)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -148,7 +148,7 @@ var KyveLCDClient = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        endpoint = "kyve/registry/v1beta1/stakers_list/".concat(params.poolId);
+                        endpoint = "kyve/registry/v1beta1/stakers_list/".concat(params.pool_id);
                         return [4 /*yield*/, this.request(endpoint)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -162,7 +162,7 @@ var KyveLCDClient = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        endpoint = "kyve/registry/v1beta1/staker/".concat(params.poolId, "/").concat(params.staker);
+                        endpoint = "kyve/registry/v1beta1/staker/".concat(params.pool_id, "/").concat(params.staker);
                         return [4 /*yield*/, this.request(endpoint)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -176,7 +176,7 @@ var KyveLCDClient = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        endpoint = "kyve/registry/v1beta1/proposal/".concat(params.bundleId);
+                        endpoint = "kyve/registry/v1beta1/proposal/".concat(params.bundle_id);
                         return [4 /*yield*/, this.request(endpoint)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -194,7 +194,7 @@ var KyveLCDClient = /** @class */ (function () {
                         if (typeof (params === null || params === void 0 ? void 0 : params.pagination) !== "undefined") {
                             parameters.pagination = params.pagination;
                         }
-                        endpoint = "kyve/registry/v1beta1/proposals/".concat(params.poolId);
+                        endpoint = "kyve/registry/v1beta1/proposals/".concat(params.pool_id);
                         return [4 /*yield*/, this.request(endpoint)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -208,7 +208,7 @@ var KyveLCDClient = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        endpoint = "kyve/registry/v1beta1/proposal_by_height/".concat(params.poolId, "/").concat(params.height);
+                        endpoint = "kyve/registry/v1beta1/proposal_by_height/".concat(params.pool_id, "/").concat(params.height);
                         return [4 /*yield*/, this.request(endpoint)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -222,7 +222,7 @@ var KyveLCDClient = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        endpoint = "kyve/registry/v1beta1/can_propose/".concat(params.poolId, "/").concat(params.proposer, "/").concat(params.fromHeight);
+                        endpoint = "kyve/registry/v1beta1/can_propose/".concat(params.pool_id, "/").concat(params.proposer, "/").concat(params.from_height);
                         return [4 /*yield*/, this.request(endpoint)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -236,7 +236,7 @@ var KyveLCDClient = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        endpoint = "kyve/registry/v1beta1/can_vote/".concat(params.poolId, "/").concat(params.voter, "/").concat(params.bundleId);
+                        endpoint = "kyve/registry/v1beta1/can_vote/".concat(params.pool_id, "/").concat(params.voter, "/").concat(params.bundle_id);
                         return [4 /*yield*/, this.request(endpoint)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -250,7 +250,7 @@ var KyveLCDClient = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        endpoint = "kyve/registry/v1beta1/stake_info/".concat(params.poolId, "/").concat(params.staker);
+                        endpoint = "kyve/registry/v1beta1/stake_info/".concat(params.pool_id, "/").concat(params.staker);
                         return [4 /*yield*/, this.request(endpoint)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -324,7 +324,7 @@ var KyveLCDClient = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        endpoint = "kyve/registry/v1beta1/delegator/".concat(params.poolId, "/").concat(params.staker, "/").concat(params.delegator);
+                        endpoint = "kyve/registry/v1beta1/delegator/".concat(params.pool_id, "/").concat(params.staker, "/").concat(params.delegator);
                         return [4 /*yield*/, this.request(endpoint)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -342,7 +342,7 @@ var KyveLCDClient = /** @class */ (function () {
                         if (typeof (params === null || params === void 0 ? void 0 : params.pagination) !== "undefined") {
                             parameters.pagination = params.pagination;
                         }
-                        endpoint = "kyve/registry/v1beta1/delegators_by_pool_and_staker/".concat(params.poolId, "/").concat(params.staker);
+                        endpoint = "kyve/registry/v1beta1/delegators_by_pool_and_staker/".concat(params.pool_id, "/").concat(params.staker);
                         return [4 /*yield*/, this.request(endpoint)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -360,7 +360,7 @@ var KyveLCDClient = /** @class */ (function () {
                         if (typeof (params === null || params === void 0 ? void 0 : params.pagination) !== "undefined") {
                             parameters.pagination = params.pagination;
                         }
-                        endpoint = "kyve/registry/v1beta1/stakers_by_pool_and_delegator/".concat(params.poolId, "/").concat(params.delegator);
+                        endpoint = "kyve/registry/v1beta1/stakers_by_pool_and_delegator/".concat(params.pool_id, "/").concat(params.delegator);
                         return [4 /*yield*/, this.request(endpoint)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }

@@ -3,10 +3,10 @@ exports.__esModule = true;
 exports.KYVE_COSMOSTATION_CONFIG = exports.KYVE_KEPLR_CONFIG = exports.PREFIX = exports.KYVE_ENDPOINTS = exports.SUPPORTED_WALLETS = exports.DENOM = exports.KYVE_DECIMALS = void 0;
 var cosmos_1 = require("@keplr-wallet/cosmos");
 exports.KYVE_DECIMALS = 9;
-exports.DENOM = 'tkyve';
+exports.DENOM = "tkyve";
 exports.SUPPORTED_WALLETS = {
-    KEPLER: 'KEPLER',
-    COSMOSTATION: 'COSMOSTATION'
+    KEPLER: "KEPLER",
+    COSMOSTATION: "COSMOSTATION"
 };
 exports.KYVE_ENDPOINTS = {
     local: {

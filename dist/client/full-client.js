@@ -98,7 +98,7 @@ function getSigningKyveClient(rpcEndpoint, signer, walletName, defaultTypes) {
                     return [4 /*yield*/, signer.getAccounts()];
                 case 2:
                     account = (_a.sent())[0];
-                    if (typeof walletName === 'string')
+                    if (typeof walletName === "string")
                         return [2 /*return*/, new kyve_web_client_1["default"](newClient, account, walletName)];
                     return [2 /*return*/, new kyve_client_1["default"](newClient, account)];
             }

@@ -41,9 +41,7 @@ export default class KyveSDK {
     /**
      * create LCD client to get data from Rest api
      */
-    createLCDClient(): import("@cosmjs/launchpad").LcdClient & import("@cosmjs/launchpad").AuthExtension & import("@cosmjs/launchpad").BankExtension & import("@cosmjs/launchpad").DistributionExtension & import("@cosmjs/launchpad").GovExtension & import("@cosmjs/launchpad").MintExtension & import("@cosmjs/launchpad").SlashingExtension & import("@cosmjs/launchpad").StakingExtension & import("@cosmjs/launchpad").SupplyExtension & {
-        kyve: import("./client/kyveLCD.client").KyveLCDClient;
-    };
+    createLCDClient(): import("./client/kyveLCD.client").LCDKyveClientType;
     /**
      * generate KyveClient instance without mnemonic
      */
