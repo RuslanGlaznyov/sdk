@@ -104,7 +104,7 @@ var KyveSDK = /** @class */ (function () {
             var signedClient;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, proto_signing_1.DirectSecp256k1Wallet.fromKey((0, encoding_1.fromHex)(privateKey), constants_1.PREFIX)];
+                    case 0: return [4 /*yield*/, proto_signing_1.DirectSecp256k1Wallet.fromKey((0, encoding_1.fromHex)(privateKey.startsWith('0x') ? privateKey : "0x".concat(privateKey)), constants_1.PREFIX)];
                     case 1:
                         signedClient = _a.sent();
                         return [2 /*return*/, (0, full_client_1.getSigningKyveClient)(this.network.rpc, signedClient)];

@@ -37,11 +37,14 @@ export default class KyveBaseMsg {
   }
 
   public foundPool(
-    value: Omit<MsgFundPool, 'creator'>,
+    value: Omit<MsgFundPool, "creator">,
     fee?: StdFee | "auto" | number,
     memo?: string
   ) {
-    const tx = withTypeUrl.fundPool({ ...value, creator: this.account.address});
+    const tx = withTypeUrl.fundPool({
+      ...value,
+      creator: this.account.address,
+    });
     return this.nativeClient.signAndBroadcast(
       this.account.address,
       [tx],
@@ -51,12 +54,14 @@ export default class KyveBaseMsg {
   }
 
   public defundPool(
-    value: Omit<MsgDefundPool, | 'creator'>,
+    value: Omit<MsgDefundPool, "creator">,
     fee?: StdFee | "auto" | number,
     memo?: string
   ) {
-
-    const tx = withTypeUrl.defundPool({ ...value, creator: this.account.address});
+    const tx = withTypeUrl.defundPool({
+      ...value,
+      creator: this.account.address,
+    });
     return this.nativeClient.signAndBroadcast(
       this.account.address,
       [tx],
@@ -66,11 +71,14 @@ export default class KyveBaseMsg {
   }
 
   public stakePool(
-    value: Omit<MsgStakePool, 'creator'>,
+    value: Omit<MsgStakePool, "creator">,
     fee?: StdFee | "auto" | number,
     memo?: string
   ) {
-    const tx = withTypeUrl.stakePool({ ...value, creator: this.account.address});
+    const tx = withTypeUrl.stakePool({
+      ...value,
+      creator: this.account.address,
+    });
     return this.nativeClient.signAndBroadcast(
       this.account.address,
       [tx],
@@ -80,11 +88,14 @@ export default class KyveBaseMsg {
   }
 
   public unstakePool(
-    value: Omit<MsgUnstakePool,  'creator'>,
+    value: Omit<MsgUnstakePool, "creator">,
     fee?: StdFee | "auto" | number,
     memo?: string
   ) {
-    const tx = withTypeUrl.unstakePool({ ...value, creator: this.account.address});
+    const tx = withTypeUrl.unstakePool({
+      ...value,
+      creator: this.account.address,
+    });
     return this.nativeClient.signAndBroadcast(
       this.account.address,
       [tx],
@@ -94,11 +105,14 @@ export default class KyveBaseMsg {
   }
 
   public delegatePool(
-    value: Omit<MsgDelegatePool, 'creator'>,
+    value: Omit<MsgDelegatePool, "creator">,
     fee?: StdFee | "auto" | number,
     memo?: string
   ) {
-    const tx = withTypeUrl.delegatePool({ ...value, creator: this.account.address});
+    const tx = withTypeUrl.delegatePool({
+      ...value,
+      creator: this.account.address,
+    });
     return this.nativeClient.signAndBroadcast(
       this.account.address,
       [tx],
@@ -108,11 +122,14 @@ export default class KyveBaseMsg {
   }
 
   public withdrawPool(
-    value: Omit<MsgWithdrawPool, 'creator'>,
+    value: Omit<MsgWithdrawPool, "creator">,
     fee?: StdFee | "auto" | number,
     memo?: string
   ) {
-    const tx = withTypeUrl.withdrawPool({ ...value, creator: this.account.address});
+    const tx = withTypeUrl.withdrawPool({
+      ...value,
+      creator: this.account.address,
+    });
     return this.nativeClient.signAndBroadcast(
       this.account.address,
       [tx],
@@ -123,11 +140,14 @@ export default class KyveBaseMsg {
 
   //submitBundleProposal
   public undelegatePool(
-    value: Omit<MsgUndelegatePool, 'creator'>,
+    value: Omit<MsgUndelegatePool, "creator">,
     fee?: StdFee | "auto" | number,
     memo?: string
   ) {
-    const tx = withTypeUrl.undelegatePool({ ...value, creator: this.account.address});
+    const tx = withTypeUrl.undelegatePool({
+      ...value,
+      creator: this.account.address,
+    });
     return this.nativeClient.signAndBroadcast(
       this.account.address,
       [tx],
@@ -137,11 +157,14 @@ export default class KyveBaseMsg {
   }
 
   public submitBundleProposal(
-    value: Omit<MsgSubmitBundleProposal, 'creator'>,
+    value: Omit<MsgSubmitBundleProposal, "creator">,
     fee?: StdFee | "auto" | number,
     memo?: string
   ) {
-    const tx = withTypeUrl.submitBundleProposal({ ...value, creator: this.account.address});
+    const tx = withTypeUrl.submitBundleProposal({
+      ...value,
+      creator: this.account.address,
+    });
     return this.nativeClient.signAndBroadcast(
       this.account.address,
       [tx],
@@ -167,11 +190,14 @@ export default class KyveBaseMsg {
   }
 
   public claimUploaderRole(
-    value: Omit<MsgClaimUploaderRole, 'creator'>,
+    value: Omit<MsgClaimUploaderRole, "creator">,
     fee?: StdFee | "auto" | number,
     memo?: string
   ) {
-    const tx = withTypeUrl.claimUploaderRole({ ...value, creator: this.account.address});
+    const tx = withTypeUrl.claimUploaderRole({
+      ...value,
+      creator: this.account.address,
+    });
     return this.nativeClient.signAndBroadcast(
       this.account.address,
       [tx],
@@ -181,11 +207,14 @@ export default class KyveBaseMsg {
   }
 
   public updateMetadata(
-    value: Omit<MsgUpdateMetadata, 'creator'>,
+    value: Omit<MsgUpdateMetadata, "creator">,
     fee?: StdFee | "auto" | number,
     memo?: string
   ) {
-    const tx = withTypeUrl.updateMetadata({ ...value, creator: this.account.address});
+    const tx = withTypeUrl.updateMetadata({
+      ...value,
+      creator: this.account.address,
+    });
     return this.nativeClient.signAndBroadcast(
       this.account.address,
       [tx],
@@ -416,7 +445,10 @@ export default class KyveBaseMsg {
     return events;
   }
   async getKyveBalance() {
-    const data = await this.nativeClient.getBalance(this.account.address, 'tkyve')
+    const data = await this.nativeClient.getBalance(
+      this.account.address,
+      "tkyve"
+    );
     return data.amount;
   }
 }

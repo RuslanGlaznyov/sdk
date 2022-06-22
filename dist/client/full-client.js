@@ -77,19 +77,6 @@ var proto_signing_1 = require("@cosmjs/proto-signing");
 var KyveRegistryTx = __importStar(require("../registry/tx.registry"));
 var kyve_client_1 = __importDefault(require("./kyve.client"));
 var kyve_web_client_1 = __importDefault(require("./kyve.web.client"));
-// export function create<T extends string | number>(value: T): Value<T> // public signature
-// export async function getSigningKyveClient<T extends  string | undefined>(
-//     rpcEndpoint: string,
-//     signer: OfflineSigner,
-//     walletName: T,
-//     defaultTypes?: ReadonlyArray<[string, GeneratedType]>): Promise<T extends string ? KyveWebClient : KyveClient>;
-// export async function <T extends undefined | string>getSigningKyveClient(
-//     rpcEndpoint: string,
-//     signer: OfflineSigner,
-//     walletName: T,
-//     defaultTypes: undefined,
-// ): Promise<T KyveClient>;
-// type GetUser = <T extends DbUser | null>(dbUser: T) => T extends DbUser ? GqlUser : null;
 function getSigningKyveClient(rpcEndpoint, signer, walletName, defaultTypes) {
     if (defaultTypes === void 0) { defaultTypes = stargate_1.defaultRegistryTypes; }
     return __awaiter(this, void 0, void 0, function () {

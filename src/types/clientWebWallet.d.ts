@@ -1,5 +1,5 @@
-import {Client} from "./client";
+import { Client } from "./client";
 
 export type ClientWebWallet = Client & {
-     getWalletName: () => string;
-}
+  getWalletName: () => string;
+};

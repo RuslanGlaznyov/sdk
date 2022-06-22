@@ -1,11 +1,11 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
 import { ChainInfo } from "@keplr-wallet/types";
-import {AddChainParams} from "@cosmostation/extension-client/types/message";
+import { AddChainParams } from "@cosmostation/extension-client/types/message";
 export const KYVE_DECIMALS = 9;
-export const DENOM = 'tkyve'
+export const DENOM = "tkyve";
 export const SUPPORTED_WALLETS = {
-  KEPLER: 'KEPLER',
-  COSMOSTATION: 'COSMOSTATION'
+  KEPLER: "KEPLER",
+  COSMOSTATION: "COSMOSTATION",
 } as const;
 type Networks = Record<KYVE_NETWORK, Network>;
 
@@ -69,7 +69,7 @@ export const KYVE_KEPLR_CONFIG: ChainInfo = {
   features: ["ibc-transfer", "ibc-go"],
 };
 
-export const KYVE_COSMOSTATION_CONFIG: AddChainParams= {
+export const KYVE_COSMOSTATION_CONFIG: AddChainParams = {
   chainId: "",
   restURL: "",
   chainName: "",
@@ -77,8 +77,8 @@ export const KYVE_COSMOSTATION_CONFIG: AddChainParams= {
   displayDenom: "KYVE",
   addressPrefix: PREFIX,
   coinType: "118",
-  decimals: KYVE_DECIMALS
-}
+  decimals: KYVE_DECIMALS,
+};
 
 export type KYVE_NETWORK = "local" | "alpha" | "beta" | "korellia";
 
