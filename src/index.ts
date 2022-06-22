@@ -7,7 +7,7 @@ import {
     PREFIX, SUPPORTED_WALLETS,
 } from "./constants";
 import {getSigningKyveClient} from "./client/full-client";
-import {DirectSecp256k1HdWallet} from "@cosmjs/proto-signing";
+import {DirectSecp256k1HdWallet, DirectSecp256k1Wallet} from "@cosmjs/proto-signing";
 import {RequestAccountResponse, SignOptions} from "@cosmostation/extension-client/types/message";
 import {cosmostationMethods, CosmostationSigner} from "./cosmostation-helper";
 import {createKyveLCDClient} from "./client/kyveLCD.client";
@@ -16,11 +16,13 @@ import {BigNumber} from "bignumber.js";
 import humanize from "humanize-number";
 import KyveWebClient from "./client/kyve.web.client";
 import KyveClient from "./client/kyve.client";
+import {fromHex} from "@cosmjs/encoding";
 
 /** Class representing a KyveSDK. */
 export default class KyveSDK {
     public readonly network: Network;
     private walletSupports: Set<keyof typeof SUPPORTED_WALLETS>;
+
     /**
      * Create sdk instance.
      * @param network - The network type, e.g mainnet, testnet, etc
@@ -47,10 +49,21 @@ export default class KyveSDK {
     }
 
     /**
+     * create a client from private key
+     * @param privateKey - hex privateKey
+     * @return Promise<KyveClient>
+     */
+    async fromPrivateKey(privateKey: string): Promise<KyveClient> {
+
+        const signedClient = await DirectSecp256k1Wallet.fromKey(fromHex(privateKey.startsWith('0x') ? privateKey : `0x${privateKey}`), PREFIX,);
+        return getSigningKyveClient(this.network.rpc, signedClient);
+    }
+
+    /**
      * Crate a client from Keplr wallet if installed
      * @return Promise<KyveWebClient>
      */
-    async fromKeplr(): Promise<KyveWebClient>  {
+    async fromKeplr(): Promise<KyveWebClient> {
         if (typeof window === "undefined") throw new Error("Unsupported.");
         if (!window.keplr) throw new Error("Please install Keplr.");
         await window.keplr.experimentalSuggestChain({

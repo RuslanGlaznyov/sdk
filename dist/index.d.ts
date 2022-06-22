@@ -18,6 +18,12 @@ export default class KyveSDK {
      */
     fromMnemonic(mnemonic: string): Promise<KyveClient>;
     /**
+     * create a client from private key
+     * @param privateKey - hex privateKey
+     * @return Promise<KyveClient>
+     */
+    fromPrivateKey(privateKey: string): Promise<KyveClient>;
+    /**
      * Crate a client from Keplr wallet if installed
      * @return Promise<KyveWebClient>
      */

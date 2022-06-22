@@ -58,6 +58,7 @@ var kyveLCD_client_1 = require("./client/kyveLCD.client");
 var bignumber_js_1 = require("bignumber.js");
 // @ts-ignore
 var humanize_number_1 = __importDefault(require("humanize-number"));
+var encoding_1 = require("@cosmjs/encoding");
 /** Class representing a KyveSDK. */
 var KyveSDK = /** @class */ (function () {
     /**
@@ -86,6 +87,24 @@ var KyveSDK = /** @class */ (function () {
                     case 0: return [4 /*yield*/, proto_signing_1.DirectSecp256k1HdWallet.fromMnemonic(mnemonic, {
                             prefix: constants_1.PREFIX
                         })];
+                    case 1:
+                        signedClient = _a.sent();
+                        return [2 /*return*/, (0, full_client_1.getSigningKyveClient)(this.network.rpc, signedClient)];
+                }
+            });
+        });
+    };
+    /**
+     * create a client from private key
+     * @param privateKey - hex privateKey
+     * @return Promise<KyveClient>
+     */
+    KyveSDK.prototype.fromPrivateKey = function (privateKey) {
+        return __awaiter(this, void 0, void 0, function () {
+            var signedClient;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, proto_signing_1.DirectSecp256k1Wallet.fromKey((0, encoding_1.fromHex)(privateKey), constants_1.PREFIX)];
                     case 1:
                         signedClient = _a.sent();
                         return [2 /*return*/, (0, full_client_1.getSigningKyveClient)(this.network.rpc, signedClient)];
