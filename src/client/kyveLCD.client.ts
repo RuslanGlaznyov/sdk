@@ -60,7 +60,19 @@ import {
   QueryStakersListRequest,
   QueryStakersListResponse,
 } from "@kyve/proto/dist/proto/kyve/registry/v1beta1/query";
+import qs from 'qs'
+import {PageRequest} from "@kyve/proto/dist/proto/cosmos/base/query/v1beta1/pagination";
+axios.interceptors.request.use(config => {
 
+  config.paramsSerializer = params => {
+    return qs.stringify(params, {
+      allowDots: true,
+      encode: false
+    });
+  };
+
+  return config;
+});
 type LCDClientType = LcdClient &
   AuthExtension &
   BankExtension &
@@ -73,6 +85,26 @@ type LCDClientType = LcdClient &
 type WithOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
 export type LCDKyveClientType = LCDClientType & { kyve: KyveLCDClient }
+type NestedPartial<T> = {
+  [K in keyof T]?: T[K] extends Array<infer R> ? Array<NestedPartial<R>> : NestedPartial<T[K]>
+};
+type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
+type PaginationRequestType = {
+  offset: string;
+  limit: string;
+  count_total: boolean;
+  reverse: boolean;
+  key: string
+}
+type PaginationPartialRequestUtilType<T extends { pagination?: PageRequest}> = Overwrite<T, {pagination?: Partial<PaginationRequestType> }>
+type PaginationAllPartialRequestUtilType<T> = NestedPartial<Overwrite<T, {pagination?: {offset: string;
+    limit: string;
+    count_total: boolean;
+    reverse: boolean;
+    key: string
+  } }>>
+
+type PaginationResponseTypeUtil<T> = Overwrite<T, {pagination?: {next_key: string, total: string}}>
 
 export function createKyveLCDClient(restEndpoint: string) {
   const lcdClient = LcdClient.withExtensions(
@@ -114,9 +146,8 @@ export class KyveLCDClient {
   }
 
   /* Pools queries for all pools. */
-  async pools(params: QueryPoolsRequest): Promise<QueryPoolsResponse> {
+  async pools(params?: PaginationAllPartialRequestUtilType<QueryPoolsRequest>): Promise<PaginationResponseTypeUtil<QueryPoolsResponse>> {
     const parameters: Record<string, any> = {};
-
     if (typeof params?.pagination !== "undefined") {
       parameters.pagination = params.pagination;
     }
@@ -174,15 +205,15 @@ export class KyveLCDClient {
 
   /* Proposals ... */
   async proposals(
-    params: WithOptional<QueryProposalsRequest, "pagination">
-  ): Promise<QueryProposalsResponse> {
+    params: PaginationPartialRequestUtilType<QueryProposalsRequest>
+  ): Promise<PaginationResponseTypeUtil<QueryProposalsResponse>> {
     const parameters: Record<string, any> = {};
 
     if (typeof params?.pagination !== "undefined") {
       parameters.pagination = params.pagination;
     }
     const endpoint = `kyve/registry/v1beta1/proposals/${params.pool_id}`;
-    return await this.request(endpoint);
+    return await this.request(endpoint, parameters);
   }
 
   /* ProposalByHeight ... */
@@ -225,25 +256,24 @@ export class KyveLCDClient {
 
   /* AccountFundedList returns all pools the given user has funded into. */
   async accountFundedList(
-    params: QueryAccountFundedListRequest
-  ): Promise<QueryAccountFundedListResponse> {
+    params: PaginationPartialRequestUtilType<QueryAccountFundedListRequest>
+  ): Promise<PaginationResponseTypeUtil<QueryAccountFundedListResponse>> {
     const endpoint = `kyve/registry/v1beta1/account_funded_list/${params.address}`;
     return await this.request(endpoint);
   }
   /* AccountStakedList ... */
   async accountStakedList(
-    params: QueryAccountStakedListRequest
-  ): Promise<QueryAccountStakedListResponse> {
+    params: PaginationPartialRequestUtilType<QueryAccountStakedListRequest>
+  ): Promise<PaginationResponseTypeUtil<QueryAccountStakedListResponse>> {
     const endpoint = `kyve/registry/v1beta1/account_staked_list/${params.address}`;
     return await this.request(endpoint);
   }
 
   /* AccountDelegationList ... */
   async accountDelegationList(
-    params: QueryAccountDelegationListRequest
-  ): Promise<QueryAccountDelegationListResponse> {
+    params: PaginationPartialRequestUtilType<QueryAccountDelegationListRequest>
+  ): Promise<PaginationResponseTypeUtil<QueryAccountDelegationListResponse>> {
     const parameters: Record<string, any> = {};
-
     if (typeof params?.pagination !== "undefined") {
       parameters.pagination = params.pagination;
     }
@@ -262,22 +292,21 @@ export class KyveLCDClient {
 
   /* DelegatorsByPoolAndStaker ... */
   async delegatorsByPoolAndStaker(
-    params: QueryDelegatorsByPoolAndStakerRequest
-  ): Promise<QueryDelegatorsByPoolAndStakerResponse> {
+    params: PaginationPartialRequestUtilType<QueryDelegatorsByPoolAndStakerRequest>
+  ): Promise<PaginationResponseTypeUtil<QueryDelegatorsByPoolAndStakerResponse>> {
     const parameters: Record<string, any> = {};
 
     if (typeof params?.pagination !== "undefined") {
       parameters.pagination = params.pagination;
     }
-
     const endpoint = `kyve/registry/v1beta1/delegators_by_pool_and_staker/${params.pool_id}/${params.staker}`;
-    return await this.request(endpoint);
+    return await this.request(endpoint, parameters);
   }
 
   /* StakersByPoolAndDelegator ... */
   async stakersByPoolAndDelegator(
-    params: QueryStakersByPoolAndDelegatorRequest
-  ): Promise<QueryStakersByPoolAndDelegatorResponse> {
+    params: PaginationPartialRequestUtilType<QueryStakersByPoolAndDelegatorRequest>
+  ): Promise<PaginationResponseTypeUtil<QueryStakersByPoolAndDelegatorResponse>> {
     const parameters: Record<string, any> = {};
 
     if (typeof params?.pagination !== "undefined") {
@@ -285,6 +314,6 @@ export class KyveLCDClient {
     }
 
     const endpoint = `kyve/registry/v1beta1/stakers_by_pool_and_delegator/${params.pool_id}/${params.delegator}`;
-    return await this.request(endpoint);
+    return await this.request(endpoint, parameters);
   }
 }
