@@ -25,7 +25,6 @@ import { FullDecodedTransaction } from "../types/transactions";
 import { decodeTxRaw } from "@cosmjs/proto-signing";
 import { Client } from "../types/client";
 import { DENOM } from "../constants";
-import axios from "axios";
 
 export default class KyveBaseMsg {
   private nativeClient: Client;
@@ -447,7 +446,7 @@ export default class KyveBaseMsg {
   async getKyveBalance() {
     const data = await this.nativeClient.getBalance(
       this.account.address,
-      "tkyve"
+      DENOM
     );
     return data.amount;
   }

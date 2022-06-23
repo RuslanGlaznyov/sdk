@@ -101,6 +101,7 @@ it("Query <fundersList>", async () => {
     expect(vResult.valid).toBeTruthy();
   }
 });
+
 it("Query <funder>", async () => {
   const pool = await lcdClient.kyve.pools({ pagination: { limit: "1" } });
   const founders = await lcdClient.kyve.fundersList({
@@ -275,6 +276,7 @@ it("Query <accountStakedList>", async () => {
   delete schema.properties?.pagination;
   delete accountStakedListRes.pagination;
   const vResult = validate(schema, accountStakedListRes);
+  console.log(vResult.errors);
   expect(vResult.valid).toBeTruthy();
 });
 
