@@ -60,14 +60,13 @@ import {
   QueryStakersListRequest,
   QueryStakersListResponse,
 } from "@kyve/proto/dist/proto/kyve/registry/v1beta1/query";
-import qs from 'qs'
-import {PageRequest} from "@kyve/proto/dist/proto/cosmos/base/query/v1beta1/pagination";
-axios.interceptors.request.use(config => {
-
-  config.paramsSerializer = params => {
+import qs from "qs";
+import { PageRequest } from "@kyve/proto/dist/proto/cosmos/base/query/v1beta1/pagination";
+axios.interceptors.request.use((config) => {
+  config.paramsSerializer = (params) => {
     return qs.stringify(params, {
       allowDots: true,
-      encode: false
+      encode: false,
     });
   };
 
@@ -84,9 +83,11 @@ type LCDClientType = LcdClient &
   SupplyExtension;
 type WithOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
-export type LCDKyveClientType = LCDClientType & { kyve: KyveLCDClient }
+export type LCDKyveClientType = LCDClientType & { kyve: KyveLCDClient };
 type NestedPartial<T> = {
-  [K in keyof T]?: T[K] extends Array<infer R> ? Array<NestedPartial<R>> : NestedPartial<T[K]>
+  [K in keyof T]?: T[K] extends Array<infer R>
+    ? Array<NestedPartial<R>>
+    : NestedPartial<T[K]>;
 };
 type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
 type PaginationRequestType = {
@@ -94,17 +95,29 @@ type PaginationRequestType = {
   limit: string;
   count_total: boolean;
   reverse: boolean;
-  key: string
-}
-type PaginationPartialRequestUtilType<T extends { pagination?: PageRequest}> = Overwrite<T, {pagination?: Partial<PaginationRequestType> }>
-type PaginationAllPartialRequestUtilType<T> = NestedPartial<Overwrite<T, {pagination?: {offset: string;
-    limit: string;
-    count_total: boolean;
-    reverse: boolean;
-    key: string
-  } }>>
+  key: string;
+};
+type PaginationPartialRequestUtilType<T extends { pagination?: PageRequest }> =
+  Overwrite<T, { pagination?: Partial<PaginationRequestType> }>;
+type PaginationAllPartialRequestUtilType<T> = NestedPartial<
+  Overwrite<
+    T,
+    {
+      pagination?: {
+        offset: string;
+        limit: string;
+        count_total: boolean;
+        reverse: boolean;
+        key: string;
+      };
+    }
+  >
+>;
 
-type PaginationResponseTypeUtil<T> = Overwrite<T, {pagination?: {next_key: string, total: string}}>
+type PaginationResponseTypeUtil<T> = Overwrite<
+  T,
+  { pagination?: { next_key: string; total: string } }
+>;
 
 export function createKyveLCDClient(restEndpoint: string) {
   const lcdClient = LcdClient.withExtensions(
@@ -146,7 +159,9 @@ export class KyveLCDClient {
   }
 
   /* Pools queries for all pools. */
-  async pools(params?: PaginationAllPartialRequestUtilType<QueryPoolsRequest>): Promise<PaginationResponseTypeUtil<QueryPoolsResponse>> {
+  async pools(
+    params?: PaginationAllPartialRequestUtilType<QueryPoolsRequest>
+  ): Promise<PaginationResponseTypeUtil<QueryPoolsResponse>> {
     const parameters: Record<string, any> = {};
     if (typeof params?.pagination !== "undefined") {
       parameters.pagination = params.pagination;
@@ -293,7 +308,9 @@ export class KyveLCDClient {
   /* DelegatorsByPoolAndStaker ... */
   async delegatorsByPoolAndStaker(
     params: PaginationPartialRequestUtilType<QueryDelegatorsByPoolAndStakerRequest>
-  ): Promise<PaginationResponseTypeUtil<QueryDelegatorsByPoolAndStakerResponse>> {
+  ): Promise<
+    PaginationResponseTypeUtil<QueryDelegatorsByPoolAndStakerResponse>
+  > {
     const parameters: Record<string, any> = {};
 
     if (typeof params?.pagination !== "undefined") {
@@ -306,7 +323,9 @@ export class KyveLCDClient {
   /* StakersByPoolAndDelegator ... */
   async stakersByPoolAndDelegator(
     params: PaginationPartialRequestUtilType<QueryStakersByPoolAndDelegatorRequest>
-  ): Promise<PaginationResponseTypeUtil<QueryStakersByPoolAndDelegatorResponse>> {
+  ): Promise<
+    PaginationResponseTypeUtil<QueryStakersByPoolAndDelegatorResponse>
+  > {
     const parameters: Record<string, any> = {};
 
     if (typeof params?.pagination !== "undefined") {
