@@ -90,7 +90,7 @@ export const MsgSubmitProposal = {
       writer.uint32(26).string(message.proposer);
     }
     if (message.isExpedited) {
-      writer.uint32(16).bool(message.isExpedited);
+      writer.uint32(34).bool(message.isExpedited);
     }
     return writer;
   },
