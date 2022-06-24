@@ -378,9 +378,9 @@ export class KyveSDK {
           typeUrl,
           value: encodedContent,
         },
-        initialDeposit: coins(amount.toString(), "tkyve"),
+        initial_deposit: coins(amount.toString(), "tkyve"),
         proposer: creator,
-        isExpedited,
+        is_expedited: isExpedited,
       },
     };
 

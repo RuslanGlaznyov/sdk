@@ -444,9 +444,9 @@ var KyveSDK = /** @class */ (function () {
                                     typeUrl: typeUrl,
                                     value: encodedContent
                                 },
-                                initialDeposit: (0, stargate_1.coins)(amount.toString(), "tkyve"),
+                                initial_deposit: (0, stargate_1.coins)(amount.toString(), "tkyve"),
                                 proposer: creator,
-                                isExpedited: isExpedited
+                                is_expedited: isExpedited
                             }
                         };
                         return [4 /*yield*/, this.fetchFee([msg])];
