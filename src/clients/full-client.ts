@@ -5,9 +5,9 @@ import {
 } from "@cosmjs/stargate";
 import { OfflineSigner, Registry } from "@cosmjs/proto-signing";
 import * as KyveRegistryTx from "../registry/tx.registry";
-import KyveClient from "./kyve.client";
+import KyveClient from "./rpc-client/client";
 import { Client } from "../types/client";
-import KyveWebClient from "./kyve.web.client";
+import KyveWebClient from "./rpc-client/web.client";
 
 export async function getSigningKyveClient(
   rpcEndpoint: string,

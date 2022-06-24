@@ -1,24 +1,4 @@
 import {
-  AuthExtension,
-  BankExtension,
-  DistributionExtension,
-  GovExtension,
-  LcdClient,
-  MintExtension,
-  setupAuthExtension,
-  setupBankExtension,
-  setupDistributionExtension,
-  setupGovExtension,
-  setupMintExtension,
-  setupSlashingExtension,
-  setupStakingExtension,
-  setupSupplyExtension,
-  SupplyExtension,
-  SlashingExtension,
-  StakingExtension,
-} from "@cosmjs/launchpad";
-import axios from "axios";
-import {
   QueryAccountAssetsRequest,
   QueryAccountAssetsResponse,
   QueryAccountDelegationListRequest,
@@ -39,7 +19,6 @@ import {
   QueryFunderResponse,
   QueryFundersListRequest,
   QueryFundersListResponse,
-  QueryParamsRequest,
   QueryParamsResponse,
   QueryPoolRequest,
   QueryPoolResponse,
@@ -60,30 +39,9 @@ import {
   QueryStakersListRequest,
   QueryStakersListResponse,
 } from "@kyve/proto/dist/proto/kyve/registry/v1beta1/query";
-import qs from "qs";
 import { PageRequest } from "@kyve/proto/dist/proto/cosmos/base/query/v1beta1/pagination";
-axios.interceptors.request.use((config) => {
-  config.paramsSerializer = (params) => {
-    return qs.stringify(params, {
-      allowDots: true,
-      encode: false,
-    });
-  };
+import { AbstractKyveLCDClient } from "../../lcd-client.abstract";
 
-  return config;
-});
-type LCDClientType = LcdClient &
-  AuthExtension &
-  BankExtension &
-  DistributionExtension &
-  GovExtension &
-  MintExtension &
-  SlashingExtension &
-  StakingExtension &
-  SupplyExtension;
-type WithOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
-
-export type LCDKyveClientType = LCDClientType & { kyve: KyveLCDClient };
 type NestedPartial<T> = {
   [K in keyof T]?: T[K] extends Array<infer R>
     ? Array<NestedPartial<R>>
@@ -119,32 +77,9 @@ type PaginationResponseTypeUtil<T> = Overwrite<
   { pagination?: { next_key: string; total: string } }
 >;
 
-export function createKyveLCDClient(restEndpoint: string) {
-  const lcdClient = LcdClient.withExtensions(
-    { apiUrl: restEndpoint },
-    setupAuthExtension,
-    setupBankExtension,
-    setupDistributionExtension,
-    setupGovExtension,
-    setupMintExtension,
-    setupSlashingExtension,
-    setupStakingExtension,
-    setupSupplyExtension
-  ) as LCDKyveClientType;
-  lcdClient.kyve = new KyveLCDClient(restEndpoint);
-  return lcdClient;
-}
-
-export class KyveLCDClient {
-  private restEndpoint: string;
-  private request: (url: string, params?: Record<string, any>) => Promise<any>;
-
+export class KyveRegistryLCDClient extends AbstractKyveLCDClient {
   constructor(restEndpoint: string) {
-    this.restEndpoint = restEndpoint;
-    this.request = (url: string, params?: Record<string, any>) =>
-      axios
-        .get(new URL(url, this.restEndpoint).href, { params })
-        .then((res) => res.data);
+    super(restEndpoint);
   }
 
   async params(): Promise<QueryParamsResponse> {

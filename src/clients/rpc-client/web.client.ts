@@ -1,5 +1,5 @@
-import KyveClient from "./kyve.client";
-import { Client } from "../types/client";
+import KyveClient from "./client";
+import { Client } from "../../types/client";
 import { AccountData } from "@cosmjs/amino/build/signer";
 
 export default class KyveWebClient extends KyveClient {

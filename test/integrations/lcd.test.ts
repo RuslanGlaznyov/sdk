@@ -1,4 +1,3 @@
-import { LCDKyveClientType } from "../../src/client/kyveLCD.client";
 import KyveSDK from "../../src";
 import * as TJS from "typescript-json-schema";
 import { resolve } from "path";
@@ -6,6 +5,7 @@ import { JsonSchemaGenerator } from "typescript-json-schema/typescript-json-sche
 import AJV from "ajv";
 import { ErrorObject } from "ajv/lib/types";
 import { Definition } from "typescript-json-schema";
+import { KyveLCDClientType } from "../../src/clients/lcd-client/client";
 const TEST_NETWORK = "korellia";
 const PATH_TO_QUERY_TYPES =
   "./node_modules/@kyve/proto/dist/proto/kyve/registry/v1beta1/query";
@@ -29,7 +29,7 @@ const program = TJS.getProgramFromFiles(
   compilerOptions
 );
 /** END TYPESCRIPT TO JSON SCHEMA SET UP **/
-let lcdClient: LCDKyveClientType;
+let lcdClient: KyveLCDClientType;
 let typeQuerySchemas: JsonSchemaGenerator;
 let ajv: AJV;
 
@@ -64,14 +64,14 @@ function validate(
 }
 
 it("Query <params>", async () => {
-  const result = await lcdClient.kyve.params();
+  const result = await lcdClient.kyve.registry.v1beta1.params();
   const schema = typeQuerySchemas.getSchemaForSymbol("QueryParamsResponse");
   const validationResult = validate(schema, result);
   expect(validationResult.valid).toBeTruthy();
 });
 
 it("Query <pools> and <pool> by id", async () => {
-  const poolsResponse = await lcdClient.kyve.pools();
+  const poolsResponse = await lcdClient.kyve.registry.v1beta1.pools();
   const schema = typeQuerySchemas.getSchemaForSymbol("QueryPoolsResponse");
   //do not test pagination property
   delete schema.properties?.pagination;
@@ -81,7 +81,9 @@ it("Query <pools> and <pool> by id", async () => {
   // jest doesn't support nested generative test, needs a solution how to split into separate test cases
   // maybe another test runner?
   for (let pool of poolsResponse.pools) {
-    const poolsResponse = await lcdClient.kyve.pool({ id: pool.id });
+    const poolsResponse = await lcdClient.kyve.registry.v1beta1.pool({
+      id: pool.id,
+    });
     const schema = typeQuerySchemas.getSchemaForSymbol("QueryPoolResponse");
     const vResult = validate(schema, poolsResponse);
     expect(vResult.valid).toBeTruthy();
@@ -89,12 +91,12 @@ it("Query <pools> and <pool> by id", async () => {
 });
 
 it("Query <fundersList>", async () => {
-  const poolsResponse = await lcdClient.kyve.pools();
+  const poolsResponse = await lcdClient.kyve.registry.v1beta1.pools();
   const schema = typeQuerySchemas.getSchemaForSymbol(
     "QueryFundersListResponse"
   );
   for (let pool of poolsResponse.pools) {
-    const poolsResponse = await lcdClient.kyve.fundersList({
+    const poolsResponse = await lcdClient.kyve.registry.v1beta1.fundersList({
       pool_id: pool.id,
     });
     const vResult = validate(schema, poolsResponse);
@@ -103,11 +105,13 @@ it("Query <fundersList>", async () => {
 });
 
 it("Query <funder>", async () => {
-  const pool = await lcdClient.kyve.pools({ pagination: { limit: "1" } });
-  const founders = await lcdClient.kyve.fundersList({
+  const pool = await lcdClient.kyve.registry.v1beta1.pools({
+    pagination: { limit: "1" },
+  });
+  const founders = await lcdClient.kyve.registry.v1beta1.fundersList({
     pool_id: pool.pools[0].id,
   });
-  const founder = await lcdClient.kyve.funder({
+  const founder = await lcdClient.kyve.registry.v1beta1.funder({
     pool_id: pool.pools[0].id,
     funder: founders.funders[0].account,
   });
@@ -117,8 +121,10 @@ it("Query <funder>", async () => {
 });
 
 it("Query <stakersList>", async () => {
-  const pool = await lcdClient.kyve.pools({ pagination: { limit: "1" } });
-  const stakers = await lcdClient.kyve.stakersList({
+  const pool = await lcdClient.kyve.registry.v1beta1.pools({
+    pagination: { limit: "1" },
+  });
+  const stakers = await lcdClient.kyve.registry.v1beta1.stakersList({
     pool_id: pool.pools[0].id,
   });
   const schema = typeQuerySchemas.getSchemaForSymbol(
@@ -129,11 +135,15 @@ it("Query <stakersList>", async () => {
 });
 
 it("Query <staker>", async () => {
-  const pool = await lcdClient.kyve.pools({ pagination: { limit: "1" } });
-  const stakersListResponse = await lcdClient.kyve.stakersList({
-    pool_id: pool.pools[0].id,
+  const pool = await lcdClient.kyve.registry.v1beta1.pools({
+    pagination: { limit: "1" },
   });
-  const stakerResponse = await lcdClient.kyve.staker({
+  const stakersListResponse = await lcdClient.kyve.registry.v1beta1.stakersList(
+    {
+      pool_id: pool.pools[0].id,
+    }
+  );
+  const stakerResponse = await lcdClient.kyve.registry.v1beta1.staker({
     pool_id: pool.pools[0].id,
     staker: stakersListResponse.stakers[0].staker,
   });
@@ -143,8 +153,10 @@ it("Query <staker>", async () => {
 });
 
 it("Query <proposals>", async () => {
-  const pool = await lcdClient.kyve.pools({ pagination: { limit: "1" } });
-  const proposals = await lcdClient.kyve.proposals({
+  const pool = await lcdClient.kyve.registry.v1beta1.pools({
+    pagination: { limit: "1" },
+  });
+  const proposals = await lcdClient.kyve.registry.v1beta1.proposals({
     pool_id: pool.pools[0].id,
   });
   const schema = typeQuerySchemas.getSchemaForSymbol("QueryProposalsResponse");
@@ -156,11 +168,13 @@ it("Query <proposals>", async () => {
 });
 
 it("Query <proposal>", async () => {
-  const pool = await lcdClient.kyve.pools({ pagination: { limit: "1" } });
-  const proposals = await lcdClient.kyve.proposals({
+  const pool = await lcdClient.kyve.registry.v1beta1.pools({
+    pagination: { limit: "1" },
+  });
+  const proposals = await lcdClient.kyve.registry.v1beta1.proposals({
     pool_id: pool.pools[0].id,
   });
-  const proposal = await lcdClient.kyve.proposal({
+  const proposal = await lcdClient.kyve.registry.v1beta1.proposal({
     bundle_id: proposals.proposals[0].bundle_id,
   });
   const schema = typeQuerySchemas.getSchemaForSymbol("QueryProposalResponse");
@@ -169,11 +183,14 @@ it("Query <proposal>", async () => {
 });
 
 it("Query <proposalByHeight>", async () => {
-  const pool = await lcdClient.kyve.pools({ pagination: { limit: "1" } });
-  const proposalByHeightResponse = await lcdClient.kyve.proposalByHeight({
-    pool_id: pool.pools[0].id,
-    height: TEST_HEIGHT,
+  const pool = await lcdClient.kyve.registry.v1beta1.pools({
+    pagination: { limit: "1" },
   });
+  const proposalByHeightResponse =
+    await lcdClient.kyve.registry.v1beta1.proposalByHeight({
+      pool_id: pool.pools[0].id,
+      height: TEST_HEIGHT,
+    });
   const schema = typeQuerySchemas.getSchemaForSymbol(
     "QueryProposalByHeightResponse"
   );
@@ -182,11 +199,15 @@ it("Query <proposalByHeight>", async () => {
 });
 
 it("Query <canPropose>", async () => {
-  const pool = await lcdClient.kyve.pools({ pagination: { limit: "1" } });
-  const stakersListResponse = await lcdClient.kyve.stakersList({
-    pool_id: pool.pools[0].id,
+  const pool = await lcdClient.kyve.registry.v1beta1.pools({
+    pagination: { limit: "1" },
   });
-  const canProposeRes = await lcdClient.kyve.canPropose({
+  const stakersListResponse = await lcdClient.kyve.registry.v1beta1.stakersList(
+    {
+      pool_id: pool.pools[0].id,
+    }
+  );
+  const canProposeRes = await lcdClient.kyve.registry.v1beta1.canPropose({
     pool_id: pool.pools[0].id,
     proposer: stakersListResponse.stakers[0].staker,
     from_height: TEST_HEIGHT,
@@ -197,14 +218,18 @@ it("Query <canPropose>", async () => {
 });
 
 it("Query <canVote>", async () => {
-  const pool = await lcdClient.kyve.pools({ pagination: { limit: "1" } });
-  const stakersListResponse = await lcdClient.kyve.stakersList({
+  const pool = await lcdClient.kyve.registry.v1beta1.pools({
+    pagination: { limit: "1" },
+  });
+  const stakersListResponse = await lcdClient.kyve.registry.v1beta1.stakersList(
+    {
+      pool_id: pool.pools[0].id,
+    }
+  );
+  const proposals = await lcdClient.kyve.registry.v1beta1.proposals({
     pool_id: pool.pools[0].id,
   });
-  const proposals = await lcdClient.kyve.proposals({
-    pool_id: pool.pools[0].id,
-  });
-  const canVoteRes = await lcdClient.kyve.canVote({
+  const canVoteRes = await lcdClient.kyve.registry.v1beta1.canVote({
     pool_id: pool.pools[0].id,
     voter: stakersListResponse.stakers[0].staker,
     bundle_id: proposals.proposals[0].bundle_id,
@@ -215,11 +240,15 @@ it("Query <canVote>", async () => {
 });
 
 it("Query <stakeInfo>", async () => {
-  const pool = await lcdClient.kyve.pools({ pagination: { limit: "1" } });
-  const stakersListResponse = await lcdClient.kyve.stakersList({
-    pool_id: pool.pools[0].id,
+  const pool = await lcdClient.kyve.registry.v1beta1.pools({
+    pagination: { limit: "1" },
   });
-  const stakeInfoRes = await lcdClient.kyve.stakeInfo({
+  const stakersListResponse = await lcdClient.kyve.registry.v1beta1.stakersList(
+    {
+      pool_id: pool.pools[0].id,
+    }
+  );
+  const stakeInfoRes = await lcdClient.kyve.registry.v1beta1.stakeInfo({
     pool_id: pool.pools[0].id,
     staker: stakersListResponse.stakers[0].staker,
   });
@@ -229,11 +258,15 @@ it("Query <stakeInfo>", async () => {
 });
 
 it("Query <accountAssets>", async () => {
-  const pool = await lcdClient.kyve.pools({ pagination: { limit: "1" } });
-  const stakersListResponse = await lcdClient.kyve.stakersList({
-    pool_id: pool.pools[0].id,
+  const pool = await lcdClient.kyve.registry.v1beta1.pools({
+    pagination: { limit: "1" },
   });
-  const accountAssetsRes = await lcdClient.kyve.accountAssets({
+  const stakersListResponse = await lcdClient.kyve.registry.v1beta1.stakersList(
+    {
+      pool_id: pool.pools[0].id,
+    }
+  );
+  const accountAssetsRes = await lcdClient.kyve.registry.v1beta1.accountAssets({
     address: stakersListResponse.stakers[0].account,
   });
   const schema = typeQuerySchemas.getSchemaForSymbol(
@@ -244,13 +277,16 @@ it("Query <accountAssets>", async () => {
 });
 
 it("Query <accountFundedList>", async () => {
-  const pool = await lcdClient.kyve.pools({ pagination: { limit: "1" } });
-  const foundersRes = await lcdClient.kyve.fundersList({
+  const pool = await lcdClient.kyve.registry.v1beta1.pools({
+    pagination: { limit: "1" },
+  });
+  const foundersRes = await lcdClient.kyve.registry.v1beta1.fundersList({
     pool_id: pool.pools[0].id,
   });
-  const accountFundedListRes = await lcdClient.kyve.accountFundedList({
-    address: foundersRes.funders[0].account,
-  });
+  const accountFundedListRes =
+    await lcdClient.kyve.registry.v1beta1.accountFundedList({
+      address: foundersRes.funders[0].account,
+    });
   const schema = typeQuerySchemas.getSchemaForSymbol(
     "QueryAccountFundedListResponse"
   );
@@ -262,13 +298,18 @@ it("Query <accountFundedList>", async () => {
 });
 
 it("Query <accountStakedList>", async () => {
-  const pool = await lcdClient.kyve.pools({ pagination: { limit: "1" } });
-  const stakersListResponse = await lcdClient.kyve.stakersList({
-    pool_id: pool.pools[0].id,
+  const pool = await lcdClient.kyve.registry.v1beta1.pools({
+    pagination: { limit: "1" },
   });
-  const accountStakedListRes = await lcdClient.kyve.accountStakedList({
-    address: stakersListResponse.stakers[0].account,
-  });
+  const stakersListResponse = await lcdClient.kyve.registry.v1beta1.stakersList(
+    {
+      pool_id: pool.pools[0].id,
+    }
+  );
+  const accountStakedListRes =
+    await lcdClient.kyve.registry.v1beta1.accountStakedList({
+      address: stakersListResponse.stakers[0].account,
+    });
   const schema = typeQuerySchemas.getSchemaForSymbol(
     "QueryAccountStakedListResponse"
   );
@@ -276,18 +317,22 @@ it("Query <accountStakedList>", async () => {
   delete schema.properties?.pagination;
   delete accountStakedListRes.pagination;
   const vResult = validate(schema, accountStakedListRes);
-  console.log(vResult.errors);
   expect(vResult.valid).toBeTruthy();
 });
 
 it("Query <accountDelegationList>", async () => {
-  const pool = await lcdClient.kyve.pools({ pagination: { limit: "1" } });
-  const stakersListResponse = await lcdClient.kyve.stakersList({
-    pool_id: pool.pools[0].id,
+  const pool = await lcdClient.kyve.registry.v1beta1.pools({
+    pagination: { limit: "1" },
   });
-  const accountDelegationListRes = await lcdClient.kyve.accountDelegationList({
-    address: stakersListResponse.stakers[0].account,
-  });
+  const stakersListResponse = await lcdClient.kyve.registry.v1beta1.stakersList(
+    {
+      pool_id: pool.pools[0].id,
+    }
+  );
+  const accountDelegationListRes =
+    await lcdClient.kyve.registry.v1beta1.accountDelegationList({
+      address: stakersListResponse.stakers[0].account,
+    });
   const schema = typeQuerySchemas.getSchemaForSymbol(
     "QueryAccountDelegationListResponse"
   );
@@ -299,14 +344,19 @@ it("Query <accountDelegationList>", async () => {
   expect(vResult.valid).toBeTruthy();
 });
 it("Query <delegatorsByPoolAndStaker>", async () => {
-  const pool = await lcdClient.kyve.pools({ pagination: { limit: "1" } });
-  const stakersListResponse = await lcdClient.kyve.stakersList({
-    pool_id: pool.pools[0].id,
+  const pool = await lcdClient.kyve.registry.v1beta1.pools({
+    pagination: { limit: "1" },
   });
-  const delegatorsRes = await lcdClient.kyve.delegatorsByPoolAndStaker({
-    pool_id: pool.pools[0].id,
-    staker: stakersListResponse.stakers[0].staker,
-  });
+  const stakersListResponse = await lcdClient.kyve.registry.v1beta1.stakersList(
+    {
+      pool_id: pool.pools[0].id,
+    }
+  );
+  const delegatorsRes =
+    await lcdClient.kyve.registry.v1beta1.delegatorsByPoolAndStaker({
+      pool_id: pool.pools[0].id,
+      staker: stakersListResponse.stakers[0].staker,
+    });
   const schema = typeQuerySchemas.getSchemaForSymbol(
     "QueryDelegatorsByPoolAndStakerResponse"
   );
@@ -318,15 +368,20 @@ it("Query <delegatorsByPoolAndStaker>", async () => {
 });
 
 it("Query <delegator>", async () => {
-  const pool = await lcdClient.kyve.pools({ pagination: { limit: "1" } });
-  const stakersListResponse = await lcdClient.kyve.stakersList({
-    pool_id: pool.pools[0].id,
+  const pool = await lcdClient.kyve.registry.v1beta1.pools({
+    pagination: { limit: "1" },
   });
-  const delegatorsRes = await lcdClient.kyve.delegatorsByPoolAndStaker({
-    pool_id: pool.pools[0].id,
-    staker: stakersListResponse.stakers[0].staker,
-  });
-  const delegatorResponse = await lcdClient.kyve.delegator({
+  const stakersListResponse = await lcdClient.kyve.registry.v1beta1.stakersList(
+    {
+      pool_id: pool.pools[0].id,
+    }
+  );
+  const delegatorsRes =
+    await lcdClient.kyve.registry.v1beta1.delegatorsByPoolAndStaker({
+      pool_id: pool.pools[0].id,
+      staker: stakersListResponse.stakers[0].staker,
+    });
+  const delegatorResponse = await lcdClient.kyve.registry.v1beta1.delegator({
     pool_id: pool.pools[0].id,
     staker: stakersListResponse.stakers[0].staker,
     delegator: delegatorsRes.delegators[0].delegator,
@@ -337,16 +392,21 @@ it("Query <delegator>", async () => {
 });
 
 it("Query <stakersByPoolAndDelegator>", async () => {
-  const pool = await lcdClient.kyve.pools({ pagination: { limit: "1" } });
-  const stakersListResponse = await lcdClient.kyve.stakersList({
-    pool_id: pool.pools[0].id,
+  const pool = await lcdClient.kyve.registry.v1beta1.pools({
+    pagination: { limit: "1" },
   });
-  const delegatorsRes = await lcdClient.kyve.delegatorsByPoolAndStaker({
-    pool_id: pool.pools[0].id,
-    staker: stakersListResponse.stakers[0].staker,
-  });
+  const stakersListResponse = await lcdClient.kyve.registry.v1beta1.stakersList(
+    {
+      pool_id: pool.pools[0].id,
+    }
+  );
+  const delegatorsRes =
+    await lcdClient.kyve.registry.v1beta1.delegatorsByPoolAndStaker({
+      pool_id: pool.pools[0].id,
+      staker: stakersListResponse.stakers[0].staker,
+    });
   const stakersByPoolAndDelegatorRes =
-    await lcdClient.kyve.stakersByPoolAndDelegator({
+    await lcdClient.kyve.registry.v1beta1.stakersByPoolAndDelegator({
       pool_id: pool.pools[0].id,
       delegator: delegatorsRes.delegators[0].delegator,
     });

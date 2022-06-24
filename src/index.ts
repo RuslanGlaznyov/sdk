@@ -8,7 +8,7 @@ import {
   PREFIX,
   SUPPORTED_WALLETS,
 } from "./constants";
-import { getSigningKyveClient } from "./client/full-client";
+import { getSigningKyveClient } from "./clients/full-client";
 import {
   DirectSecp256k1HdWallet,
   DirectSecp256k1Wallet,
@@ -18,12 +18,12 @@ import {
   SignOptions,
 } from "@cosmostation/extension-client/types/message";
 import { cosmostationMethods, CosmostationSigner } from "./cosmostation-helper";
-import { createKyveLCDClient } from "./client/kyveLCD.client";
+import { createKyveLCDClient } from "./clients/lcd-client/client";
 import { BigNumber } from "bignumber.js";
 // @ts-ignore
 import humanize from "humanize-number";
-import KyveWebClient from "./client/kyve.web.client";
-import KyveClient from "./client/kyve.client";
+import KyveWebClient from "./clients/rpc-client/web.client";
+import KyveClient from "./clients/rpc-client/client";
 import { fromHex } from "@cosmjs/encoding";
 
 /** Class representing a KyveSDK. */

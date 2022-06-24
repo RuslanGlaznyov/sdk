@@ -51,10 +51,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 exports.__esModule = true;
 var constants_1 = require("./constants");
-var full_client_1 = require("./client/full-client");
+var full_client_1 = require("./clients/full-client");
 var proto_signing_1 = require("@cosmjs/proto-signing");
 var cosmostation_helper_1 = require("./cosmostation-helper");
-var kyveLCD_client_1 = require("./client/kyveLCD.client");
+var client_1 = require("./clients/lcd-client/client");
 var bignumber_js_1 = require("bignumber.js");
 // @ts-ignore
 var humanize_number_1 = __importDefault(require("humanize-number"));
@@ -204,7 +204,7 @@ var KyveSDK = /** @class */ (function () {
      * create LCD client to get data from Rest api
      */
     KyveSDK.prototype.createLCDClient = function () {
-        return (0, kyveLCD_client_1.createKyveLCDClient)(this.network.rest);
+        return (0, client_1.createKyveLCDClient)(this.network.rest);
     };
     /**
      * generate KyveClient instance without mnemonic

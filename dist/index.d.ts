@@ -1,7 +1,7 @@
 import { KYVE_NETWORK, Network } from "./constants";
 import { SignOptions } from "@cosmostation/extension-client/types/message";
-import KyveWebClient from "./client/kyve.web.client";
-import KyveClient from "./client/kyve.client";
+import KyveWebClient from "./clients/rpc-client/web.client";
+import KyveClient from "./clients/rpc-client/client";
 /** Class representing a KyveSDK. */
 export default class KyveSDK {
     readonly network: Network;
@@ -41,7 +41,7 @@ export default class KyveSDK {
     /**
      * create LCD client to get data from Rest api
      */
-    createLCDClient(): import("./client/kyveLCD.client").LCDKyveClientType;
+    createLCDClient(): import("./clients/lcd-client/client").KyveLCDClientType;
     /**
      * generate KyveClient instance without mnemonic
      */
