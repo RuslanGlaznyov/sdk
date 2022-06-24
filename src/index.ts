@@ -1,4 +1,5 @@
 import {
+  coin,
   coins,
   DeliverTxResponse,
   GasPrice,
@@ -36,6 +37,7 @@ import { pubkeyToAddress } from "@cosmjs/amino/build/addresses";
 import { TxRaw } from "cosmjs-types/cosmos/tx/v1beta1/tx";
 import Long from "long";
 import { Tendermint34Client } from "@cosmjs/tendermint-rpc";
+import Coin = cosmos.base.v1beta1.Coin;
 
 export { KYVE_DECIMALS } from "./utils/constants";
 export { KyveWallet } from "./wallet";
@@ -370,6 +372,10 @@ export class KyveSDK {
         break;
     }
 
+    const initialDeposit = Coin.encode(
+      coin(amount.toString(), "tkyve")
+    ).finish();
+
     const msg = {
       typeUrl: "/cosmos.gov.v1beta1.MsgSubmitProposal",
       value: {
@@ -377,7 +383,7 @@ export class KyveSDK {
           typeUrl,
           value: encodedContent,
         },
-        initialDeposit: coins(amount.toString(), "tkyve"),
+        initialDeposit,
         proposer: creator,
         isExpedited,
       },
