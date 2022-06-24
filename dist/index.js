@@ -67,7 +67,6 @@ var addresses_1 = require("@cosmjs/amino/build/addresses");
 var tx_1 = require("cosmjs-types/cosmos/tx/v1beta1/tx");
 var long_1 = __importDefault(require("long"));
 var tendermint_rpc_1 = require("@cosmjs/tendermint-rpc");
-var Coin = cosmos_1.cosmos.base.v1beta1.Coin;
 var constants_2 = require("./utils/constants");
 __createBinding(exports, constants_2, "KYVE_DECIMALS");
 var wallet_1 = require("./wallet");
@@ -395,7 +394,7 @@ var KyveSDK = /** @class */ (function () {
     KyveSDK.prototype.govSubmitProposal = function (type, content, amount, isExpedited) {
         if (isExpedited === void 0) { isExpedited = false; }
         return __awaiter(this, void 0, void 0, function () {
-            var client, creator, typeUrl, encodedContent, initialDeposit, msg, fee, txRaw, txBytes;
+            var client, creator, typeUrl, encodedContent, msg, fee, txRaw, txBytes;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getClient()];
@@ -438,7 +437,6 @@ var KyveSDK = /** @class */ (function () {
                                 encodedContent = registry_1.CancelPoolUpgradeProposal.encode(content).finish();
                                 break;
                         }
-                        initialDeposit = Coin.encode((0, stargate_1.coin)(amount.toString(), "tkyve")).finish();
                         msg = {
                             typeUrl: "/cosmos.gov.v1beta1.MsgSubmitProposal",
                             value: {
@@ -446,7 +444,7 @@ var KyveSDK = /** @class */ (function () {
                                     typeUrl: typeUrl,
                                     value: encodedContent
                                 },
-                                initialDeposit: initialDeposit,
+                                initialDeposit: (0, stargate_1.coins)(amount.toString(), "tkyve"),
                                 proposer: creator,
                                 isExpedited: isExpedited
                             }

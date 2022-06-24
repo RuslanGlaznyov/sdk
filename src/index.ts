@@ -1,5 +1,4 @@
 import {
-  coin,
   coins,
   DeliverTxResponse,
   GasPrice,
@@ -372,10 +371,6 @@ export class KyveSDK {
         break;
     }
 
-    const initialDeposit = Coin.encode(
-      coin(amount.toString(), "tkyve")
-    ).finish();
-
     const msg = {
       typeUrl: "/cosmos.gov.v1beta1.MsgSubmitProposal",
       value: {
@@ -383,7 +378,7 @@ export class KyveSDK {
           typeUrl,
           value: encodedContent,
         },
-        initialDeposit,
+        initialDeposit: coins(amount.toString(), "tkyve"),
         proposer: creator,
         isExpedited,
       },

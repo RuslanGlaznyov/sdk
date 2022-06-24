@@ -2,6 +2,7 @@ import { Registry } from "@cosmjs/proto-signing";
 import { defaultRegistryTypes } from "@cosmjs/stargate";
 import path from "path";
 import { Field, load, Root, Type } from "protobufjs";
+import { MsgSubmitProposal } from "./cosmosRegistry";
 
 export const TextProposal = new Type("TextProposal")
   .add(new Field("title", 1, "string"))
@@ -104,7 +105,6 @@ export const CancelPoolUpgradeProposal = new Type("CancelPoolUpgradeProposal")
 
 export const createRegistry = async (): Promise<Registry> => {
   const root = await load(path.join(__dirname, "../proto/tx.proto"));
-  const cosmosRoot = await load(path.join(__dirname, "../proto/cosmos.proto"));
 
   return new Registry(
     Array.from([
@@ -148,10 +148,7 @@ export const createRegistry = async (): Promise<Registry> => {
         root.lookupType("MsgUpdateMetadata"),
       ],
       // We need to extend this message to include the `IsExpedited` flag.
-      [
-        `/cosmos.gov.v1beta1.MsgSubmitProposal`,
-        cosmosRoot.lookupType("MsgSubmitProposal"),
-      ],
+      [`/cosmos.gov.v1beta1.MsgSubmitProposal`, MsgSubmitProposal],
     ])
   );
 };
