@@ -324,7 +324,8 @@ export class KyveSDK {
       | "SchedulePoolUpgradeProposal"
       | "CancelPoolUpgradeProposal",
     content: Object,
-    amount: BigNumber
+    amount: BigNumber,
+    isExpedited: boolean = false
   ): Promise<{
     transactionHash: string;
     transactionBroadcast: Promise<DeliverTxResponse>;
@@ -378,6 +379,7 @@ export class KyveSDK {
         },
         initialDeposit: coins(amount.toString(), "tkyve"),
         proposer: creator,
+        isExpedited,
       },
     };
 

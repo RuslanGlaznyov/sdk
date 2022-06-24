@@ -140,12 +140,15 @@ exports.CancelPoolUpgradeProposal = new protobufjs_1.Type("CancelPoolUpgradeProp
     .add(new protobufjs_1.Field("description", 2, "string"))
     .add(new protobufjs_1.Field("runtime", 3, "string"));
 var createRegistry = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var root;
+    var root, cosmosRoot;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, (0, protobufjs_1.load)(path_1["default"].join(__dirname, "../proto/tx.proto"))];
             case 1:
                 root = _a.sent();
+                return [4 /*yield*/, (0, protobufjs_1.load)(path_1["default"].join(__dirname, "../proto.cosmos.proto"))];
+            case 2:
+                cosmosRoot = _a.sent();
                 return [2 /*return*/, new proto_signing_1.Registry(Array.from(__spreadArray(__spreadArray([], stargate_1.defaultRegistryTypes, true), [
                         ["/kyve.registry.v1beta1.MsgFundPool", root.lookupType("MsgFundPool")],
                         [
@@ -184,6 +187,11 @@ var createRegistry = function () { return __awaiter(void 0, void 0, void 0, func
                         [
                             "/kyve.registry.v1beta1.MsgUpdateMetadata",
                             root.lookupType("MsgUpdateMetadata"),
+                        ],
+                        // We need to extend this message to include the `IsExpedited` flag.
+                        [
+                            "/cosmos.gov.v1beta1.MsgSubmitProposal",
+                            cosmosRoot.lookupType("MsgSubmitProposal"),
                         ],
                     ], false)))];
         }

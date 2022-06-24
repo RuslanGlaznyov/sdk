@@ -391,7 +391,8 @@ var KyveSDK = /** @class */ (function () {
             });
         });
     };
-    KyveSDK.prototype.govSubmitProposal = function (type, content, amount) {
+    KyveSDK.prototype.govSubmitProposal = function (type, content, amount, isExpedited) {
+        if (isExpedited === void 0) { isExpedited = false; }
         return __awaiter(this, void 0, void 0, function () {
             var client, creator, typeUrl, encodedContent, msg, fee, txRaw, txBytes;
             return __generator(this, function (_a) {
@@ -444,7 +445,8 @@ var KyveSDK = /** @class */ (function () {
                                     value: encodedContent
                                 },
                                 initialDeposit: (0, stargate_1.coins)(amount.toString(), "tkyve"),
-                                proposer: creator
+                                proposer: creator,
+                                isExpedited: isExpedited
                             }
                         };
                         return [4 /*yield*/, this.fetchFee([msg])];
