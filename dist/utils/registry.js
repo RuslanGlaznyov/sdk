@@ -146,7 +146,7 @@ var createRegistry = function () { return __awaiter(void 0, void 0, void 0, func
             case 0: return [4 /*yield*/, (0, protobufjs_1.load)(path_1["default"].join(__dirname, "../proto/tx.proto"))];
             case 1:
                 root = _a.sent();
-                return [4 /*yield*/, (0, protobufjs_1.load)(path_1["default"].join(__dirname, "../proto.cosmos.proto"))];
+                return [4 /*yield*/, (0, protobufjs_1.load)(path_1["default"].join(__dirname, "../proto/cosmos.proto"))];
             case 2:
                 cosmosRoot = _a.sent();
                 return [2 /*return*/, new proto_signing_1.Registry(Array.from(__spreadArray(__spreadArray([], stargate_1.defaultRegistryTypes, true), [

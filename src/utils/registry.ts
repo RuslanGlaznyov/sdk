@@ -104,7 +104,7 @@ export const CancelPoolUpgradeProposal = new Type("CancelPoolUpgradeProposal")
 
 export const createRegistry = async (): Promise<Registry> => {
   const root = await load(path.join(__dirname, "../proto/tx.proto"));
-  const cosmosRoot = await load(path.join(__dirname, "../proto.cosmos.proto"));
+  const cosmosRoot = await load(path.join(__dirname, "../proto/cosmos.proto"));
 
   return new Registry(
     Array.from([
