@@ -1,0 +1,264 @@
+import  KyveClient  from '../../src/clients/rpc-client/client'
+import {Client} from "../../src/types/client";
+import {createValidator} from "../helper";
+import * as fs from 'fs'
+import {resolve} from "path";
+import {
+    MsgClaimUploaderRole,
+    MsgDefundPool,
+    MsgDelegatePool, MsgFundPool, MsgStakePool,
+    MsgSubmitBundleProposal,
+    MsgUndelegatePool, MsgUnstakePool, MsgUpdateMetadata, MsgVoteProposal,
+    MsgWithdrawPool
+} from "@kyve/proto/dist/proto/kyve/registry/v1beta1/tx";
+import Mock = jest.Mock;
+import {DENOM, KYVE_DECIMALS} from "../../dist/constants";
+import {TextProposal} from "@kyve/proto/dist/proto/cosmos/gov/v1beta1/gov";
+import {ParameterChangeProposal} from "@kyve/proto/dist/proto/cosmos/params/v1beta1/params";
+import {
+    CancelPoolUpgradeProposal,
+    PausePoolProposal, SchedulePoolUpgradeProposal,
+    UnpausePoolProposal,
+    UpdatePoolProposal
+} from "@kyve/proto/dist/proto/kyve/registry/v1beta1/gov";
+import BigNumber from 'bignumber.js';
+const PATH_TO_TYPES =
+    "./node_modules/@kyve/proto/dist/proto/kyve/registry/v1beta1";
+
+const typesFiles = fs.readdirSync(PATH_TO_TYPES)
+    .filter(files => files.endsWith('d.ts'))
+    .map(dtsFiles => resolve(PATH_TO_TYPES, dtsFiles));
+
+const mockAccountData = {
+ address: "kyve19jc64sd773gtjljksjhls0n5mqay7xj83yeqvk",
+ algo:  "secp256k1" as const,
+ pubkey: new Uint8Array()
+}
+const TEST_MEMO = 'test_memo';
+const TEST_FEE = 1;
+const TEST_AMOUNT = '1000000000'
+
+
+const validator = createValidator(typesFiles)
+const BaseMethods = [
+    {
+        methodName: 'foundPool',
+        parameters: {
+                params: MsgFundPool.fromJSON({}),
+                schema: validator.typeQuerySchemas.getSchemaForSymbol("MsgFundPool")
+            }
+    },
+    {
+        methodName: 'defundPool',
+        parameters: {
+                params:  MsgDefundPool.fromJSON({}),
+                schema: validator.typeQuerySchemas.getSchemaForSymbol("MsgDefundPool")
+            }
+    },
+    {
+        methodName: 'stakePool',
+        parameters: {
+                params: MsgStakePool.fromJSON({}),
+                schema: validator.typeQuerySchemas.getSchemaForSymbol("MsgStakePool")
+            }
+    },
+    {
+        methodName: 'unstakePool',
+        parameters: {
+                params: MsgUnstakePool.fromJSON({}),
+                schema: validator.typeQuerySchemas.getSchemaForSymbol("MsgUnstakePool")
+            }
+
+    },
+    {
+        methodName: 'delegatePool',
+        parameters: {
+                params: MsgDelegatePool.fromJSON({}),
+                schema: validator.typeQuerySchemas.getSchemaForSymbol("MsgDelegatePool")
+            }
+    },
+    {
+        methodName: 'withdrawPool',
+        parameters: {
+                params: MsgWithdrawPool.fromJSON({}),
+                schema: validator.typeQuerySchemas.getSchemaForSymbol("MsgWithdrawPool")
+            }
+
+    },
+    {
+        methodName: 'undelegatePool',
+        parameters: {
+                params:  MsgUndelegatePool.fromJSON({}),
+                schema: validator.typeQuerySchemas.getSchemaForSymbol("MsgUndelegatePool")
+            }
+
+    },
+    {
+        methodName: 'submitBundleProposal',
+        parameters: {
+                params:  MsgSubmitBundleProposal.fromJSON({}),
+                schema: validator.typeQuerySchemas.getSchemaForSymbol("MsgSubmitBundleProposal")
+            }
+
+    },
+    {
+        methodName: 'voteProposal',
+        parameters: {
+            params:  MsgVoteProposal.fromJSON({}),
+            schema: validator.typeQuerySchemas.getSchemaForSymbol("MsgVoteProposal")
+        }
+    },
+    {
+        methodName: 'claimUploaderRole',
+        parameters: {
+            params:  MsgClaimUploaderRole.fromJSON({}),
+            schema: validator.typeQuerySchemas.getSchemaForSymbol("MsgClaimUploaderRole")
+        }
+    },
+    {
+        methodName: 'updateMetadata',
+        parameters: {
+            params:  MsgUpdateMetadata.fromJSON({}),
+            schema: validator.typeQuerySchemas.getSchemaForSymbol("MsgUpdateMetadata")
+        }
+    },
+    {
+        methodName: 'updateMetadata',
+        parameters: {
+            params:  MsgUpdateMetadata.fromJSON({}),
+            schema: validator.typeQuerySchemas.getSchemaForSymbol("MsgUpdateMetadata")
+        }
+    },
+
+
+] as const;
+let kyveClient: KyveClient;
+let mockSignAndBroadcast: Mock;
+let mockSendTokens: Mock
+let mockGetBalance: Mock
+beforeEach(() => {
+    mockSignAndBroadcast = jest.fn()
+    mockSendTokens = jest.fn()
+    mockGetBalance = jest.fn(()  => ({amount: 0}))
+    const mockNativeClient = {
+        signAndBroadcast: mockSignAndBroadcast,
+        sendTokens: mockSendTokens,
+        getBalance: mockGetBalance
+    } as unknown as Client;
+    kyveClient = new KyveClient(mockNativeClient, mockAccountData)
+})
+
+
+describe('Base Methods', () => {
+    BaseMethods.forEach(method => {
+        it(`method ${method.methodName}`, async () => {
+            //@ts-ignore have no idea how to create it generic. btw ts-ignore is ok, because we check params from json schema
+            await kyveClient.kyve.v1beta1.base[method.methodName](method.parameters.params, {memo: TEST_MEMO, fee: TEST_FEE});
+
+            expect(mockSignAndBroadcast).toHaveBeenCalledTimes(1);
+
+            const [[testAddress, [tx], fee, memo]] = mockSignAndBroadcast.mock.calls;
+            expect(testAddress).toEqual(mockAccountData.address);
+
+            expect(tx).toEqual(expect.objectContaining({
+                typeUrl: expect.any(String),
+                value: expect.any(Object)
+            }))
+            expect(memo).toEqual(TEST_MEMO)
+            const validationResult = validator.validate(method.parameters.schema, tx.value);
+            expect(validationResult.valid).toBeTruthy();
+            expect(fee).toEqual(TEST_FEE)
+        })
+    })
+
+    it('transfer', async () => {
+        const testRecipient = 'kyveTestRecipient'
+        const testAmount = '1'
+        await kyveClient.kyve.v1beta1.base.transfer(testRecipient, testAmount, {memo: TEST_MEMO, fee: TEST_FEE});
+        expect(mockSendTokens).toHaveBeenCalledTimes(1);
+        const [[ownerAddress, recipient, [coin], fee, memo]] = mockSendTokens.mock.calls;
+        expect(ownerAddress).toEqual(mockAccountData.address)
+        expect(recipient).toEqual(testRecipient)
+        expect(memo).toEqual(TEST_MEMO)
+        expect(fee).toEqual(TEST_FEE)
+        expect(coin).toEqual({
+            denom: DENOM,
+            amount: new BigNumber(10).pow(KYVE_DECIMALS).toString()
+        })
+    })
+
+    it('getKyveBalance', async () => {
+        const result = await kyveClient.kyve.v1beta1.base.getKyveBalance();
+        expect(mockGetBalance).toHaveBeenCalledTimes(1);
+        const [[ownerAddress, denom]] = mockGetBalance.mock.calls;
+        expect(ownerAddress).toEqual(mockAccountData.address);
+        expect(denom).toEqual(DENOM)
+        expect(result).toEqual(0)
+    })
+})
+
+const GovMethods = [
+    {
+        method: 'submitTextProposal',
+        decoder: TextProposal
+    },
+    {
+        method: 'parameterChangeProposal',
+        decoder: ParameterChangeProposal
+    },
+    {
+        method: 'pausePoolProposal',
+        decoder: PausePoolProposal
+    },
+    {
+        method: 'updatePoolProposal',
+        decoder: UpdatePoolProposal,
+    },
+    {
+        method: 'pausePoolProposal',
+        decoder: PausePoolProposal
+    },
+    {
+        method: 'unpausePoolProposal',
+        decoder: UnpausePoolProposal,
+    },
+    {
+        method: 'schedulePoolUpgradeProposal',
+        decoder: SchedulePoolUpgradeProposal
+    },
+    {
+        method: 'cancelPoolUpgradeProposal',
+        decoder: CancelPoolUpgradeProposal
+    }
+
+] as const;
+
+describe("Gov methods", () => {
+    GovMethods.forEach(method => {
+        it(`${method.method}`, async () => {
+            const govParam = method.decoder.fromJSON({})
+            //@ts-ignore
+            await kyveClient.kyve.v1beta1.gov[method.method](TEST_AMOUNT, govParam, {isExpedited: true})
+            expect(mockSignAndBroadcast).toHaveBeenCalledTimes(1);
+            const [[testAddress, [tx], fee]] = mockSignAndBroadcast.mock.calls;
+            expect(testAddress).toEqual(mockAccountData.address);
+            expect(tx).toEqual(expect.objectContaining({
+                typeUrl: expect.any(String),
+                value: {
+                    content: {
+                        typeUrl: expect.any(String),
+                        value: expect.any(Uint8Array)
+                    },
+                    initial_deposit: [{
+                        denom: DENOM,
+                        amount: TEST_AMOUNT
+                    }],
+                    proposer: mockAccountData.address,
+                    is_expedited: true
+                }
+            }))
+            expect(fee).toEqual('auto')
+            expect(method.decoder.decode(tx.value.content.value)).toEqual(govParam);
+        })
+    })
+})

@@ -25,15 +25,6 @@ import { FullDecodedTransaction } from "../../../types/transactions";
 import { decodeTxRaw } from "@cosmjs/proto-signing";
 import { Client } from "../../../types/client";
 import { DENOM } from "../../../constants";
-import { TextProposal } from "@kyve/proto/dist/proto/cosmos/gov/v1beta1/gov";
-import { ParameterChangeProposal } from "@kyve/proto/dist/proto/cosmos/params/v1beta1/params";
-import {
-  CancelPoolUpgradeProposal,
-  PausePoolProposal,
-  SchedulePoolUpgradeProposal,
-  UnpausePoolProposal,
-  UpdatePoolProposal,
-} from "@kyve/proto/dist/proto/kyve/registry/v1beta1/gov";
 
 export default class KyveBaseMsg {
   private nativeClient: Client;
@@ -46,8 +37,10 @@ export default class KyveBaseMsg {
 
   public foundPool(
     value: Omit<MsgFundPool, "creator">,
-    fee?: StdFee | "auto" | number,
-    memo?: string
+    options?: {
+      fee?: StdFee | "auto" | number,
+      memo?: string
+    }
   ) {
     const tx = withTypeUrl.fundPool({
       ...value,
@@ -56,15 +49,17 @@ export default class KyveBaseMsg {
     return this.nativeClient.signAndBroadcast(
       this.account.address,
       [tx],
-      fee ? fee : "auto",
-      memo
+        options?.fee ? options?.fee : "auto",
+        options?.memo
     );
   }
 
   public defundPool(
     value: Omit<MsgDefundPool, "creator">,
-    fee?: StdFee | "auto" | number,
-    memo?: string
+    options?: {
+      fee?: StdFee | "auto" | number,
+      memo?: string
+    }
   ) {
     const tx = withTypeUrl.defundPool({
       ...value,
@@ -73,15 +68,17 @@ export default class KyveBaseMsg {
     return this.nativeClient.signAndBroadcast(
       this.account.address,
       [tx],
-      fee ? fee : "auto",
-      memo
+        options?.fee ? options?.fee : "auto",
+        options?.memo
     );
   }
 
   public stakePool(
     value: Omit<MsgStakePool, "creator">,
-    fee?: StdFee | "auto" | number,
-    memo?: string
+    options?: {
+      fee?: StdFee | "auto" | number,
+      memo?: string
+    }
   ) {
     const tx = withTypeUrl.stakePool({
       ...value,
@@ -90,15 +87,17 @@ export default class KyveBaseMsg {
     return this.nativeClient.signAndBroadcast(
       this.account.address,
       [tx],
-      fee ? fee : "auto",
-      memo
+        options?.fee ? options?.fee : "auto",
+      options?.memo
     );
   }
 
   public unstakePool(
     value: Omit<MsgUnstakePool, "creator">,
-    fee?: StdFee | "auto" | number,
-    memo?: string
+    options?: {
+      fee?: StdFee | "auto" | number,
+      memo?: string
+    }
   ) {
     const tx = withTypeUrl.unstakePool({
       ...value,
@@ -107,15 +106,17 @@ export default class KyveBaseMsg {
     return this.nativeClient.signAndBroadcast(
       this.account.address,
       [tx],
-      fee ? fee : "auto",
-      memo
+        options?.fee ? options?.fee : "auto",
+      options?.memo
     );
   }
 
   public delegatePool(
     value: Omit<MsgDelegatePool, "creator">,
-    fee?: StdFee | "auto" | number,
-    memo?: string
+    options?: {
+      fee?: StdFee | "auto" | number,
+      memo?: string
+    }
   ) {
     const tx = withTypeUrl.delegatePool({
       ...value,
@@ -124,15 +125,17 @@ export default class KyveBaseMsg {
     return this.nativeClient.signAndBroadcast(
       this.account.address,
       [tx],
-      fee ? fee : "auto",
-      memo
+      options?.fee ? options?.fee : "auto",
+      options?.memo
     );
   }
 
   public withdrawPool(
     value: Omit<MsgWithdrawPool, "creator">,
-    fee?: StdFee | "auto" | number,
-    memo?: string
+    options?: {
+      fee?: StdFee | "auto" | number,
+      memo?: string
+    }
   ) {
     const tx = withTypeUrl.withdrawPool({
       ...value,
@@ -141,16 +144,17 @@ export default class KyveBaseMsg {
     return this.nativeClient.signAndBroadcast(
       this.account.address,
       [tx],
-      fee ? fee : "auto",
-      memo
+        options?.fee ? options?.fee : "auto",
+      options?.memo
     );
   }
 
-  //submitBundleProposal
   public undelegatePool(
     value: Omit<MsgUndelegatePool, "creator">,
-    fee?: StdFee | "auto" | number,
-    memo?: string
+    options?: {
+      fee?: StdFee | "auto" | number,
+      memo?: string
+    }
   ) {
     const tx = withTypeUrl.undelegatePool({
       ...value,
@@ -159,15 +163,17 @@ export default class KyveBaseMsg {
     return this.nativeClient.signAndBroadcast(
       this.account.address,
       [tx],
-      fee ? fee : "auto",
-      memo
+        options?.fee ? options?.fee : "auto",
+      options?.memo
     );
   }
 
   public submitBundleProposal(
     value: Omit<MsgSubmitBundleProposal, "creator">,
-    fee?: StdFee | "auto" | number,
-    memo?: string
+    options?: {
+      fee?: StdFee | "auto" | number,
+      memo?: string
+    }
   ) {
     const tx = withTypeUrl.submitBundleProposal({
       ...value,
@@ -176,31 +182,36 @@ export default class KyveBaseMsg {
     return this.nativeClient.signAndBroadcast(
       this.account.address,
       [tx],
-      fee ? fee : "auto",
-      memo
+        options?.fee ? options?.fee : "auto",
+      options?.memo
     );
   }
 
   public voteProposal(
     value: Omit<MsgVoteProposal, "creator">,
-    fee?: StdFee | "auto" | number,
-    memo?: string
+    options?: {
+      fee?: StdFee | "auto" | number,
+      memo?: string
+    }
   ) {
-    const newValue = value as MsgVoteProposal;
-    newValue.creator = this.account.address;
-    const tx = withTypeUrl.voteProposal(newValue);
+    const tx = withTypeUrl.voteProposal({
+      ...value,
+      creator: this.account.address,
+    });
     return this.nativeClient.signAndBroadcast(
       this.account.address,
       [tx],
-      fee ? fee : "auto",
-      memo
+        options?.fee ? options?.fee : "auto",
+      options?.memo
     );
   }
 
   public claimUploaderRole(
     value: Omit<MsgClaimUploaderRole, "creator">,
-    fee?: StdFee | "auto" | number,
-    memo?: string
+    options?: {
+      fee?: StdFee | "auto" | number,
+      memo?: string
+    }
   ) {
     const tx = withTypeUrl.claimUploaderRole({
       ...value,
@@ -209,15 +220,17 @@ export default class KyveBaseMsg {
     return this.nativeClient.signAndBroadcast(
       this.account.address,
       [tx],
-      fee ? fee : "auto",
-      memo
+        options?.fee ? options?.fee : "auto",
+        options?.memo
     );
   }
 
   public updateMetadata(
     value: Omit<MsgUpdateMetadata, "creator">,
-    fee?: StdFee | "auto" | number,
-    memo?: string
+    options?: {
+      fee?: StdFee | "auto" | number,
+      memo?: string
+    }
   ) {
     const tx = withTypeUrl.updateMetadata({
       ...value,
@@ -226,16 +239,18 @@ export default class KyveBaseMsg {
     return this.nativeClient.signAndBroadcast(
       this.account.address,
       [tx],
-      fee ? fee : "auto",
-      memo
+        options?.fee ? options?.fee : "auto",
+        options?.memo
     );
   }
-
+  //todo test
   async transfer(
     recipient: string,
     amount: string,
-    fee?: StdFee | "auto" | number,
-    memo?: string
+    options?: {
+      fee?: StdFee | "auto" | number,
+      memo?: string
+    }
   ) {
     const parsedAmount = new BigNumber(amount)
       .multipliedBy(new BigNumber(10).pow(KYVE_DECIMALS))
@@ -245,8 +260,8 @@ export default class KyveBaseMsg {
       this.account.address,
       recipient,
       coins(parsedAmount, DENOM),
-      fee ? fee : "auto",
-      memo
+        options?.fee ? options?.fee : "auto",
+      options?.memo
     );
   }
   //TODO refactor it :) !
@@ -452,157 +467,10 @@ export default class KyveBaseMsg {
 
     return events;
   }
-
-  private createGovTx(
-    amount: string,
-    content: { typeUrl: string; value: Object }
-  ) {
-    return {
-      typeUrl: "/cosmos.gov.v1beta1.MsgSubmitProposal",
-      value: {
-        content,
-        initialDeposit: coins(amount.toString(), "tkyve"),
-        proposer: this.account.address,
-      },
-    };
-  }
-
-  public submitTextProposal(
-    amount: string,
-    value: TextProposal,
-    fee?: StdFee | "auto" | number,
-    memo?: string
-  ) {
-    const content = {
-      typeUrl: "/cosmos.gov.v1beta1.TextProposal",
-      value: TextProposal.encode(value).finish(),
-    };
-    const tx = this.createGovTx(amount, content);
-    return this.nativeClient.signAndBroadcast(
-      this.account.address,
-      [tx],
-      fee ? fee : "auto",
-      memo
-    );
-  }
-
-  public parameterChangeProposal(
-    amount: string,
-    value: ParameterChangeProposal,
-    fee?: StdFee | "auto" | number,
-    memo?: string
-  ) {
-    const content = {
-      typeUrl: "/cosmos.params.v1beta1.ParameterChangeProposal",
-      value: ParameterChangeProposal.encode(value).finish(),
-    };
-    const tx = this.createGovTx(amount, content);
-    return this.nativeClient.signAndBroadcast(
-      this.account.address,
-      [tx],
-      fee ? fee : "auto",
-      memo
-    );
-  }
-
-  public updatePoolProposal(
-    amount: string,
-    value: UpdatePoolProposal,
-    fee?: StdFee | "auto" | number,
-    memo?: string
-  ) {
-    const content = {
-      typeUrl: "/kyve.registry.v1beta1.UpdatePoolProposal",
-      value: UpdatePoolProposal.encode(value).finish(),
-    };
-    const tx = this.createGovTx(amount, content);
-    return this.nativeClient.signAndBroadcast(
-      this.account.address,
-      [tx],
-      fee ? fee : "auto",
-      memo
-    );
-  }
-
-  public pausePoolProposal(
-    amount: string,
-    value: PausePoolProposal,
-    fee?: StdFee | "auto" | number,
-    memo?: string
-  ) {
-    const content = {
-      typeUrl: "/kyve.registry.v1beta1.PausePoolProposal",
-      value: PausePoolProposal.encode(value).finish(),
-    };
-    const tx = this.createGovTx(amount, content);
-    return this.nativeClient.signAndBroadcast(
-      this.account.address,
-      [tx],
-      fee ? fee : "auto",
-      memo
-    );
-  }
-
-  public unpausePoolProposal(
-    amount: string,
-    value: UnpausePoolProposal,
-    fee?: StdFee | "auto" | number,
-    memo?: string
-  ) {
-    const content = {
-      typeUrl: "/kyve.registry.v1beta1.UnpausePoolProposal",
-      value: UnpausePoolProposal.encode(value).finish(),
-    };
-    const tx = this.createGovTx(amount, content);
-    return this.nativeClient.signAndBroadcast(
-      this.account.address,
-      [tx],
-      fee ? fee : "auto",
-      memo
-    );
-  }
-
-  public schedulePoolUpgradeProposal(
-    amount: string,
-    value: SchedulePoolUpgradeProposal,
-    fee?: StdFee | "auto" | number,
-    memo?: string
-  ) {
-    const content = {
-      typeUrl: "/kyve.registry.v1beta1.SchedulePoolUpgradeProposal",
-      value: SchedulePoolUpgradeProposal.encode(value).finish(),
-    };
-    const tx = this.createGovTx(amount, content);
-    return this.nativeClient.signAndBroadcast(
-      this.account.address,
-      [tx],
-      fee ? fee : "auto",
-      memo
-    );
-  }
-
-  public cancelPoolUpgradeProposal(
-    amount: string,
-    value: CancelPoolUpgradeProposal,
-    fee?: StdFee | "auto" | number,
-    memo?: string
-  ) {
-    const content = {
-      typeUrl: "/kyve.registry.v1beta1.CancelPoolUpgradeProposal",
-      value: CancelPoolUpgradeProposal.encode(value).finish(),
-    };
-    const tx = this.createGovTx(amount, content);
-    return this.nativeClient.signAndBroadcast(
-      this.account.address,
-      [tx],
-      fee ? fee : "auto",
-      memo
-    );
-  }
   async getKyveBalance() {
     const data = await this.nativeClient.getBalance(
-      this.account.address,
-      "tkyve"
+        this.account.address,
+        DENOM
     );
     return data.amount;
   }

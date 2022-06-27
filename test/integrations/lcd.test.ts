@@ -1,67 +1,23 @@
 import KyveSDK from "../../src";
-import * as TJS from "typescript-json-schema";
-import { resolve } from "path";
 import { JsonSchemaGenerator } from "typescript-json-schema/typescript-json-schema";
-import AJV from "ajv";
-import { ErrorObject } from "ajv/lib/types";
-import { Definition } from "typescript-json-schema";
 import { KyveLCDClientType } from "../../src/clients/lcd-client/client";
+import {createValidator} from "../helper";
 const TEST_NETWORK = "korellia";
 const PATH_TO_QUERY_TYPES =
   "./node_modules/@kyve/proto/dist/proto/kyve/registry/v1beta1/query";
 const TEST_HEIGHT = "1000000";
-/** TYPESCRIPT TO JSON SCHEMA SET UP **/
 
-// optionally pass argument to schema generator
-const settings: TJS.PartialArgs = {
-  required: true,
-  noExtraProps: true,
-};
-
-// optionally pass ts compiler options
-const compilerOptions: TJS.CompilerOptions = {
-  strictNullChecks: false,
-  additionalProperties: false,
-};
-
-const program = TJS.getProgramFromFiles(
-  [resolve(PATH_TO_QUERY_TYPES)],
-  compilerOptions
-);
-/** END TYPESCRIPT TO JSON SCHEMA SET UP **/
 let lcdClient: KyveLCDClientType;
 let typeQuerySchemas: JsonSchemaGenerator;
-let ajv: AJV;
-
+let validate: Function;
 beforeAll(async () => {
   const sdk = new KyveSDK(TEST_NETWORK);
   lcdClient = await sdk.createLCDClient();
-  typeQuerySchemas = TJS.buildGenerator(
-    program,
-    settings
-  ) as unknown as JsonSchemaGenerator;
-  ajv = new AJV({ strict: true });
-  if (!typeQuerySchemas) {
-    throw new Error("Can't find query type to generate JSON schema ");
-  }
+  const result = createValidator([PATH_TO_QUERY_TYPES])
+  validate = result.validate;
+  typeQuerySchemas = result.typeQuerySchemas
 });
 
-function validate(
-  schema: Definition,
-  data: any
-): { valid: boolean; errors: ErrorObject[] | null } {
-  const validate = ajv.compile(schema);
-  validate(data);
-  if (validate.errors)
-    return {
-      valid: false,
-      errors: validate.errors,
-    };
-  return {
-    valid: true,
-    errors: null,
-  };
-}
 
 it("Query <params>", async () => {
   const result = await lcdClient.kyve.registry.v1beta1.params();
