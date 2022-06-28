@@ -1,7 +1,6 @@
 import { MsgClaimUploaderRole, MsgDefundPool, MsgDelegatePool, MsgFundPool, MsgStakePool, MsgSubmitBundleProposal, MsgUndelegatePool, MsgUnstakePool, MsgUpdateMetadata, MsgVoteProposal, MsgWithdrawPool } from "@kyve/proto/dist/proto/kyve/registry/v1beta1/tx";
 import { StdFee } from "@cosmjs/amino/build/signdoc";
 import { AccountData } from "@cosmjs/amino/build/signer";
-import { MessageEvent } from "../../../types/events";
 import { Client } from "../../../types/client";
 export default class KyveBaseMsg {
     private nativeClient;
@@ -55,6 +54,5 @@ export default class KyveBaseMsg {
         fee?: StdFee | "auto" | number;
         memo?: string;
     }): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
-    getMessageEventLogs(fromBlock: number, toBlock: number): Promise<MessageEvent[]>;
     getKyveBalance(): Promise<string>;
 }
