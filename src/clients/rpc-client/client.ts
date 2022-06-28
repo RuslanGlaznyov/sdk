@@ -1,21 +1,21 @@
 import { AccountData } from "@cosmjs/amino/build/signer";
 import KyveBaseMethods from "./kyve/base.v1beta1";
 import KyveGovMethods from "./kyve/gov.v1beta1";
-import { Client } from "../../types/client";
+import {SigningStargateClient} from "@cosmjs/stargate";
 
 export default class KyveClient {
-  public nativeClient: Client;
+  public nativeClient: SigningStargateClient;
   public readonly account: AccountData;
-  public kyve: { v1beta1: { base: KyveBaseMethods, gov: KyveGovMethods} };
+  public kyve: { v1beta1: { base: KyveBaseMethods; gov: KyveGovMethods } };
 
-  constructor(client: Client, account: AccountData) {
+  constructor(client: SigningStargateClient, account: AccountData) {
     this.account = account;
     this.nativeClient = client;
     this.kyve = {
-        v1beta1: {
-          base: new KyveBaseMethods(this.nativeClient, this.account),
-          gov:  new KyveGovMethods(this.nativeClient, this.account)
-        },
+      v1beta1: {
+        base: new KyveBaseMethods(this.nativeClient, this.account),
+        gov: new KyveGovMethods(this.nativeClient, this.account),
+      },
     };
   }
 }

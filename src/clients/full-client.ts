@@ -6,7 +6,6 @@ import {
 import { OfflineSigner, Registry } from "@cosmjs/proto-signing";
 import * as KyveRegistryTx from "../registry/tx.registry";
 import KyveClient from "./rpc-client/client";
-import { Client } from "../types/client";
 import KyveWebClient from "./rpc-client/web.client";
 
 export async function getSigningKyveClient(
@@ -36,11 +35,8 @@ export async function getSigningKyveClient(
       registry,
       gasPrice,
     });
-  //@ts-ignore
-  client.rpcEndpoint = rpcEndpoint;
-  const newClient = client as Client;
   const [account] = await signer.getAccounts();
   if (typeof walletName === "string")
-    return new KyveWebClient(newClient, account, walletName);
-  return new KyveClient(newClient, account);
+    return new KyveWebClient(client, account, walletName);
+  return new KyveClient(client, account);
 }

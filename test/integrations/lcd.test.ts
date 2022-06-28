@@ -1,7 +1,7 @@
 import KyveSDK from "../../src";
 import { JsonSchemaGenerator } from "typescript-json-schema/typescript-json-schema";
 import { KyveLCDClientType } from "../../src/clients/lcd-client/client";
-import {createValidator} from "../helper";
+import { createValidator } from "../helper";
 const TEST_NETWORK = "korellia";
 const PATH_TO_QUERY_TYPES =
   "./node_modules/@kyve/proto/dist/proto/kyve/registry/v1beta1/query";
@@ -13,11 +13,10 @@ let validate: Function;
 beforeAll(async () => {
   const sdk = new KyveSDK(TEST_NETWORK);
   lcdClient = await sdk.createLCDClient();
-  const result = createValidator([PATH_TO_QUERY_TYPES])
+  const result = createValidator([PATH_TO_QUERY_TYPES]);
   validate = result.validate;
-  typeQuerySchemas = result.typeQuerySchemas
+  typeQuerySchemas = result.typeQuerySchemas;
 });
-
 
 it("Query <params>", async () => {
   const result = await lcdClient.kyve.registry.v1beta1.params();

@@ -101,7 +101,6 @@ var KyveBaseMsg = /** @class */ (function () {
         var tx = tx_registry_1.withTypeUrl.updateMetadata(__assign(__assign({}, value), { creator: this.account.address }));
         return this.nativeClient.signAndBroadcast(this.account.address, [tx], (options === null || options === void 0 ? void 0 : options.fee) ? options === null || options === void 0 ? void 0 : options.fee : "auto", options === null || options === void 0 ? void 0 : options.memo);
     };
-    //todo test
     KyveBaseMsg.prototype.transfer = function (recipient, amount, options) {
         return __awaiter(this, void 0, void 0, function () {
             var parsedAmount;

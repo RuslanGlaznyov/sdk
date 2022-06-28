@@ -80,7 +80,7 @@ var web_client_1 = __importDefault(require("./rpc-client/web.client"));
 function getSigningKyveClient(rpcEndpoint, signer, walletName, defaultTypes) {
     if (defaultTypes === void 0) { defaultTypes = stargate_1.defaultRegistryTypes; }
     return __awaiter(this, void 0, void 0, function () {
-        var registry, gasPrice, client, newClient, account;
+        var registry, gasPrice, client, account;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -92,15 +92,12 @@ function getSigningKyveClient(rpcEndpoint, signer, walletName, defaultTypes) {
                         })];
                 case 1:
                     client = _a.sent();
-                    //@ts-ignore
-                    client.rpcEndpoint = rpcEndpoint;
-                    newClient = client;
                     return [4 /*yield*/, signer.getAccounts()];
                 case 2:
                     account = (_a.sent())[0];
                     if (typeof walletName === "string")
-                        return [2 /*return*/, new web_client_1["default"](newClient, account, walletName)];
-                    return [2 /*return*/, new client_1["default"](newClient, account)];
+                        return [2 /*return*/, new web_client_1["default"](client, account, walletName)];
+                    return [2 /*return*/, new client_1["default"](client, account)];
             }
         });
     });

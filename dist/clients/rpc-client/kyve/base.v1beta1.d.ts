@@ -1,11 +1,11 @@
 import { MsgClaimUploaderRole, MsgDefundPool, MsgDelegatePool, MsgFundPool, MsgStakePool, MsgSubmitBundleProposal, MsgUndelegatePool, MsgUnstakePool, MsgUpdateMetadata, MsgVoteProposal, MsgWithdrawPool } from "@kyve/proto/dist/proto/kyve/registry/v1beta1/tx";
+import { SigningStargateClient } from "@cosmjs/stargate";
 import { StdFee } from "@cosmjs/amino/build/signdoc";
 import { AccountData } from "@cosmjs/amino/build/signer";
-import { Client } from "../../../types/client";
 export default class KyveBaseMsg {
     private nativeClient;
     readonly account: AccountData;
-    constructor(client: Client, account: AccountData);
+    constructor(client: SigningStargateClient, account: AccountData);
     foundPool(value: Omit<MsgFundPool, "creator">, options?: {
         fee?: StdFee | "auto" | number;
         memo?: string;

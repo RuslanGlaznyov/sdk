@@ -1,13 +1,13 @@
+import { SigningStargateClient } from "@cosmjs/stargate";
 import { StdFee } from "@cosmjs/amino/build/signdoc";
 import { AccountData } from "@cosmjs/amino/build/signer";
-import { Client } from "../../../types/client";
 import { TextProposal } from "@kyve/proto/dist/proto/cosmos/gov/v1beta1/gov";
 import { ParameterChangeProposal } from "@kyve/proto/dist/proto/cosmos/params/v1beta1/params";
 import { CancelPoolUpgradeProposal, PausePoolProposal, SchedulePoolUpgradeProposal, UnpausePoolProposal, UpdatePoolProposal } from "@kyve/proto/dist/proto/kyve/registry/v1beta1/gov";
 export default class KyveGovMsg {
     private nativeClient;
     readonly account: AccountData;
-    constructor(client: Client, account: AccountData);
+    constructor(client: SigningStargateClient, account: AccountData);
     private createGovTx;
     submitTextProposal(amount: string, value: TextProposal, options?: {
         fee?: StdFee | "auto" | number;
