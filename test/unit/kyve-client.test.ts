@@ -50,7 +50,7 @@ const TEST_AMOUNT = "1000000000";
 const validator = createValidator(typesFiles);
 const BaseMethods = [
   {
-    methodName: "foundPool",
+    methodName: "fundPool",
     parameters: {
       params: MsgFundPool.fromJSON({}),
       schema: validator.typeQuerySchemas.getSchemaForSymbol("MsgFundPool"),

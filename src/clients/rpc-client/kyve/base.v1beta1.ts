@@ -29,7 +29,7 @@ export default class KyveBaseMsg {
     this.nativeClient = client;
   }
 
-   public async foundPool(
+   public async fundPool(
     value: Omit<MsgFundPool, "creator">,
     options?: {
       fee?: StdFee | "auto" | number;
