@@ -28,6 +28,8 @@ import {
 } from "@kyve/proto/dist/proto/kyve/registry/v1beta1/gov";
 import BigNumber from "bignumber.js";
 import { SigningStargateClient } from "@cosmjs/stargate";
+import {cosmos} from "@keplr-wallet/cosmos";
+import TxRaw = cosmos.tx.v1beta1.TxRaw;
 const PATH_TO_TYPES =
   "./node_modules/@kyve/proto/dist/proto/kyve/registry/v1beta1";
 
@@ -140,15 +142,16 @@ const BaseMethods = [
   },
 ] as const;
 let kyveClient: KyveClient;
-let mockSignAndBroadcast: Mock;
+let mockSign: Mock;
 let mockSendTokens: Mock;
 let mockGetBalance: Mock;
 beforeEach(() => {
-  mockSignAndBroadcast = jest.fn();
+  mockSign = jest.fn(() => TxRaw.create());
   mockSendTokens = jest.fn();
   mockGetBalance = jest.fn(() => ({ amount: 0 }));
   const mockNativeClient = {
-    signAndBroadcast: mockSignAndBroadcast,
+    simulate: () => Promise.resolve(1),
+    sign: mockSign,
     sendTokens: mockSendTokens,
     getBalance: mockGetBalance,
   } as unknown as SigningStargateClient;
@@ -164,9 +167,9 @@ describe("Base Methods", () => {
         { memo: TEST_MEMO, fee: TEST_FEE }
       );
 
-      expect(mockSignAndBroadcast).toHaveBeenCalledTimes(1);
+      expect(mockSign).toHaveBeenCalledTimes(1);
 
-      const [[testAddress, [tx], fee, memo]] = mockSignAndBroadcast.mock.calls;
+      const [[testAddress, [tx], fee, memo]] = mockSign.mock.calls;
       expect(testAddress).toEqual(mockAccountData.address);
 
       expect(tx).toEqual(
@@ -181,7 +184,7 @@ describe("Base Methods", () => {
         tx.value
       );
       expect(validationResult.valid).toBeTruthy();
-      expect(fee).toEqual(TEST_FEE);
+      expect(Object.keys(fee).sort()).toEqual(['amount', 'gas'].sort())
     });
   });
 
@@ -258,8 +261,8 @@ describe("Gov methods", () => {
       await kyveClient.kyve.v1beta1.gov[method.method](TEST_AMOUNT, govParam, {
         isExpedited: true,
       });
-      expect(mockSignAndBroadcast).toHaveBeenCalledTimes(1);
-      const [[testAddress, [tx], fee]] = mockSignAndBroadcast.mock.calls;
+      expect(mockSign).toHaveBeenCalledTimes(1);
+      const [[testAddress, [tx], fee]] = mockSign.mock.calls;
       expect(testAddress).toEqual(mockAccountData.address);
       expect(tx).toEqual(
         expect.objectContaining({
@@ -280,7 +283,8 @@ describe("Gov methods", () => {
           },
         })
       );
-      expect(fee).toEqual("auto");
+
+      expect(Object.keys(fee).sort()).toEqual(['amount', 'gas'].sort())
       expect(method.decoder.decode(tx.value.content.value)).toEqual(govParam);
     });
   });

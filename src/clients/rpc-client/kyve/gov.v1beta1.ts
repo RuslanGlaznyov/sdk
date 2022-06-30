@@ -1,4 +1,4 @@
-import { coins, SigningStargateClient } from "@cosmjs/stargate";
+import { coins, SigningStargateClient} from "@cosmjs/stargate";
 import { StdFee } from "@cosmjs/amino/build/signdoc";
 import { AccountData } from "@cosmjs/amino/build/signer";
 import { DENOM } from "../../../constants";
@@ -11,6 +11,7 @@ import {
   UnpausePoolProposal,
   UpdatePoolProposal,
 } from "@kyve/proto/dist/proto/kyve/registry/v1beta1/gov";
+import {signTx, TxPromise} from "../../../utils";
 
 export default class KyveGovMsg {
   private nativeClient: SigningStargateClient;
@@ -37,7 +38,7 @@ export default class KyveGovMsg {
     };
   }
 
-  public submitTextProposal(
+  public async submitTextProposal(
     amount: string,
     value: TextProposal,
     options?: {
@@ -51,15 +52,10 @@ export default class KyveGovMsg {
       value: TextProposal.encode(value).finish(),
     };
     const tx = this.createGovTx(amount, content, options?.isExpedited);
-    return this.nativeClient.signAndBroadcast(
-      this.account.address,
-      [tx],
-      options?.fee ? options?.fee : "auto",
-      options?.memo
-    );
+    return new TxPromise(this.nativeClient, await signTx(this.nativeClient, this.account.address,  tx, options))
   }
 
-  public parameterChangeProposal(
+  public async parameterChangeProposal(
     amount: string,
     value: ParameterChangeProposal,
     options?: {
@@ -73,15 +69,10 @@ export default class KyveGovMsg {
       value: ParameterChangeProposal.encode(value).finish(),
     };
     const tx = this.createGovTx(amount, content, options?.isExpedited);
-    return this.nativeClient.signAndBroadcast(
-      this.account.address,
-      [tx],
-      options?.fee ? options?.fee : "auto",
-      options?.memo
-    );
+    return new TxPromise(this.nativeClient, await signTx(this.nativeClient, this.account.address,  tx, options))
   }
 
-  public updatePoolProposal(
+  public async updatePoolProposal(
     amount: string,
     value: UpdatePoolProposal,
     options?: {
@@ -95,15 +86,11 @@ export default class KyveGovMsg {
       value: UpdatePoolProposal.encode(value).finish(),
     };
     const tx = this.createGovTx(amount, content, options?.isExpedited);
-    return this.nativeClient.signAndBroadcast(
-      this.account.address,
-      [tx],
-      options?.fee ? options?.fee : "auto",
-      options?.memo
-    );
+    return new TxPromise(this.nativeClient, await signTx(this.nativeClient, this.account.address,  tx, options))
+
   }
 
-  public pausePoolProposal(
+  public async pausePoolProposal(
     amount: string,
     value: PausePoolProposal,
     options?: {
@@ -117,15 +104,11 @@ export default class KyveGovMsg {
       value: PausePoolProposal.encode(value).finish(),
     };
     const tx = this.createGovTx(amount, content, options?.isExpedited);
-    return this.nativeClient.signAndBroadcast(
-      this.account.address,
-      [tx],
-      options?.fee ? options?.fee : "auto",
-      options?.memo
-    );
+    return new TxPromise(this.nativeClient, await signTx(this.nativeClient, this.account.address,  tx, options))
+
   }
 
-  public unpausePoolProposal(
+  public async unpausePoolProposal(
     amount: string,
     value: UnpausePoolProposal,
     options?: {
@@ -139,15 +122,10 @@ export default class KyveGovMsg {
       value: UnpausePoolProposal.encode(value).finish(),
     };
     const tx = this.createGovTx(amount, content, options?.isExpedited);
-    return this.nativeClient.signAndBroadcast(
-      this.account.address,
-      [tx],
-      options?.fee ? options.fee : "auto",
-      options?.memo
-    );
+    return new TxPromise(this.nativeClient, await signTx(this.nativeClient, this.account.address,  tx, options))
   }
 
-  public schedulePoolUpgradeProposal(
+  public async schedulePoolUpgradeProposal(
     amount: string,
     value: SchedulePoolUpgradeProposal,
     options?: {
@@ -161,15 +139,11 @@ export default class KyveGovMsg {
       value: SchedulePoolUpgradeProposal.encode(value).finish(),
     };
     const tx = this.createGovTx(amount, content, options?.isExpedited);
-    return this.nativeClient.signAndBroadcast(
-      this.account.address,
-      [tx],
-      options?.fee ? options?.fee : "auto",
-      options?.memo
-    );
+    return new TxPromise(this.nativeClient, await signTx(this.nativeClient, this.account.address,  tx, options))
+
   }
 
-  public cancelPoolUpgradeProposal(
+  public async cancelPoolUpgradeProposal(
     amount: string,
     value: CancelPoolUpgradeProposal,
     options: {
@@ -183,11 +157,6 @@ export default class KyveGovMsg {
       value: CancelPoolUpgradeProposal.encode(value).finish(),
     };
     const tx = this.createGovTx(amount, content, options?.isExpedited);
-    return this.nativeClient.signAndBroadcast(
-      this.account.address,
-      [tx],
-      options?.fee ? options?.fee : "auto",
-      options?.memo
-    );
+    return new TxPromise(this.nativeClient, await signTx(this.nativeClient, this.account.address,  tx, options))
   }
 }
