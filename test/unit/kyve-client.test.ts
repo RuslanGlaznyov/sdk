@@ -27,7 +27,7 @@ import {
   UpdatePoolProposal,
 } from "@kyve/proto/dist/proto/kyve/registry/v1beta1/gov";
 import BigNumber from "bignumber.js";
-import {SigningStargateClient} from "@cosmjs/stargate";
+import { SigningStargateClient } from "@cosmjs/stargate";
 const PATH_TO_TYPES =
   "./node_modules/@kyve/proto/dist/proto/kyve/registry/v1beta1";
 
@@ -159,8 +159,8 @@ describe("Base Methods", () => {
   BaseMethods.forEach((method) => {
     it(`method ${method.methodName}`, async () => {
       await kyveClient.kyve.v1beta1.base[method.methodName](
-          //@ts-ignore have no idea how to create it generic. btw ts-ignore is ok, because we check params from json schema
-          method.parameters.params,
+        //@ts-ignore have no idea how to create it generic. btw ts-ignore is ok, because we check params from json schema
+        method.parameters.params,
         { memo: TEST_MEMO, fee: TEST_FEE }
       );
 

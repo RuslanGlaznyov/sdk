@@ -2,6 +2,7 @@ import KyveSDK from "../../src";
 import { JsonSchemaGenerator } from "typescript-json-schema/typescript-json-schema";
 import { KyveLCDClientType } from "../../src/clients/lcd-client/client";
 import { createValidator } from "../helper";
+import { QueryAccountDelegationUnbondingsResponse } from "@kyve/proto/dist/proto/kyve/registry/v1beta1/query";
 const TEST_NETWORK = "korellia";
 const PATH_TO_QUERY_TYPES =
   "./node_modules/@kyve/proto/dist/proto/kyve/registry/v1beta1/query";
@@ -372,5 +373,76 @@ it("Query <stakersByPoolAndDelegator>", async () => {
   delete schema.properties?.pagination;
   delete stakersByPoolAndDelegatorRes.pagination;
   const vResult = validate(schema, stakersByPoolAndDelegatorRes);
+  expect(vResult.valid).toBeTruthy();
+});
+
+it("Query <accountStakingUnbondingsRequest>", async () => {
+  const pool = await lcdClient.kyve.registry.v1beta1.pools({
+    paused: false,
+    pagination: { limit: "1" },
+  });
+  const stakersListResponse = await lcdClient.kyve.registry.v1beta1.stakersList(
+    {
+      pool_id: pool.pools[0].id,
+    }
+  );
+  //todo: suppose that in a pool at least one unbonding staker, need mock data
+  const staker = stakersListResponse.stakers.filter(
+    (it) => it.unbonding_amount.length > 1
+  );
+  const accountStakingUnbondingResponse =
+    await lcdClient.kyve.registry.v1beta1.accountStakingUnbonding({
+      address: staker[0].account,
+    });
+  const schema = typeQuerySchemas.getSchemaForSymbol(
+    "QueryAccountStakingUnbondingsResponse"
+  );
+  delete schema.properties?.pagination;
+  delete accountStakingUnbondingResponse.pagination;
+  const vResult = validate(schema, accountStakingUnbondingResponse);
+  expect(vResult.valid).toBeTruthy();
+});
+
+it("Query <accountDelegationUnbondings>", async () => {
+  const pool = await lcdClient.kyve.registry.v1beta1.pools({
+    paused: false,
+    pagination: { limit: "1" },
+  });
+  const stakersListResponse = await lcdClient.kyve.registry.v1beta1.stakersList(
+    {
+      pool_id: pool.pools[0].id,
+    }
+  );
+  //todo: suppose that in a pool at least one unbonding staker, need mock data
+  const unboandingStakers = stakersListResponse.stakers.filter(
+    (it) => it.unbonding_amount.length > 1
+  );
+  const delegatorsRes =
+    await lcdClient.kyve.registry.v1beta1.delegatorsByPoolAndStaker({
+      pool_id: pool.pools[0].id,
+      staker: unboandingStakers[0].staker,
+    });
+
+  const accountDelegationUnbondingRes = (
+    await Promise.all(
+      delegatorsRes.delegators.map(async (delegator) => {
+        const accountStakingUnbondingResponse =
+          await lcdClient.kyve.registry.v1beta1.accountDelegationUnbondings({
+            address: delegator.delegator,
+          });
+
+        if (accountStakingUnbondingResponse.unbondings.length) {
+          return accountStakingUnbondingResponse;
+        }
+      })
+    )
+  ).find(Boolean);
+
+  const schema = typeQuerySchemas.getSchemaForSymbol(
+    "QueryAccountDelegationUnbondingsResponse"
+  );
+  delete schema.properties?.pagination;
+  delete accountDelegationUnbondingRes?.pagination;
+  const vResult = validate(schema, accountDelegationUnbondingRes);
   expect(vResult.valid).toBeTruthy();
 });

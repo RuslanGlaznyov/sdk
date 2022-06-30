@@ -11,7 +11,7 @@ import {
   MsgVoteProposal,
   MsgWithdrawPool,
 } from "@kyve/proto/dist/proto/kyve/registry/v1beta1/tx";
-import {coins, SigningStargateClient} from "@cosmjs/stargate";
+import { coins, SigningStargateClient } from "@cosmjs/stargate";
 import { StdFee } from "@cosmjs/amino/build/signdoc";
 import { withTypeUrl } from "../../../registry/tx.registry";
 import { AccountData } from "@cosmjs/amino/build/signer";

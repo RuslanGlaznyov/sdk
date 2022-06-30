@@ -367,6 +367,40 @@ var KyveRegistryLCDClient = /** @class */ (function (_super) {
             });
         });
     };
+    KyveRegistryLCDClient.prototype.accountStakingUnbonding = function (params) {
+        return __awaiter(this, void 0, void 0, function () {
+            var parameters, endpoint;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        parameters = {};
+                        if (typeof (params === null || params === void 0 ? void 0 : params.pagination) !== "undefined") {
+                            parameters.pagination = params.pagination;
+                        }
+                        endpoint = "kyve/registry/v1beta1/account_staking_unbondings/".concat(params.address);
+                        return [4 /*yield*/, this.request(endpoint, parameters)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    KyveRegistryLCDClient.prototype.accountDelegationUnbondings = function (params) {
+        return __awaiter(this, void 0, void 0, function () {
+            var parameters, endpoint;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        parameters = {};
+                        if (typeof (params === null || params === void 0 ? void 0 : params.pagination) !== "undefined") {
+                            parameters.pagination = params.pagination;
+                        }
+                        endpoint = "kyve/registry/v1beta1/account_delegation_unbondings/".concat(params.address);
+                        return [4 /*yield*/, this.request(endpoint, parameters)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
     return KyveRegistryLCDClient;
 }(lcd_client_abstract_1.AbstractKyveLCDClient));
 exports.KyveRegistryLCDClient = KyveRegistryLCDClient;

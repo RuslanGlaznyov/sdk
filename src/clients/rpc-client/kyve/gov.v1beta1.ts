@@ -1,4 +1,4 @@
-import {coins, SigningStargateClient} from "@cosmjs/stargate";
+import { coins, SigningStargateClient } from "@cosmjs/stargate";
 import { StdFee } from "@cosmjs/amino/build/signdoc";
 import { AccountData } from "@cosmjs/amino/build/signer";
 import { DENOM } from "../../../constants";

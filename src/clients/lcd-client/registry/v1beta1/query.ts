@@ -38,6 +38,10 @@ import {
   QueryStakersByPoolAndDelegatorResponse,
   QueryStakersListRequest,
   QueryStakersListResponse,
+  QueryAccountStakingUnbondingsRequest,
+  QueryAccountStakingUnbondingsResponse,
+  QueryAccountDelegationUnbondingsResponse,
+  QueryAccountDelegationUnbondingsRequest,
 } from "@kyve/proto/dist/proto/kyve/registry/v1beta1/query";
 import { PageRequest } from "@kyve/proto/dist/proto/cosmos/base/query/v1beta1/pagination";
 import { AbstractKyveLCDClient } from "../../lcd-client.abstract";
@@ -211,6 +215,7 @@ export class KyveRegistryLCDClient extends AbstractKyveLCDClient {
     const endpoint = `kyve/registry/v1beta1/account_funded_list/${params.address}`;
     return await this.request(endpoint);
   }
+
   /* AccountStakedList ... */
   async accountStakedList(
     params: PaginationPartialRequestUtilType<QueryAccountStakedListRequest>
@@ -268,6 +273,34 @@ export class KyveRegistryLCDClient extends AbstractKyveLCDClient {
     }
 
     const endpoint = `kyve/registry/v1beta1/stakers_by_pool_and_delegator/${params.pool_id}/${params.delegator}`;
+    return await this.request(endpoint, parameters);
+  }
+
+  async accountStakingUnbonding(
+    params: PaginationAllPartialRequestUtilType<QueryAccountStakingUnbondingsRequest>
+  ): Promise<
+    PaginationResponseTypeUtil<QueryAccountStakingUnbondingsResponse>
+  > {
+    const parameters: Record<string, any> = {};
+
+    if (typeof params?.pagination !== "undefined") {
+      parameters.pagination = params.pagination;
+    }
+    const endpoint = `kyve/registry/v1beta1/account_staking_unbondings/${params.address}`;
+    return await this.request(endpoint, parameters);
+  }
+
+  async accountDelegationUnbondings(
+    params: PaginationAllPartialRequestUtilType<QueryAccountDelegationUnbondingsRequest>
+  ): Promise<
+    PaginationResponseTypeUtil<QueryAccountDelegationUnbondingsResponse>
+  > {
+    const parameters: Record<string, any> = {};
+
+    if (typeof params?.pagination !== "undefined") {
+      parameters.pagination = params.pagination;
+    }
+    const endpoint = `kyve/registry/v1beta1/account_delegation_unbondings/${params.address}`;
     return await this.request(endpoint, parameters);
   }
 }
