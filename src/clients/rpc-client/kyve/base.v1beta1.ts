@@ -11,14 +11,14 @@ import {
   MsgVoteProposal,
   MsgWithdrawPool,
 } from "@kyve/proto/dist/proto/kyve/registry/v1beta1/tx";
-import { coins, SigningStargateClient} from "@cosmjs/stargate";
+import { coins, SigningStargateClient } from "@cosmjs/stargate";
 import { StdFee } from "@cosmjs/amino/build/signdoc";
 import { withTypeUrl } from "../../../registry/tx.registry";
 import { AccountData } from "@cosmjs/amino/build/signer";
 import { BigNumber } from "bignumber.js";
 import { KYVE_DECIMALS } from "../../../constants";
 import { DENOM } from "../../../constants";
-import {signTx, TxPromise} from "../../../utils";
+import { signTx, TxPromise } from "../../../utils";
 
 export default class KyveBaseMsg {
   private nativeClient: SigningStargateClient;
@@ -29,7 +29,7 @@ export default class KyveBaseMsg {
     this.nativeClient = client;
   }
 
-   public async fundPool(
+  public async fundPool(
     value: Omit<MsgFundPool, "creator">,
     options?: {
       fee?: StdFee | "auto" | number;
@@ -40,8 +40,11 @@ export default class KyveBaseMsg {
       ...value,
       creator: this.account.address,
     });
-     return new TxPromise(this.nativeClient, await signTx(this.nativeClient, this.account.address,  tx, options))
-   }
+    return new TxPromise(
+      this.nativeClient,
+      await signTx(this.nativeClient, this.account.address, tx, options)
+    );
+  }
 
   public async defundPool(
     value: Omit<MsgDefundPool, "creator">,
@@ -54,8 +57,10 @@ export default class KyveBaseMsg {
       ...value,
       creator: this.account.address,
     });
-    return new TxPromise(this.nativeClient, await signTx(this.nativeClient, this.account.address,  tx, options))
-
+    return new TxPromise(
+      this.nativeClient,
+      await signTx(this.nativeClient, this.account.address, tx, options)
+    );
   }
 
   public async stakePool(
@@ -69,8 +74,10 @@ export default class KyveBaseMsg {
       ...value,
       creator: this.account.address,
     });
-    return new TxPromise(this.nativeClient, await signTx(this.nativeClient, this.account.address,  tx, options))
-
+    return new TxPromise(
+      this.nativeClient,
+      await signTx(this.nativeClient, this.account.address, tx, options)
+    );
   }
 
   public async unstakePool(
@@ -84,8 +91,10 @@ export default class KyveBaseMsg {
       ...value,
       creator: this.account.address,
     });
-    return new TxPromise(this.nativeClient, await signTx(this.nativeClient, this.account.address,  tx, options))
-
+    return new TxPromise(
+      this.nativeClient,
+      await signTx(this.nativeClient, this.account.address, tx, options)
+    );
   }
 
   public async delegatePool(
@@ -99,8 +108,10 @@ export default class KyveBaseMsg {
       ...value,
       creator: this.account.address,
     });
-    return new TxPromise(this.nativeClient, await signTx(this.nativeClient, this.account.address,  tx, options))
-
+    return new TxPromise(
+      this.nativeClient,
+      await signTx(this.nativeClient, this.account.address, tx, options)
+    );
   }
 
   public async withdrawPool(
@@ -114,8 +125,10 @@ export default class KyveBaseMsg {
       ...value,
       creator: this.account.address,
     });
-    return new TxPromise(this.nativeClient, await signTx(this.nativeClient, this.account.address,  tx, options))
-
+    return new TxPromise(
+      this.nativeClient,
+      await signTx(this.nativeClient, this.account.address, tx, options)
+    );
   }
 
   public async undelegatePool(
@@ -129,8 +142,10 @@ export default class KyveBaseMsg {
       ...value,
       creator: this.account.address,
     });
-    return new TxPromise(this.nativeClient, await signTx(this.nativeClient, this.account.address,  tx, options))
-
+    return new TxPromise(
+      this.nativeClient,
+      await signTx(this.nativeClient, this.account.address, tx, options)
+    );
   }
 
   public async submitBundleProposal(
@@ -144,8 +159,10 @@ export default class KyveBaseMsg {
       ...value,
       creator: this.account.address,
     });
-    return new TxPromise(this.nativeClient, await signTx(this.nativeClient, this.account.address,  tx, options))
-
+    return new TxPromise(
+      this.nativeClient,
+      await signTx(this.nativeClient, this.account.address, tx, options)
+    );
   }
 
   public async voteProposal(
@@ -159,8 +176,10 @@ export default class KyveBaseMsg {
       ...value,
       creator: this.account.address,
     });
-    return new TxPromise(this.nativeClient, await signTx(this.nativeClient, this.account.address,  tx, options))
-
+    return new TxPromise(
+      this.nativeClient,
+      await signTx(this.nativeClient, this.account.address, tx, options)
+    );
   }
 
   public async claimUploaderRole(
@@ -174,8 +193,10 @@ export default class KyveBaseMsg {
       ...value,
       creator: this.account.address,
     });
-    return new TxPromise(this.nativeClient, await signTx(this.nativeClient, this.account.address,  tx, options))
-
+    return new TxPromise(
+      this.nativeClient,
+      await signTx(this.nativeClient, this.account.address, tx, options)
+    );
   }
 
   public async updateMetadata(
@@ -189,8 +210,10 @@ export default class KyveBaseMsg {
       ...value,
       creator: this.account.address,
     });
-    return new TxPromise(this.nativeClient, await signTx(this.nativeClient, this.account.address,  tx, options))
-
+    return new TxPromise(
+      this.nativeClient,
+      await signTx(this.nativeClient, this.account.address, tx, options)
+    );
   }
 
   async transfer(

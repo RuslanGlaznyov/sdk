@@ -28,7 +28,7 @@ import {
 } from "@kyve/proto/dist/proto/kyve/registry/v1beta1/gov";
 import BigNumber from "bignumber.js";
 import { SigningStargateClient } from "@cosmjs/stargate";
-import {cosmos} from "@keplr-wallet/cosmos";
+import { cosmos } from "@keplr-wallet/cosmos";
 import TxRaw = cosmos.tx.v1beta1.TxRaw;
 const PATH_TO_TYPES =
   "./node_modules/@kyve/proto/dist/proto/kyve/registry/v1beta1";
@@ -184,7 +184,7 @@ describe("Base Methods", () => {
         tx.value
       );
       expect(validationResult.valid).toBeTruthy();
-      expect(Object.keys(fee).sort()).toEqual(['amount', 'gas'].sort())
+      expect(Object.keys(fee).sort()).toEqual(["amount", "gas"].sort());
     });
   });
 
@@ -284,7 +284,7 @@ describe("Gov methods", () => {
         })
       );
 
-      expect(Object.keys(fee).sort()).toEqual(['amount', 'gas'].sort())
+      expect(Object.keys(fee).sort()).toEqual(["amount", "gas"].sort());
       expect(method.decoder.decode(tx.value.content.value)).toEqual(govParam);
     });
   });
