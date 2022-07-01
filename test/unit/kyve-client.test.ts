@@ -145,13 +145,16 @@ let kyveClient: KyveClient;
 let mockSign: Mock;
 let mockSendTokens: Mock;
 let mockGetBalance: Mock;
+let mockBTx: Mock;
 beforeEach(() => {
   mockSign = jest.fn(() => TxRaw.create());
   mockSendTokens = jest.fn();
+  mockBTx = jest.fn();
   mockGetBalance = jest.fn(() => ({ amount: 0 }));
   const mockNativeClient = {
     simulate: () => Promise.resolve(1),
     sign: mockSign,
+    broadcastTx: mockBTx,
     sendTokens: mockSendTokens,
     getBalance: mockGetBalance,
   } as unknown as SigningStargateClient;

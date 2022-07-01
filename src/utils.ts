@@ -5,18 +5,25 @@ import { toHex } from "@cosmjs/encoding";
 import { sha256 } from "@cosmjs/crypto";
 import { calculateFee, SigningStargateClient } from "@cosmjs/stargate";
 import { StdFee } from "@cosmjs/amino/build/signdoc";
+import {DeliverTxResponse} from "@cosmjs/stargate/build/stargateclient";
 
 export class TxPromise {
   private nativeClient: SigningStargateClient;
-  private txBytes: Uint8Array;
-  readonly txHash: string;
-  constructor(nativeClient: SigningStargateClient, txBytes: Uint8Array) {
+  private signer: () => Promise<Uint8Array>;
+  constructor(nativeClient: SigningStargateClient, signer: () => Promise<Uint8Array>) {
     this.nativeClient = nativeClient;
-    this.txBytes = txBytes;
-    this.txHash = toHex(sha256(this.txBytes)).toUpperCase();
+    this.signer = signer;
+  }
+  async getTxHash() {
+    return toHex(sha256(await this.signer())).toUpperCase()
   }
   async execute() {
-    return await this.nativeClient.broadcastTx(this.txBytes);
+    return await this.nativeClient.broadcastTx(await this.signer());
+  }
+  then(resolve: (arg: DeliverTxResponse) => void,
+       reject: (arg: Error) => void,
+  ) {
+     return this.signer().then(tx => this.nativeClient.broadcastTx(tx)).then(resolve).catch(reject)
   }
 }
 

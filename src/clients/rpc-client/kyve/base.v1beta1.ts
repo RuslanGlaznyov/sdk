@@ -29,7 +29,7 @@ export default class KyveBaseMsg {
     this.nativeClient = client;
   }
 
-  public async fundPool(
+  public fundPool(
     value: Omit<MsgFundPool, "creator">,
     options?: {
       fee?: StdFee | "auto" | number;
@@ -42,11 +42,11 @@ export default class KyveBaseMsg {
     });
     return new TxPromise(
       this.nativeClient,
-      await signTx(this.nativeClient, this.account.address, tx, options)
+        () =>  signTx(this.nativeClient, this.account.address, tx, options)
     );
   }
 
-  public async defundPool(
+  public defundPool(
     value: Omit<MsgDefundPool, "creator">,
     options?: {
       fee?: StdFee | "auto" | number;
@@ -59,11 +59,11 @@ export default class KyveBaseMsg {
     });
     return new TxPromise(
       this.nativeClient,
-      await signTx(this.nativeClient, this.account.address, tx, options)
+        () =>  signTx(this.nativeClient, this.account.address, tx, options)
     );
   }
 
-  public async stakePool(
+  public stakePool(
     value: Omit<MsgStakePool, "creator">,
     options?: {
       fee?: StdFee | "auto" | number;
@@ -76,11 +76,11 @@ export default class KyveBaseMsg {
     });
     return new TxPromise(
       this.nativeClient,
-      await signTx(this.nativeClient, this.account.address, tx, options)
+        () =>  signTx(this.nativeClient, this.account.address, tx, options)
     );
   }
 
-  public async unstakePool(
+  public unstakePool(
     value: Omit<MsgUnstakePool, "creator">,
     options?: {
       fee?: StdFee | "auto" | number;
@@ -93,11 +93,11 @@ export default class KyveBaseMsg {
     });
     return new TxPromise(
       this.nativeClient,
-      await signTx(this.nativeClient, this.account.address, tx, options)
+        () =>  signTx(this.nativeClient, this.account.address, tx, options)
     );
   }
 
-  public async delegatePool(
+  public delegatePool(
     value: Omit<MsgDelegatePool, "creator">,
     options?: {
       fee?: StdFee | "auto" | number;
@@ -110,11 +110,11 @@ export default class KyveBaseMsg {
     });
     return new TxPromise(
       this.nativeClient,
-      await signTx(this.nativeClient, this.account.address, tx, options)
+        () =>  signTx(this.nativeClient, this.account.address, tx, options)
     );
   }
 
-  public async withdrawPool(
+  public withdrawPool(
     value: Omit<MsgWithdrawPool, "creator">,
     options?: {
       fee?: StdFee | "auto" | number;
@@ -127,11 +127,11 @@ export default class KyveBaseMsg {
     });
     return new TxPromise(
       this.nativeClient,
-      await signTx(this.nativeClient, this.account.address, tx, options)
+        () =>  signTx(this.nativeClient, this.account.address, tx, options)
     );
   }
 
-  public async undelegatePool(
+  public undelegatePool(
     value: Omit<MsgUndelegatePool, "creator">,
     options?: {
       fee?: StdFee | "auto" | number;
@@ -144,11 +144,11 @@ export default class KyveBaseMsg {
     });
     return new TxPromise(
       this.nativeClient,
-      await signTx(this.nativeClient, this.account.address, tx, options)
+        () =>  signTx(this.nativeClient, this.account.address, tx, options)
     );
   }
 
-  public async submitBundleProposal(
+  public submitBundleProposal(
     value: Omit<MsgSubmitBundleProposal, "creator">,
     options?: {
       fee?: StdFee | "auto" | number;
@@ -161,11 +161,11 @@ export default class KyveBaseMsg {
     });
     return new TxPromise(
       this.nativeClient,
-      await signTx(this.nativeClient, this.account.address, tx, options)
+        () =>  signTx(this.nativeClient, this.account.address, tx, options)
     );
   }
 
-  public async voteProposal(
+  public voteProposal(
     value: Omit<MsgVoteProposal, "creator">,
     options?: {
       fee?: StdFee | "auto" | number;
@@ -178,11 +178,11 @@ export default class KyveBaseMsg {
     });
     return new TxPromise(
       this.nativeClient,
-      await signTx(this.nativeClient, this.account.address, tx, options)
+        () =>  signTx(this.nativeClient, this.account.address, tx, options)
     );
   }
 
-  public async claimUploaderRole(
+  public claimUploaderRole(
     value: Omit<MsgClaimUploaderRole, "creator">,
     options?: {
       fee?: StdFee | "auto" | number;
@@ -195,11 +195,11 @@ export default class KyveBaseMsg {
     });
     return new TxPromise(
       this.nativeClient,
-      await signTx(this.nativeClient, this.account.address, tx, options)
+        () =>  signTx(this.nativeClient, this.account.address, tx, options)
     );
   }
 
-  public async updateMetadata(
+  public updateMetadata(
     value: Omit<MsgUpdateMetadata, "creator">,
     options?: {
       fee?: StdFee | "auto" | number;
@@ -212,7 +212,7 @@ export default class KyveBaseMsg {
     });
     return new TxPromise(
       this.nativeClient,
-      await signTx(this.nativeClient, this.account.address, tx, options)
+        () =>  signTx(this.nativeClient, this.account.address, tx, options)
     );
   }
 

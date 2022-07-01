@@ -2,55 +2,54 @@ import { MsgClaimUploaderRole, MsgDefundPool, MsgDelegatePool, MsgFundPool, MsgS
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { StdFee } from "@cosmjs/amino/build/signdoc";
 import { AccountData } from "@cosmjs/amino/build/signer";
-import { TxPromise } from "../../../utils";
 export default class KyveBaseMsg {
     private nativeClient;
     readonly account: AccountData;
     constructor(client: SigningStargateClient, account: AccountData);
-    foundPool(value: Omit<MsgFundPool, "creator">, options?: {
+    fundPool(value: Omit<MsgFundPool, "creator">, options?: {
         fee?: StdFee | "auto" | number;
         memo?: string;
-    }): Promise<TxPromise>;
+    }): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
     defundPool(value: Omit<MsgDefundPool, "creator">, options?: {
         fee?: StdFee | "auto" | number;
         memo?: string;
-    }): Promise<TxPromise>;
+    }): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
     stakePool(value: Omit<MsgStakePool, "creator">, options?: {
         fee?: StdFee | "auto" | number;
         memo?: string;
-    }): Promise<TxPromise>;
+    }): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
     unstakePool(value: Omit<MsgUnstakePool, "creator">, options?: {
         fee?: StdFee | "auto" | number;
         memo?: string;
-    }): Promise<TxPromise>;
+    }): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
     delegatePool(value: Omit<MsgDelegatePool, "creator">, options?: {
         fee?: StdFee | "auto" | number;
         memo?: string;
-    }): Promise<TxPromise>;
+    }): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
     withdrawPool(value: Omit<MsgWithdrawPool, "creator">, options?: {
         fee?: StdFee | "auto" | number;
         memo?: string;
-    }): Promise<TxPromise>;
+    }): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
     undelegatePool(value: Omit<MsgUndelegatePool, "creator">, options?: {
         fee?: StdFee | "auto" | number;
         memo?: string;
-    }): Promise<TxPromise>;
+    }): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
     submitBundleProposal(value: Omit<MsgSubmitBundleProposal, "creator">, options?: {
         fee?: StdFee | "auto" | number;
         memo?: string;
-    }): Promise<TxPromise>;
+    }): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
     voteProposal(value: Omit<MsgVoteProposal, "creator">, options?: {
         fee?: StdFee | "auto" | number;
         memo?: string;
-    }): Promise<TxPromise>;
+    }): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
     claimUploaderRole(value: Omit<MsgClaimUploaderRole, "creator">, options?: {
         fee?: StdFee | "auto" | number;
         memo?: string;
-    }): Promise<TxPromise>;
+    }): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
     updateMetadata(value: Omit<MsgUpdateMetadata, "creator">, options?: {
         fee?: StdFee | "auto" | number;
         memo?: string;
-    }): Promise<TxPromise>;
+    }): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
     transfer(recipient: string, amount: string, options?: {
         fee?: StdFee | "auto" | number;
         memo?: string;

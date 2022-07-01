@@ -38,7 +38,7 @@ export default class KyveGovMsg {
     };
   }
 
-  public async submitTextProposal(
+  public submitTextProposal(
     amount: string,
     value: TextProposal,
     options?: {
@@ -54,11 +54,11 @@ export default class KyveGovMsg {
     const tx = this.createGovTx(amount, content, options?.isExpedited);
     return new TxPromise(
       this.nativeClient,
-      await signTx(this.nativeClient, this.account.address, tx, options)
+        () =>  signTx(this.nativeClient, this.account.address, tx, options)
     );
   }
 
-  public async parameterChangeProposal(
+  public parameterChangeProposal(
     amount: string,
     value: ParameterChangeProposal,
     options?: {
@@ -74,11 +74,11 @@ export default class KyveGovMsg {
     const tx = this.createGovTx(amount, content, options?.isExpedited);
     return new TxPromise(
       this.nativeClient,
-      await signTx(this.nativeClient, this.account.address, tx, options)
+        () =>  signTx(this.nativeClient, this.account.address, tx, options)
     );
   }
 
-  public async updatePoolProposal(
+  public updatePoolProposal(
     amount: string,
     value: UpdatePoolProposal,
     options?: {
@@ -94,11 +94,11 @@ export default class KyveGovMsg {
     const tx = this.createGovTx(amount, content, options?.isExpedited);
     return new TxPromise(
       this.nativeClient,
-      await signTx(this.nativeClient, this.account.address, tx, options)
+        () =>  signTx(this.nativeClient, this.account.address, tx, options)
     );
   }
 
-  public async pausePoolProposal(
+  public pausePoolProposal(
     amount: string,
     value: PausePoolProposal,
     options?: {
@@ -114,11 +114,11 @@ export default class KyveGovMsg {
     const tx = this.createGovTx(amount, content, options?.isExpedited);
     return new TxPromise(
       this.nativeClient,
-      await signTx(this.nativeClient, this.account.address, tx, options)
+        () =>  signTx(this.nativeClient, this.account.address, tx, options)
     );
   }
 
-  public async unpausePoolProposal(
+  public unpausePoolProposal(
     amount: string,
     value: UnpausePoolProposal,
     options?: {
@@ -134,11 +134,11 @@ export default class KyveGovMsg {
     const tx = this.createGovTx(amount, content, options?.isExpedited);
     return new TxPromise(
       this.nativeClient,
-      await signTx(this.nativeClient, this.account.address, tx, options)
+        () =>  signTx(this.nativeClient, this.account.address, tx, options)
     );
   }
 
-  public async schedulePoolUpgradeProposal(
+  public schedulePoolUpgradeProposal(
     amount: string,
     value: SchedulePoolUpgradeProposal,
     options?: {
@@ -154,11 +154,11 @@ export default class KyveGovMsg {
     const tx = this.createGovTx(amount, content, options?.isExpedited);
     return new TxPromise(
       this.nativeClient,
-      await signTx(this.nativeClient, this.account.address, tx, options)
+        () =>  signTx(this.nativeClient, this.account.address, tx, options)
     );
   }
 
-  public async cancelPoolUpgradeProposal(
+  public cancelPoolUpgradeProposal(
     amount: string,
     value: CancelPoolUpgradeProposal,
     options: {
@@ -174,7 +174,7 @@ export default class KyveGovMsg {
     const tx = this.createGovTx(amount, content, options?.isExpedited);
     return new TxPromise(
       this.nativeClient,
-      await signTx(this.nativeClient, this.account.address, tx, options)
+        () =>  signTx(this.nativeClient, this.account.address, tx, options)
     );
   }
 }

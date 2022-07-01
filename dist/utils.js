@@ -58,6 +58,9 @@ var TxPromise = /** @class */ (function () {
             });
         });
     };
+    TxPromise.prototype.then = function (resolve, reject) {
+        return this.nativeClient.broadcastTx(this.txBytes).then(resolve)["catch"](reject);
+    };
     return TxPromise;
 }());
 exports.TxPromise = TxPromise;
