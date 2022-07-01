@@ -918,7 +918,7 @@ var KyveSDK = /** @class */ (function () {
                         estimation = _a.sent();
                         multiplier = 1.5;
                         return [2 /*return*/, {
-                                amount: (0, stargate_1.coins)(0, "tkyve"),
+                                amount: (0, stargate_1.coins)(5000000, "tkyve"),
                                 gas: Math.floor(estimation * multiplier).toString()
                             }];
                 }
