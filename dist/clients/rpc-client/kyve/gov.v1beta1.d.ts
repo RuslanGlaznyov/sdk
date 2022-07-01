@@ -4,6 +4,7 @@ import { AccountData } from "@cosmjs/amino/build/signer";
 import { TextProposal } from "@kyve/proto/dist/proto/cosmos/gov/v1beta1/gov";
 import { ParameterChangeProposal } from "@kyve/proto/dist/proto/cosmos/params/v1beta1/params";
 import { CancelPoolUpgradeProposal, PausePoolProposal, SchedulePoolUpgradeProposal, UnpausePoolProposal, UpdatePoolProposal } from "@kyve/proto/dist/proto/kyve/registry/v1beta1/gov";
+import { TxPromise } from "../../../utils";
 export default class KyveGovMsg {
     private nativeClient;
     readonly account: AccountData;
@@ -13,35 +14,35 @@ export default class KyveGovMsg {
         fee?: StdFee | "auto" | number;
         memo?: string;
         isExpedited?: boolean;
-    }): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
+    }): Promise<TxPromise>;
     parameterChangeProposal(amount: string, value: ParameterChangeProposal, options?: {
         fee?: StdFee | "auto" | number;
         memo?: string;
         isExpedited?: boolean;
-    }): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
+    }): Promise<TxPromise>;
     updatePoolProposal(amount: string, value: UpdatePoolProposal, options?: {
         isExpedited?: boolean;
         fee?: StdFee | "auto" | number;
         memo?: string;
-    }): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
+    }): Promise<TxPromise>;
     pausePoolProposal(amount: string, value: PausePoolProposal, options?: {
         isExpedited?: boolean;
         fee?: StdFee | "auto" | number;
         memo?: string;
-    }): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
+    }): Promise<TxPromise>;
     unpausePoolProposal(amount: string, value: UnpausePoolProposal, options?: {
         isExpedited?: boolean;
         fee?: StdFee | "auto" | number;
         memo?: string;
-    }): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
+    }): Promise<TxPromise>;
     schedulePoolUpgradeProposal(amount: string, value: SchedulePoolUpgradeProposal, options?: {
         isExpedited?: boolean;
         fee?: StdFee | "auto" | number;
         memo?: string;
-    }): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
+    }): Promise<TxPromise>;
     cancelPoolUpgradeProposal(amount: string, value: CancelPoolUpgradeProposal, options: {
         isExpedited?: boolean;
         fee?: StdFee | "auto" | number;
         memo?: string;
-    }): Promise<import("@cosmjs/stargate").DeliverTxResponse>;
+    }): Promise<TxPromise>;
 }

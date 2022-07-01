@@ -52,54 +52,176 @@ var tx_registry_1 = require("../../../registry/tx.registry");
 var bignumber_js_1 = require("bignumber.js");
 var constants_1 = require("../../../constants");
 var constants_2 = require("../../../constants");
+var utils_1 = require("../../../utils");
 var KyveBaseMsg = /** @class */ (function () {
     function KyveBaseMsg(client, account) {
         this.account = account;
         this.nativeClient = client;
     }
     KyveBaseMsg.prototype.foundPool = function (value, options) {
-        var tx = tx_registry_1.withTypeUrl.fundPool(__assign(__assign({}, value), { creator: this.account.address }));
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], (options === null || options === void 0 ? void 0 : options.fee) ? options === null || options === void 0 ? void 0 : options.fee : "auto", options === null || options === void 0 ? void 0 : options.memo);
+        return __awaiter(this, void 0, void 0, function () {
+            var tx, _a, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        tx = tx_registry_1.withTypeUrl.fundPool(__assign(__assign({}, value), { creator: this.account.address }));
+                        _a = utils_1.TxPromise.bind;
+                        _b = [void 0, this.nativeClient];
+                        return [4 /*yield*/, (0, utils_1.signTx)(this.nativeClient, this.account.address, tx, options)];
+                    case 1: return [2 /*return*/, new (_a.apply(utils_1.TxPromise, _b.concat([_c.sent()])))()];
+                }
+            });
+        });
     };
     KyveBaseMsg.prototype.defundPool = function (value, options) {
-        var tx = tx_registry_1.withTypeUrl.defundPool(__assign(__assign({}, value), { creator: this.account.address }));
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], (options === null || options === void 0 ? void 0 : options.fee) ? options === null || options === void 0 ? void 0 : options.fee : "auto", options === null || options === void 0 ? void 0 : options.memo);
+        return __awaiter(this, void 0, void 0, function () {
+            var tx, _a, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        tx = tx_registry_1.withTypeUrl.defundPool(__assign(__assign({}, value), { creator: this.account.address }));
+                        _a = utils_1.TxPromise.bind;
+                        _b = [void 0, this.nativeClient];
+                        return [4 /*yield*/, (0, utils_1.signTx)(this.nativeClient, this.account.address, tx, options)];
+                    case 1: return [2 /*return*/, new (_a.apply(utils_1.TxPromise, _b.concat([_c.sent()])))()];
+                }
+            });
+        });
     };
     KyveBaseMsg.prototype.stakePool = function (value, options) {
-        var tx = tx_registry_1.withTypeUrl.stakePool(__assign(__assign({}, value), { creator: this.account.address }));
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], (options === null || options === void 0 ? void 0 : options.fee) ? options === null || options === void 0 ? void 0 : options.fee : "auto", options === null || options === void 0 ? void 0 : options.memo);
+        return __awaiter(this, void 0, void 0, function () {
+            var tx, _a, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        tx = tx_registry_1.withTypeUrl.stakePool(__assign(__assign({}, value), { creator: this.account.address }));
+                        _a = utils_1.TxPromise.bind;
+                        _b = [void 0, this.nativeClient];
+                        return [4 /*yield*/, (0, utils_1.signTx)(this.nativeClient, this.account.address, tx, options)];
+                    case 1: return [2 /*return*/, new (_a.apply(utils_1.TxPromise, _b.concat([_c.sent()])))()];
+                }
+            });
+        });
     };
     KyveBaseMsg.prototype.unstakePool = function (value, options) {
-        var tx = tx_registry_1.withTypeUrl.unstakePool(__assign(__assign({}, value), { creator: this.account.address }));
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], (options === null || options === void 0 ? void 0 : options.fee) ? options === null || options === void 0 ? void 0 : options.fee : "auto", options === null || options === void 0 ? void 0 : options.memo);
+        return __awaiter(this, void 0, void 0, function () {
+            var tx, _a, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        tx = tx_registry_1.withTypeUrl.unstakePool(__assign(__assign({}, value), { creator: this.account.address }));
+                        _a = utils_1.TxPromise.bind;
+                        _b = [void 0, this.nativeClient];
+                        return [4 /*yield*/, (0, utils_1.signTx)(this.nativeClient, this.account.address, tx, options)];
+                    case 1: return [2 /*return*/, new (_a.apply(utils_1.TxPromise, _b.concat([_c.sent()])))()];
+                }
+            });
+        });
     };
     KyveBaseMsg.prototype.delegatePool = function (value, options) {
-        var tx = tx_registry_1.withTypeUrl.delegatePool(__assign(__assign({}, value), { creator: this.account.address }));
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], (options === null || options === void 0 ? void 0 : options.fee) ? options === null || options === void 0 ? void 0 : options.fee : "auto", options === null || options === void 0 ? void 0 : options.memo);
+        return __awaiter(this, void 0, void 0, function () {
+            var tx, _a, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        tx = tx_registry_1.withTypeUrl.delegatePool(__assign(__assign({}, value), { creator: this.account.address }));
+                        _a = utils_1.TxPromise.bind;
+                        _b = [void 0, this.nativeClient];
+                        return [4 /*yield*/, (0, utils_1.signTx)(this.nativeClient, this.account.address, tx, options)];
+                    case 1: return [2 /*return*/, new (_a.apply(utils_1.TxPromise, _b.concat([_c.sent()])))()];
+                }
+            });
+        });
     };
     KyveBaseMsg.prototype.withdrawPool = function (value, options) {
-        var tx = tx_registry_1.withTypeUrl.withdrawPool(__assign(__assign({}, value), { creator: this.account.address }));
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], (options === null || options === void 0 ? void 0 : options.fee) ? options === null || options === void 0 ? void 0 : options.fee : "auto", options === null || options === void 0 ? void 0 : options.memo);
+        return __awaiter(this, void 0, void 0, function () {
+            var tx, _a, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        tx = tx_registry_1.withTypeUrl.withdrawPool(__assign(__assign({}, value), { creator: this.account.address }));
+                        _a = utils_1.TxPromise.bind;
+                        _b = [void 0, this.nativeClient];
+                        return [4 /*yield*/, (0, utils_1.signTx)(this.nativeClient, this.account.address, tx, options)];
+                    case 1: return [2 /*return*/, new (_a.apply(utils_1.TxPromise, _b.concat([_c.sent()])))()];
+                }
+            });
+        });
     };
     KyveBaseMsg.prototype.undelegatePool = function (value, options) {
-        var tx = tx_registry_1.withTypeUrl.undelegatePool(__assign(__assign({}, value), { creator: this.account.address }));
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], (options === null || options === void 0 ? void 0 : options.fee) ? options === null || options === void 0 ? void 0 : options.fee : "auto", options === null || options === void 0 ? void 0 : options.memo);
+        return __awaiter(this, void 0, void 0, function () {
+            var tx, _a, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        tx = tx_registry_1.withTypeUrl.undelegatePool(__assign(__assign({}, value), { creator: this.account.address }));
+                        _a = utils_1.TxPromise.bind;
+                        _b = [void 0, this.nativeClient];
+                        return [4 /*yield*/, (0, utils_1.signTx)(this.nativeClient, this.account.address, tx, options)];
+                    case 1: return [2 /*return*/, new (_a.apply(utils_1.TxPromise, _b.concat([_c.sent()])))()];
+                }
+            });
+        });
     };
     KyveBaseMsg.prototype.submitBundleProposal = function (value, options) {
-        var tx = tx_registry_1.withTypeUrl.submitBundleProposal(__assign(__assign({}, value), { creator: this.account.address }));
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], (options === null || options === void 0 ? void 0 : options.fee) ? options === null || options === void 0 ? void 0 : options.fee : "auto", options === null || options === void 0 ? void 0 : options.memo);
+        return __awaiter(this, void 0, void 0, function () {
+            var tx, _a, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        tx = tx_registry_1.withTypeUrl.submitBundleProposal(__assign(__assign({}, value), { creator: this.account.address }));
+                        _a = utils_1.TxPromise.bind;
+                        _b = [void 0, this.nativeClient];
+                        return [4 /*yield*/, (0, utils_1.signTx)(this.nativeClient, this.account.address, tx, options)];
+                    case 1: return [2 /*return*/, new (_a.apply(utils_1.TxPromise, _b.concat([_c.sent()])))()];
+                }
+            });
+        });
     };
     KyveBaseMsg.prototype.voteProposal = function (value, options) {
-        var tx = tx_registry_1.withTypeUrl.voteProposal(__assign(__assign({}, value), { creator: this.account.address }));
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], (options === null || options === void 0 ? void 0 : options.fee) ? options === null || options === void 0 ? void 0 : options.fee : "auto", options === null || options === void 0 ? void 0 : options.memo);
+        return __awaiter(this, void 0, void 0, function () {
+            var tx, _a, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        tx = tx_registry_1.withTypeUrl.voteProposal(__assign(__assign({}, value), { creator: this.account.address }));
+                        _a = utils_1.TxPromise.bind;
+                        _b = [void 0, this.nativeClient];
+                        return [4 /*yield*/, (0, utils_1.signTx)(this.nativeClient, this.account.address, tx, options)];
+                    case 1: return [2 /*return*/, new (_a.apply(utils_1.TxPromise, _b.concat([_c.sent()])))()];
+                }
+            });
+        });
     };
     KyveBaseMsg.prototype.claimUploaderRole = function (value, options) {
-        var tx = tx_registry_1.withTypeUrl.claimUploaderRole(__assign(__assign({}, value), { creator: this.account.address }));
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], (options === null || options === void 0 ? void 0 : options.fee) ? options === null || options === void 0 ? void 0 : options.fee : "auto", options === null || options === void 0 ? void 0 : options.memo);
+        return __awaiter(this, void 0, void 0, function () {
+            var tx, _a, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        tx = tx_registry_1.withTypeUrl.claimUploaderRole(__assign(__assign({}, value), { creator: this.account.address }));
+                        _a = utils_1.TxPromise.bind;
+                        _b = [void 0, this.nativeClient];
+                        return [4 /*yield*/, (0, utils_1.signTx)(this.nativeClient, this.account.address, tx, options)];
+                    case 1: return [2 /*return*/, new (_a.apply(utils_1.TxPromise, _b.concat([_c.sent()])))()];
+                }
+            });
+        });
     };
     KyveBaseMsg.prototype.updateMetadata = function (value, options) {
-        var tx = tx_registry_1.withTypeUrl.updateMetadata(__assign(__assign({}, value), { creator: this.account.address }));
-        return this.nativeClient.signAndBroadcast(this.account.address, [tx], (options === null || options === void 0 ? void 0 : options.fee) ? options === null || options === void 0 ? void 0 : options.fee : "auto", options === null || options === void 0 ? void 0 : options.memo);
+        return __awaiter(this, void 0, void 0, function () {
+            var tx, _a, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        tx = tx_registry_1.withTypeUrl.updateMetadata(__assign(__assign({}, value), { creator: this.account.address }));
+                        _a = utils_1.TxPromise.bind;
+                        _b = [void 0, this.nativeClient];
+                        return [4 /*yield*/, (0, utils_1.signTx)(this.nativeClient, this.account.address, tx, options)];
+                    case 1: return [2 /*return*/, new (_a.apply(utils_1.TxPromise, _b.concat([_c.sent()])))()];
+                }
+            });
+        });
     };
     KyveBaseMsg.prototype.transfer = function (recipient, amount, options) {
         return __awaiter(this, void 0, void 0, function () {
