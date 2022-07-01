@@ -846,7 +846,7 @@ export class KyveSDK {
     const multiplier = 1.5;
 
     return {
-      amount: coins(0, "tkyve"),
+      amount: coins(5000000, "tkyve"),
       gas: Math.floor(estimation * multiplier).toString(),
     };
   }
