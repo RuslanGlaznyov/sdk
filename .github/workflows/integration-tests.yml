@@ -22,14 +22,20 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: "checkout repo"
+        uses: actions/checkout@v3
+        with:
+          ref: "feature/v2"
+      - name: "nodejs install"
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
-      - uses: borales/actions-yarn@v3.0.0
+      - name: "dependecy install"
+        uses: borales/actions-yarn@v3.0.0
         with: 
           cmd: intsall --frozen-lockfile    
-      - uses: borales/actions-yarn@v3.0.0
+      - name: "run tests"
+        uses: borales/actions-yarn@v3.0.0
         with: 
           cmd: test:unit
