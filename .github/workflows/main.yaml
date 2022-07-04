@@ -18,7 +18,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [ 15.x, 16.x, 18.x ]
+        node-version: [ 18.x ]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -30,11 +30,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
       - name: "dependecy install"
-        uses: borales/actions-yarn@v3.0.0
-        with:
-          cmd: intsall --frozen-lockfile
+        run: yarn intsall --frozen-lockfile
       - name: "run tests"
-        uses: borales/actions-yarn@v3.0.0
-        with:
-          cmd: test:unit
+        run: yarn test:unit
