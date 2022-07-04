@@ -31,4 +31,6 @@ jobs:
     - uses: borales/actions-yarn@v3.0.0
       with: 
           cmd: intsall --frozen-lockfile    
-    - run: yarn test:unit
+    - uses: borales/actions-yarn@v3.0.0
+      with: 
+          cmd: test:unit
