@@ -55,6 +55,8 @@ jobs:
         run: echo $GITHUB_WORKSPACE
       - name: "print workspace path"
         run: cat  ${{env.WORKSPACE}}/chain/config.yml
+      - name: "go version"
+        run: go version
       - name: "start ignite"
         run: ignite chain serve -c  ${{env.WORKSPACE}}/chain/config.yml -p  ${{env.WORKSPACE}}/chain -v
         working-directory: ./chain
