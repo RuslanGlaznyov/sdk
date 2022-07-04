@@ -51,7 +51,7 @@ jobs:
         run: ls
         working-directory: ./chain
       - name: "start ignite"
-        run: ignite -h
+        run: ignite chain serve --reset-once
         working-directory: ./chain
 #      - name: "run tests"
 #        run: yarn test
