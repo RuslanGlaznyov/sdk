@@ -53,7 +53,7 @@ jobs:
       - name: "print workspace"
         run: echo $GITHUB_WORKSPACE
       - name: "start ignite"
-        run: ignite chain serve -c  echo "${GITHUB_WORKSPACE}/chain/config.yaml" -p  echo "${GITHUB_WORKSPACE}/chain" -v
+        run: ignite chain serve -c  echo ${{env.GITHUB_WORKSPACE}}/chain/config.yaml -p  echo ${{env.GITHUB_WORKSPACE}}/chain -v
         working-directory: ./chain
 #      - name: "run tests"
 #        run: yarn test
