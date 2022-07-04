@@ -24,17 +24,17 @@ jobs:
         with:
           name: "KYVENetwork/chain"
           path: "chain"
-          cache-dependency-path: ./test/yarn.lock
 #          #TODO checkout to the current realise branch
 #          ref: "v0.6.0"
+      - name: "print folder"
+        run: | 
+          ls ${{ github.workspace }}
       - name: "nodejs install"
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+          cache-dependency-path: ./test/yarn.lock
           cache: 'yarn'
-      - name: "print folder"
-        run: |
-          ls ${{ github.workspace }}
       - name: "dependency install"
         run: yarn install --frozen-lockfile
         #TODO add current branch as dependency
