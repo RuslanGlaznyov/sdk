@@ -47,13 +47,15 @@ jobs:
       - name: "print dir"
         run: ls
       - name: "move to bin"
-        run: sudo mv ignite /usr/local/bin/
+        run: sudo cp ignite /usr/local/bin/
+      - name: "execute rules"
+        run: sudo chmod +rwx ignite
         working-directory: ./chain
       - name: "print dir"
         run: ls
-        working-directory: ./chain/test
+        working-directory: ./chain
       - name: "start ignite"
-        run: ignite chain serve -r
+        run: ./ignite chain serve -r
         working-directory: ./chain
 #      - name: "run tests"
 #        run: yarn test
