@@ -42,7 +42,7 @@ jobs:
         with:
             go-version: 1.16
       - name: "install ignite"
-        run: curl https://get.ignite.com/cli@v0.21.2 | bash
+        run: curl https://get.ignite.com/cli@v0.22.2 | bash
         working-directory: ./chain
       - name: "print dir"
         run: ls
