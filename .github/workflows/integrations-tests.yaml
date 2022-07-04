@@ -17,16 +17,21 @@ jobs:
       matrix:
         node-version: [ 16.x, 18.x ]
     steps:
-      - name: "checkout repo"
+      - name: "checkout chain repo"
         uses: actions/checkout@v3
         with:
-          ref: "feature/v2"
+          name: "KYVENetwork/chain"
+          #TODO checkout to the current realise branch
+          ref: "v0.6.0"
       - name: "nodejs install"
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
       - name: "dependency install"
+        working-directory: ./test
         run: yarn install --frozen-lockfile
+        #TODO add current branch as dependency
       - name: "run tests"
-        run: yarn test:unit
+        working-directory: ./test
+        run: yarn test
