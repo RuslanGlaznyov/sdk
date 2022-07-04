@@ -34,8 +34,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache-dependency-path: ./chain/test/yarn.lock
           cache: 'yarn'
-      - name: "dependency install"
-        run: yarn install --frozen-lockfile
+#      - name: "dependency install"
+#        run: yarn install --frozen-lockfile
         #TODO add current branch as dependency
       - name: "Set up Go"
         uses: actions/setup-go@v2
@@ -46,8 +46,7 @@ jobs:
         working-directory: ./chain
       - name: "print dir"
         run: ls
-      - name: "move to bin"
-        run: sudo cp ignite /usr/local/bin/
+        working-directory: ./chain
       - name: "execute rules"
         run: sudo chmod +rwx ignite
         working-directory: ./chain
