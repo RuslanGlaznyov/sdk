@@ -19,12 +19,12 @@ jobs:
       - name: "checkout chain repo"
         uses: actions/checkout@v3
         with:
-          name: "KYVENetwork/chain"
-          path: "chain"
+          repository: "KYVENetwork/chain"
+          path: "test"
 #          #TODO checkout to the current realise branch
 #          ref: "v0.6.0"
       - name: "Show Working directory"
-        run: ls chain
+        run: ls test
       - name: "nodejs install"
         uses: actions/setup-node@v3
         with:
