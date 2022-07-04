@@ -28,12 +28,12 @@ jobs:
           ref: "feature/integration-tests"
       - name: "Show Working directory"
         run: ls
-      - name: "nodejs install"
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache-dependency-path: ./chain/test/yarn.lock
-          cache: 'yarn'
+#      - name: "nodejs install"
+#        uses: actions/setup-node@v3
+#        with:
+#          node-version: ${{ matrix.node-version }}
+#          cache-dependency-path: ./chain/test/yarn.lock
+#          cache: 'yarn'
 #      - name: "dependency install"
 #        run: yarn install --frozen-lockfile
         #TODO add current branch as dependency
@@ -42,7 +42,7 @@ jobs:
         with:
             go-version: 1.16
       - name: "install ignite"
-        run: curl https://get.ignite.com/cli | bash
+        run: sudo curl https://get.ignite.com/cli! | sudo bash
         working-directory: ./chain
       - name: "print dir"
         run: ls
@@ -54,7 +54,7 @@ jobs:
         run: ls
         working-directory: ./chain
       - name: "start ignite"
-        run: ./ignite chain serve -r
+        run: ignite chain serve -r
         working-directory: ./chain
 #      - name: "run tests"
 #        run: yarn test
