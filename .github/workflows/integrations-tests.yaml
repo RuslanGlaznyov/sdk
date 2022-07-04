@@ -12,7 +12,9 @@ jobs:
   tests:
 
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: 'test'
     strategy:
       matrix:
         node-version: [ 18.x ]
@@ -21,7 +23,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           name: "KYVENetwork/chain"
-          path: "chain/test"
+          path: "chain"
 #          #TODO checkout to the current realise branch
 #          ref: "v0.6.0"
       - name: "nodejs install"
@@ -33,9 +35,7 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - name: "dependency install"
-#        working-directory: ./test
         run: yarn install --frozen-lockfile
         #TODO add current branch as dependency
       - name: "run tests"
-#        working-directory: ./test
         run: yarn test
