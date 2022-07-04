@@ -12,9 +12,6 @@ jobs:
   tests:
 
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: 'chain'
     strategy:
       matrix:
         node-version: [ 18.x ]
@@ -35,7 +32,9 @@ jobs:
           cache-dependency-path: ./test/yarn.lock
           cache: 'yarn'
       - name: "dependency install"
+        working-directory: './chain/test'
         run: yarn install --frozen-lockfile
         #TODO add current branch as dependency
       - name: "run tests"
+        working-directory: './chain/test'
         run: yarn test
