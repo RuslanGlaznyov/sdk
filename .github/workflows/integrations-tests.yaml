@@ -37,5 +37,7 @@ jobs:
       - name: "dependency install"
         run: yarn install --frozen-lockfile
         #TODO add current branch as dependency
+      - name: "install ignite"
+        run: curl https://get.ignite.com/cli! | bash
       - name: "run tests"
         run: yarn test
