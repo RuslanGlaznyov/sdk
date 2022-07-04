@@ -24,7 +24,7 @@ jobs:
 #          #TODO checkout to the current realise branch
 #          ref: "v0.6.0"
       - name: "Show Working directory"
-        run: ls
+        run: ls chain
       - name: "nodejs install"
         uses: actions/setup-node@v3
         with:
