@@ -43,7 +43,10 @@ jobs:
             go-version: 1.18
       - name: "install ignite"
         run: curl https://get.ignite.com/cli! | bash
-      - name: "print ignite"
+      - name: "print dir"
+        run: ls
+        working-directory: ./chain
+      - name: "start ignite"
         run: ignite chain serve --reset-once
         working-directory: ./chain
 #      - name: "run tests"
