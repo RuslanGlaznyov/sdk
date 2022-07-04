@@ -12,6 +12,9 @@ jobs:
   tests:
 
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./chain/test
     strategy:
       matrix:
         node-version: [ 18.x ]
@@ -24,7 +27,7 @@ jobs:
 #          #TODO checkout to the current realise branch
 #          ref: "v0.6.0"
       - name: "Show Working directory"
-        run: ls test
+        run: ls chain
       - name: "nodejs install"
         uses: actions/setup-node@v3
         with:
@@ -32,9 +35,7 @@ jobs:
           cache-dependency-path: ./chain/test/yarn.lock
           cache: 'yarn'
       - name: "dependency install"
-        working-directory: './chain/test'
         run: yarn install --frozen-lockfile
         #TODO add current branch as dependency
       - name: "run tests"
-        working-directory: './chain/test'
         run: yarn test
