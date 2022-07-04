@@ -949,9 +949,9 @@
     big-integer "^1.6.48"
     utility-types "^3.10.0"
 
-"@kyve/proto@git+ssh://git@github.com:KYVENetwork/proto.git#v0.5.0":
+"@kyve/proto@https://github.com/KYVENetwork/proto.git#v0.5.0":
   version "1.0.0"
-  resolved "git+ssh://git@github.com:KYVENetwork/proto.git#93b8c66a4eb9b02c33e3b78e144861d7051d7e90"
+  resolved "https://github.com/KYVENetwork/proto.git#dcd7e0995cc15e23c64216cadf6de57114a44b2d"
   dependencies:
     "@protobufs/cosmos" "^0.0.9"
     "@protobufs/gogoproto" "^0.0.9"
