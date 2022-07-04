@@ -37,11 +37,13 @@ jobs:
       - name: "dependency install"
         run: yarn install --frozen-lockfile
         #TODO add current branch as dependency
-      - name: "install ignite"
-        run: curl https://get.ignite.com/cli! | bash
       - name: "Set up Go"
         uses: actions/setup-go@v2
         with:
-          go-version: 1.18
+            go-version: 1.18
+      - name: "install ignite"
+        run: curl https://get.ignite.com/cli! | bash
+      - name: "print ignite"
+        run: ignite -h
       - name: "run tests"
         run: yarn test
