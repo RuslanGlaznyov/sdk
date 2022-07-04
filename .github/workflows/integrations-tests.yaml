@@ -29,6 +29,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
+      - name: "print folder"
+        run: |
+          ls ${{ github.workspace }}
       - name: "dependency install"
 #        working-directory: ./test
         run: yarn install --frozen-lockfile
