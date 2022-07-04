@@ -24,6 +24,7 @@ jobs:
         with:
           name: "KYVENetwork/chain"
           path: "chain"
+          cache-dependency-path: ./test/yarn.lock
 #          #TODO checkout to the current realise branch
 #          ref: "v0.6.0"
       - name: "nodejs install"
