@@ -46,8 +46,11 @@ jobs:
       - name: "print dir"
         run: ls
         working-directory: ./chain
+      - name: "print dir"
+        run: ls
+        working-directory: ./chain/test
       - name: "start ignite"
-        run: ignite chain serve -r
+        run: sudo ./test/ignite chain serve -r
         working-directory: ./chain
 #      - name: "run tests"
 #        run: yarn test
