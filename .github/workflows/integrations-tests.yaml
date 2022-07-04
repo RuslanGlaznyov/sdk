@@ -53,6 +53,8 @@ jobs:
         working-directory: ./chain
       - name: "print workspace"
         run: echo $GITHUB_WORKSPACE
+      - name: "print workspace path"
+        run: ls  ${{env.WORKSPACE}}/chain
       - name: "start ignite"
         run: ignite chain serve -c  ${{env.WORKSPACE}}/chain/config.yaml -p  ${{env.WORKSPACE}}/chain -v
         working-directory: ./chain
