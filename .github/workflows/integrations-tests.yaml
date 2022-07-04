@@ -43,6 +43,7 @@ jobs:
             go-version: 1.16
       - name: "install ignite"
         run: curl https://get.ignite.com/cli@v0.21.2 | bash
+        working-directory: ./chain
       - name: "print dir"
         run: ls
         working-directory: ./chain
@@ -50,7 +51,7 @@ jobs:
         run: ls
         working-directory: ./chain/test
       - name: "start ignite"
-        run: sudo ./test/ignite chain serve -r
+        run: sudo ./ignite chain serve -r
         working-directory: ./chain
 #      - name: "run tests"
 #        run: yarn test
