@@ -44,6 +44,6 @@ jobs:
       - name: "install ignite"
         run: curl https://get.ignite.com/cli! | bash
       - name: "print ignite"
-        run: ignite -h
-      - name: "run tests"
-        run: yarn test
+        run: ignite chain serve --reset-once
+#      - name: "run tests"
+#        run: yarn test
