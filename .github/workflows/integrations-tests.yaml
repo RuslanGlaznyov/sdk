@@ -50,8 +50,10 @@ jobs:
       - name: "print dir"
         run: ls
         working-directory: ./chain
+      - name: "print workspace"
+        run: echo $GITHUB_WORKSPACE
       - name: "start ignite"
-        run: ignite chain serve -r -v
+        run: ignite chain serve -v
         working-directory: ./chain
 #      - name: "run tests"
 #        run: yarn test
