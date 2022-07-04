@@ -47,9 +47,6 @@ jobs:
       - name: "print dir"
         run: ls
         working-directory: ./chain
-      - name: "execute rules"
-        run: sudo chmod +rwx ignite
-        working-directory: ./chain
       - name: "print dir"
         run: ls
         working-directory: ./chain
