@@ -10,7 +10,8 @@ on:
 
 jobs:
   tests:
-
+    env:
+      WORKSPACE: "/home/runner/work/sdk/sdk"
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -53,7 +54,7 @@ jobs:
       - name: "print workspace"
         run: echo $GITHUB_WORKSPACE
       - name: "start ignite"
-        run: ignite chain serve -c  echo ${{env.GITHUB_WORKSPACE}}/chain/config.yaml -p  echo ${{env.GITHUB_WORKSPACE}}/chain -v
+        run: ignite chain serve -c  echo ${{env.WORKSPACE}}/chain/config.yaml -p  echo ${{env.WORKSPACE}}/chain -v
         working-directory: ./chain
 #      - name: "run tests"
 #        run: yarn test
