@@ -56,7 +56,7 @@ jobs:
       - name: "go version"
         run: go version
       - name: "start ignite"
-        run: ignite version
+        run: sudo chmod +rwx ignite
         working-directory: ./chain
       - name: "start ignite"
         run: ignite chain serve -r
