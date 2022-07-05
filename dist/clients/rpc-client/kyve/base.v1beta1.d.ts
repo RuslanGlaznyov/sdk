@@ -7,7 +7,7 @@ export default class KyveBaseMsg {
     private nativeClient;
     readonly account: AccountData;
     constructor(client: SigningStargateClient, account: AccountData);
-    foundPool(value: Omit<MsgFundPool, "creator">, options?: {
+    fundPool(value: Omit<MsgFundPool, "creator">, options?: {
         fee?: StdFee | "auto" | number;
         memo?: string;
     }): Promise<TxPromise>;

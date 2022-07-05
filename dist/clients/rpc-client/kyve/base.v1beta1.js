@@ -58,7 +58,7 @@ var KyveBaseMsg = /** @class */ (function () {
         this.account = account;
         this.nativeClient = client;
     }
-    KyveBaseMsg.prototype.foundPool = function (value, options) {
+    KyveBaseMsg.prototype.fundPool = function (value, options) {
         return __awaiter(this, void 0, void 0, function () {
             var tx, _a, _b;
             return __generator(this, function (_c) {
