@@ -52,6 +52,9 @@ jobs:
       - name: "install ignite from source"
         run: cd cli && make install
         working-directory: ./chain
+      - name: "print dir"
+        run: ls
+        working-directory: ./chain    
 #      - name: "print workspace path"
 #        run: cat  ${{env.WORKSPACE}}/chain/config.yml
       - name: "go version"
