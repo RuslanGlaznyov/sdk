@@ -55,8 +55,8 @@ jobs:
 #        run: cat  ${{env.WORKSPACE}}/chain/config.yml
       - name: "go version"
         run: go version
-      - name: "start ignite"
-        run: sudo chmod +rwx ignite
+      - name: "version ignite"
+        run: ignite version
         working-directory: ./chain
       - name: "start ignite"
         run: ignite chain serve -r
