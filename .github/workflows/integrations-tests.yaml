@@ -55,6 +55,8 @@ jobs:
 #        run: cat  ${{env.WORKSPACE}}/chain/config.yml
       - name: "go version"
         run: go version
+      - name: "go path"
+        run: go env GOPATH
       - name: "version ignite"
         run: ignite version
         working-directory: ./chain
