@@ -22,6 +22,7 @@ import { ParameterChangeProposal } from "@kyve/proto/dist/proto/cosmos/params/v1
 import {
   CancelPoolUpgradeProposal,
   PausePoolProposal,
+  ResetPoolProposal,
   SchedulePoolUpgradeProposal,
   UnpausePoolProposal,
   UpdatePoolProposal,
@@ -250,6 +251,10 @@ const GovMethods = [
   {
     method: "cancelPoolUpgradeProposal",
     decoder: CancelPoolUpgradeProposal,
+  },
+  {
+    method: "resetPoolProposal",
+    decoder: ResetPoolProposal,
   },
 ] as const;
 

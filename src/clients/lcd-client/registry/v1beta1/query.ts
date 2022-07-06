@@ -153,7 +153,7 @@ export class KyveRegistryLCDClient extends AbstractKyveLCDClient {
 
   /* Proposal ... */
   async proposal(params: QueryProposalRequest): Promise<QueryProposalResponse> {
-    const endpoint = `kyve/registry/v1beta1/proposal/${params.bundle_id}`;
+    const endpoint = `kyve/registry/v1beta1/proposal/${params.storage_id}`;
     return await this.request(endpoint);
   }
 
@@ -188,7 +188,7 @@ export class KyveRegistryLCDClient extends AbstractKyveLCDClient {
 
   /* CanVote checks if voter on pool can still vote for the given bundle */
   async canVote(params: QueryCanVoteRequest): Promise<QueryCanVoteResponse> {
-    const endpoint = `kyve/registry/v1beta1/can_vote/${params.pool_id}/${params.voter}/${params.bundle_id}`;
+    const endpoint = `kyve/registry/v1beta1/can_vote/${params.pool_id}/${params.voter}/${params.storage_id}`;
     return await this.request(endpoint);
   }
 

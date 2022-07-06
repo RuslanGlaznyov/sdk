@@ -7,6 +7,7 @@ import { ParameterChangeProposal } from "@kyve/proto/dist/proto/cosmos/params/v1
 import {
   CancelPoolUpgradeProposal,
   PausePoolProposal,
+  ResetPoolProposal,
   SchedulePoolUpgradeProposal,
   UnpausePoolProposal,
   UpdatePoolProposal,
@@ -170,6 +171,26 @@ export default class KyveGovMsg {
     const content = {
       typeUrl: "/kyve.registry.v1beta1.CancelPoolUpgradeProposal",
       value: CancelPoolUpgradeProposal.encode(value).finish(),
+    };
+    const tx = this.createGovTx(amount, content, options?.isExpedited);
+    return new TxPromise(
+      this.nativeClient,
+      await signTx(this.nativeClient, this.account.address, tx, options)
+    );
+  }
+
+  public async resetPoolProposal(
+    amount: string,
+    value: ResetPoolProposal,
+    options: {
+      isExpedited?: boolean;
+      fee?: StdFee | "auto" | number;
+      memo?: string;
+    }
+  ) {
+    const content = {
+      typeUrl: "/kyve.registry.v1beta1.ResetPoolProposal",
+      value: ResetPoolProposal.encode(value).finish(),
     };
     const tx = this.createGovTx(amount, content, options?.isExpedited);
     return new TxPromise(

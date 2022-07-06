@@ -176,7 +176,7 @@ var KyveRegistryLCDClient = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        endpoint = "kyve/registry/v1beta1/proposal/".concat(params.bundle_id);
+                        endpoint = "kyve/registry/v1beta1/proposal/".concat(params.storage_id);
                         return [4 /*yield*/, this.request(endpoint)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -236,7 +236,7 @@ var KyveRegistryLCDClient = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        endpoint = "kyve/registry/v1beta1/can_vote/".concat(params.pool_id, "/").concat(params.voter, "/").concat(params.bundle_id);
+                        endpoint = "kyve/registry/v1beta1/can_vote/".concat(params.pool_id, "/").concat(params.voter, "/").concat(params.storage_id);
                         return [4 /*yield*/, this.request(endpoint)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }

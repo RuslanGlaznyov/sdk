@@ -131,7 +131,7 @@ it("Query <proposal>", async () => {
     pool_id: pool.pools[0].id,
   });
   const proposal = await lcdClient.kyve.registry.v1beta1.proposal({
-    bundle_id: proposals.proposals[0].bundle_id,
+    storage_id: proposals.proposals[0].storage_id,
   });
   const schema = typeQuerySchemas.getSchemaForSymbol("QueryProposalResponse");
   const vResult = validate(schema, proposal);
@@ -188,7 +188,7 @@ it("Query <canVote>", async () => {
   const canVoteRes = await lcdClient.kyve.registry.v1beta1.canVote({
     pool_id: pool.pools[0].id,
     voter: stakersListResponse.stakers[0].staker,
-    bundle_id: proposals.proposals[0].bundle_id,
+    storage_id: proposals.proposals[0].storage_id,
   });
   const schema = typeQuerySchemas.getSchemaForSymbol("QueryCanVoteResponse");
   const vResult = validate(schema, canVoteRes);

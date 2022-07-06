@@ -192,6 +192,25 @@ var KyveGovMsg = /** @class */ (function () {
             });
         });
     };
+    KyveGovMsg.prototype.resetPoolProposal = function (amount, value, options) {
+        return __awaiter(this, void 0, void 0, function () {
+            var content, tx, _a, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        content = {
+                            typeUrl: "/kyve.registry.v1beta1.ResetPoolProposal",
+                            value: gov_2.ResetPoolProposal.encode(value).finish()
+                        };
+                        tx = this.createGovTx(amount, content, options === null || options === void 0 ? void 0 : options.isExpedited);
+                        _a = utils_1.TxPromise.bind;
+                        _b = [void 0, this.nativeClient];
+                        return [4 /*yield*/, (0, utils_1.signTx)(this.nativeClient, this.account.address, tx, options)];
+                    case 1: return [2 /*return*/, new (_a.apply(utils_1.TxPromise, _b.concat([_c.sent()])))()];
+                }
+            });
+        });
+    };
     return KyveGovMsg;
 }());
 exports["default"] = KyveGovMsg;
