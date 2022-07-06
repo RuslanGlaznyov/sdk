@@ -8,7 +8,7 @@ import { Secp256k1HdWallet, Secp256k1Wallet } from "@cosmjs/amino";
 import { PREFIX } from "../../src/constants";
 import KyveSDK from "../../dist";
 import { fromHex } from "@cosmjs/encoding";
-import { KeplrAminoSigner } from "../../dist/keplr-helper";
+import { KeplrAminoSigner } from "../../dist/utils/keplr-helper";
 import { Keplr } from "@keplr-wallet/types";
 import { Network } from "../../dist/constants";
 const TEST_PRIVATE_KEY =

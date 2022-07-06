@@ -203,10 +203,10 @@ var KyveGovMsg = /** @class */ (function () {
                             value: gov_2.ResetPoolProposal.encode(value).finish()
                         };
                         tx = this.createGovTx(amount, content, options === null || options === void 0 ? void 0 : options.isExpedited);
-                        _a = utils_1.TxPromise.bind;
+                        _a = helper_1.TxPromise.bind;
                         _b = [void 0, this.nativeClient];
-                        return [4 /*yield*/, (0, utils_1.signTx)(this.nativeClient, this.account.address, tx, options)];
-                    case 1: return [2 /*return*/, new (_a.apply(utils_1.TxPromise, _b.concat([_c.sent()])))()];
+                        return [4 /*yield*/, (0, helper_1.signTx)(this.nativeClient, this.account.address, tx, options)];
+                    case 1: return [2 /*return*/, new (_a.apply(helper_1.TxPromise, _b.concat([_c.sent()])))()];
                 }
             });
         });
