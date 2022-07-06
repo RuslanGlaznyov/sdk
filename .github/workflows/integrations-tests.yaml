@@ -63,6 +63,8 @@ jobs:
         run: go env GOPATH
       - name: "version ignite"
         run: ignite version
+      - name: "print git"
+        run: git status 
         working-directory: ./chain
       - name: "start ignite"
         run: ignite chain serve -r -v 
