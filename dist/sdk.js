@@ -60,6 +60,9 @@ var bignumber_js_1 = require("bignumber.js");
 // @ts-ignore
 var humanize_number_1 = __importDefault(require("humanize-number"));
 var encoding_1 = require("@cosmjs/encoding");
+var amino_1 = require("@cosmjs/amino");
+var keplr_helper_1 = require("./keplr-helper");
+var cosmos_1 = require("@keplr-wallet/cosmos");
 /** Class representing a KyveSDK. */
 var KyveSDK = /** @class */ (function () {
     /**
@@ -82,15 +85,20 @@ var KyveSDK = /** @class */ (function () {
      */
     KyveSDK.prototype.fromMnemonic = function (mnemonic) {
         return __awaiter(this, void 0, void 0, function () {
-            var signedClient;
+            var aminoSigner, signedClient;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, proto_signing_1.DirectSecp256k1HdWallet.fromMnemonic(mnemonic, {
-                            prefix: constants_1.PREFIX
+                    case 0: return [4 /*yield*/, amino_1.Secp256k1HdWallet.fromMnemonic(mnemonic, {
+                            prefix: "kyve"
                         })];
                     case 1:
+                        aminoSigner = _a.sent();
+                        return [4 /*yield*/, proto_signing_1.DirectSecp256k1HdWallet.fromMnemonic(mnemonic, {
+                                prefix: constants_1.PREFIX
+                            })];
+                    case 2:
                         signedClient = _a.sent();
-                        return [2 /*return*/, (0, full_client_1.getSigningKyveClient)(this.network.rpc, signedClient)];
+                        return [2 /*return*/, (0, full_client_1.getSigningKyveClient)(this.network.rpc, signedClient, aminoSigner)];
                 }
             });
         });
@@ -102,13 +110,18 @@ var KyveSDK = /** @class */ (function () {
      */
     KyveSDK.prototype.fromPrivateKey = function (privateKey) {
         return __awaiter(this, void 0, void 0, function () {
-            var signedClient;
+            var formattedKey, signedClient, aminoSigner;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, proto_signing_1.DirectSecp256k1Wallet.fromKey((0, encoding_1.fromHex)(privateKey.startsWith("0x") ? privateKey.slice(2) : privateKey), constants_1.PREFIX)];
+                    case 0:
+                        formattedKey = (0, encoding_1.fromHex)(privateKey.startsWith("0x") ? privateKey.slice(2) : privateKey);
+                        return [4 /*yield*/, proto_signing_1.DirectSecp256k1Wallet.fromKey(formattedKey, constants_1.PREFIX)];
                     case 1:
                         signedClient = _a.sent();
-                        return [2 /*return*/, (0, full_client_1.getSigningKyveClient)(this.network.rpc, signedClient)];
+                        return [4 /*yield*/, amino_1.Secp256k1Wallet.fromKey(formattedKey, constants_1.PREFIX)];
+                    case 2:
+                        aminoSigner = _a.sent();
+                        return [2 /*return*/, (0, full_client_1.getSigningKyveClient)(this.network.rpc, signedClient, aminoSigner)];
                 }
             });
         });
@@ -119,7 +132,7 @@ var KyveSDK = /** @class */ (function () {
      */
     KyveSDK.prototype.fromKeplr = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var signer, walletName, client;
+            var signer, walletName, keplr, keplrAminoSigner, client;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -137,7 +150,9 @@ var KyveSDK = /** @class */ (function () {
                         return [4 /*yield*/, window.keplr.getKey(this.network.chainId)];
                     case 3:
                         walletName = (_a.sent()).name;
-                        return [4 /*yield*/, (0, full_client_1.getSigningKyveClient)(this.network.rpc, signer, walletName)];
+                        keplr = window.keplr;
+                        keplrAminoSigner = new keplr_helper_1.KeplrAminoSigner(keplr, this.network);
+                        return [4 /*yield*/, (0, full_client_1.getSigningKyveClient)(this.network.rpc, signer, keplrAminoSigner, walletName)];
                     case 4:
                         client = _a.sent();
                         this.walletSupports.add(constants_1.SUPPORTED_WALLETS.KEPLER);
@@ -177,7 +192,7 @@ var KyveSDK = /** @class */ (function () {
                         _a.label = 6;
                     case 6:
                         cosmostationSigner = new cosmostation_helper_1.CosmostationSigner(cosmostationAccount, this.network, config ? config : {});
-                        return [4 /*yield*/, (0, full_client_1.getSigningKyveClient)(this.network.rpc, cosmostationSigner, cosmostationAccount.name)];
+                        return [4 /*yield*/, (0, full_client_1.getSigningKyveClient)(this.network.rpc, cosmostationSigner, null, cosmostationAccount.name)];
                     case 7:
                         client = _a.sent();
                         this.walletSupports.add(constants_1.SUPPORTED_WALLETS.COSMOSTATION);
@@ -212,7 +227,7 @@ var KyveSDK = /** @class */ (function () {
      */
     KyveSDK.prototype.generate = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var signer;
+            var signer, aminoSigner;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, proto_signing_1.DirectSecp256k1HdWallet.generate(24, {
@@ -220,16 +235,31 @@ var KyveSDK = /** @class */ (function () {
                         })];
                     case 1:
                         signer = _a.sent();
-                        return [2 /*return*/, (0, full_client_1.getSigningKyveClient)(this.network.rpc, signer)];
+                        return [4 /*yield*/, amino_1.Secp256k1HdWallet.fromMnemonic(signer.mnemonic, {
+                                prefix: constants_1.PREFIX
+                            })];
+                    case 2:
+                        aminoSigner = _a.sent();
+                        return [2 /*return*/, (0, full_client_1.getSigningKyveClient)(this.network.rpc, signer, aminoSigner)];
                 }
             });
         });
     };
-    KyveSDK.prototype.formatBalance = function (balance, decimals) {
+    KyveSDK.formatBalance = function (balance, decimals) {
         if (decimals === void 0) { decimals = 2; }
         return (0, humanize_number_1["default"])(new bignumber_js_1.BigNumber(balance)
             .dividedBy(new bignumber_js_1.BigNumber(10).exponentiatedBy(constants_1.KYVE_DECIMALS))
             .toFixed(decimals));
+    };
+    KyveSDK.getAddressFromPubKey = function (pubKey) {
+        return (0, amino_1.pubkeyToAddress)({ type: "tendermint/PubKeySecp256k1", value: pubKey }, constants_1.PREFIX);
+    };
+    KyveSDK.verifyString = function (signature, data, pubKey) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, (0, cosmos_1.verifyADR36Amino)(constants_1.PREFIX, KyveSDK.getAddressFromPubKey(pubKey), new TextEncoder().encode(data), (0, encoding_1.fromBase64)(pubKey), (0, encoding_1.fromBase64)(signature))];
+            });
+        });
     };
     return KyveSDK;
 }());

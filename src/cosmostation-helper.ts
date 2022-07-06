@@ -1,6 +1,7 @@
 import {
   AddChainParams,
   RequestAccountResponse,
+  SignAminoResponse,
   SignOptions,
 } from "@cosmostation/extension-client/types/message";
 import {
@@ -10,6 +11,7 @@ import {
 import { Network } from "./constants";
 import { makeSignDoc } from "@cosmjs/proto-signing";
 import { SignDoc } from "cosmjs-types/cosmos/tx/v1beta1/tx";
+import { StdSignDoc } from "@cosmjs/amino/build/signdoc";
 
 export const cosmostationMethods = {
   getSupportedChains() {
@@ -40,6 +42,18 @@ export const cosmostationMethods = {
         gasRate: options?.gasRate,
       },
     });
+  },
+  signAmino(chainName: string, doc: StdSignDoc, options?: SignOptions) {
+    return window.cosmostation.tendermint.request({
+      method: "ten_signAmino",
+      params: {
+        chainName,
+        doc,
+        isEditMemo: !!options?.memo,
+        isEditFee: !!options?.fee,
+        gasRate: options?.gasRate,
+      },
+    }) as Promise<SignAminoResponse>;
   },
 };
 

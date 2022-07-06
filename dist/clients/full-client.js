@@ -77,7 +77,7 @@ var proto_signing_1 = require("@cosmjs/proto-signing");
 var KyveRegistryTx = __importStar(require("../registry/tx.registry"));
 var client_1 = __importDefault(require("./rpc-client/client"));
 var web_client_1 = __importDefault(require("./rpc-client/web.client"));
-function getSigningKyveClient(rpcEndpoint, signer, walletName, defaultTypes) {
+function getSigningKyveClient(rpcEndpoint, signer, aminoSigner, walletName, defaultTypes) {
     if (defaultTypes === void 0) { defaultTypes = stargate_1.defaultRegistryTypes; }
     return __awaiter(this, void 0, void 0, function () {
         var registry, gasPrice, client, account;
@@ -96,8 +96,8 @@ function getSigningKyveClient(rpcEndpoint, signer, walletName, defaultTypes) {
                 case 2:
                     account = (_a.sent())[0];
                     if (typeof walletName === "string")
-                        return [2 /*return*/, new web_client_1["default"](client, account, walletName)];
-                    return [2 /*return*/, new client_1["default"](client, account)];
+                        return [2 /*return*/, new web_client_1["default"](client, account, aminoSigner, walletName)];
+                    return [2 /*return*/, new client_1["default"](client, account, aminoSigner)];
             }
         });
     });

@@ -24,7 +24,14 @@ import { BigNumber } from "bignumber.js";
 import humanize from "humanize-number";
 import KyveWebClient from "./clients/rpc-client/web.client";
 import KyveClient from "./clients/rpc-client/client";
-import { fromHex } from "@cosmjs/encoding";
+import { fromBase64, fromHex } from "@cosmjs/encoding";
+import {
+  pubkeyToAddress,
+  Secp256k1HdWallet,
+  Secp256k1Wallet,
+} from "@cosmjs/amino";
+import { KeplrAminoSigner } from "./keplr-helper";
+import { verifyADR36Amino } from "@keplr-wallet/cosmos";
 
 /** Class representing a KyveSDK. */
 export class KyveSDK {
@@ -50,10 +57,13 @@ export class KyveSDK {
    * @return Promise<KyveClient>
    */
   async fromMnemonic(mnemonic: string): Promise<KyveClient> {
+    const aminoSigner = await Secp256k1HdWallet.fromMnemonic(mnemonic, {
+      prefix: "kyve",
+    });
     const signedClient = await DirectSecp256k1HdWallet.fromMnemonic(mnemonic, {
       prefix: PREFIX,
     });
-    return getSigningKyveClient(this.network.rpc, signedClient);
+    return getSigningKyveClient(this.network.rpc, signedClient, aminoSigner);
   }
 
   /**
@@ -62,11 +72,15 @@ export class KyveSDK {
    * @return Promise<KyveClient>
    */
   async fromPrivateKey(privateKey: string): Promise<KyveClient> {
+    const formattedKey = fromHex(
+      privateKey.startsWith("0x") ? privateKey.slice(2) : privateKey
+    );
     const signedClient = await DirectSecp256k1Wallet.fromKey(
-      fromHex(privateKey.startsWith("0x") ? privateKey.slice(2) : privateKey),
+      formattedKey,
       PREFIX
     );
-    return getSigningKyveClient(this.network.rpc, signedClient);
+    const aminoSigner = await Secp256k1Wallet.fromKey(formattedKey, PREFIX);
+    return getSigningKyveClient(this.network.rpc, signedClient, aminoSigner);
   }
 
   /**
@@ -83,13 +97,15 @@ export class KyveSDK {
       chainId: this.network.chainId,
       chainName: this.network.chainName,
     });
-
     await window.keplr.enable(this.network.chainId);
     const signer = window.keplr.getOfflineSigner(this.network.chainId);
     const walletName = (await window.keplr.getKey(this.network.chainId)).name;
+    const keplr = window.keplr;
+    const keplrAminoSigner = new KeplrAminoSigner(keplr, this.network);
     const client = await getSigningKyveClient(
       this.network.rpc,
       signer,
+      keplrAminoSigner,
       walletName
     );
     this.walletSupports.add(SUPPORTED_WALLETS.KEPLER);
@@ -130,6 +146,7 @@ export class KyveSDK {
     const client = await getSigningKyveClient(
       this.network.rpc,
       cosmostationSigner,
+      null,
       cosmostationAccount.name
     );
     this.walletSupports.add(SUPPORTED_WALLETS.COSMOSTATION);
@@ -162,14 +179,36 @@ export class KyveSDK {
     const signer = await DirectSecp256k1HdWallet.generate(24, {
       prefix: PREFIX,
     });
-    return getSigningKyveClient(this.network.rpc, signer);
+    const aminoSigner = await Secp256k1HdWallet.fromMnemonic(signer.mnemonic, {
+      prefix: PREFIX,
+    });
+    return getSigningKyveClient(this.network.rpc, signer, aminoSigner);
   }
 
-  formatBalance(balance: string, decimals: number = 2): string {
+  static formatBalance(balance: string, decimals: number = 2): string {
     return humanize(
       new BigNumber(balance)
         .dividedBy(new BigNumber(10).exponentiatedBy(KYVE_DECIMALS))
         .toFixed(decimals)
+    );
+  }
+  static getAddressFromPubKey(pubKey: string) {
+    return pubkeyToAddress(
+      { type: "tendermint/PubKeySecp256k1", value: pubKey },
+      PREFIX
+    );
+  }
+  static async verifyString(
+    signature: string,
+    data: string,
+    pubKey: string
+  ): Promise<boolean> {
+    return verifyADR36Amino(
+      PREFIX,
+      KyveSDK.getAddressFromPubKey(pubKey),
+      new TextEncoder().encode(data),
+      fromBase64(pubKey),
+      fromBase64(signature)
     );
   }
 }

@@ -67,6 +67,12 @@ exports.cosmostationMethods = {
                 gasRate: options === null || options === void 0 ? void 0 : options.gasRate
             }
         });
+    },
+    signAmino: function (chainName, doc, options) {
+        return window.cosmostation.tendermint.request({
+            method: 'ten_signAmino',
+            params: { chainName: chainName, doc: doc, isEditMemo: !!(options === null || options === void 0 ? void 0 : options.memo), isEditFee: !!(options === null || options === void 0 ? void 0 : options.fee), gasRate: options === null || options === void 0 ? void 0 : options.gasRate }
+        });
     }
 };
 var CosmostationSigner = /** @class */ (function () {

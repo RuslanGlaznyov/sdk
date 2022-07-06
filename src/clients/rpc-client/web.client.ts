@@ -1,5 +1,5 @@
 import KyveClient from "./client";
-import { AccountData } from "@cosmjs/amino/build/signer";
+import { AccountData, OfflineAminoSigner } from "@cosmjs/amino/build/signer";
 import { SigningStargateClient } from "@cosmjs/stargate";
 
 export default class KyveWebClient extends KyveClient {
@@ -7,9 +7,10 @@ export default class KyveWebClient extends KyveClient {
   constructor(
     client: SigningStargateClient,
     account: AccountData,
+    aminoSigner: OfflineAminoSigner | null,
     walletName: string
   ) {
-    super(client, account);
+    super(client, account, aminoSigner);
     this.walletName = walletName;
   }
 

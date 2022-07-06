@@ -31,6 +31,7 @@ import BigNumber from "bignumber.js";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { cosmos } from "@keplr-wallet/cosmos";
 import TxRaw = cosmos.tx.v1beta1.TxRaw;
+import { OfflineAminoSigner } from "@cosmjs/amino/build/signer";
 const PATH_TO_TYPES =
   "./node_modules/@kyve/proto/dist/proto/kyve/registry/v1beta1";
 
@@ -156,7 +157,15 @@ beforeEach(() => {
     sendTokens: mockSendTokens,
     getBalance: mockGetBalance,
   } as unknown as SigningStargateClient;
-  kyveClient = new KyveClient(mockNativeClient, mockAccountData);
+  const mockAminoSigner = {
+    signAmino() {},
+    getAccounts() {},
+  } as unknown as OfflineAminoSigner;
+  kyveClient = new KyveClient(
+    mockNativeClient,
+    mockAccountData,
+    mockAminoSigner
+  );
 });
 
 describe("Base Methods", () => {
