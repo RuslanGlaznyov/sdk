@@ -8,9 +8,11 @@ import { Secp256k1HdWallet, Secp256k1Wallet } from "@cosmjs/amino";
 import { PREFIX } from "../../src/constants";
 import KyveSDK from "../../dist";
 import { fromHex } from "@cosmjs/encoding";
-import { KeplrAminoSigner } from "../../dist/utils/keplr-helper";
+import { KeplrAminoSigner } from "../../src/utils/keplr-helper";
 import { Keplr } from "@keplr-wallet/types";
 import { Network } from "../../dist/constants";
+import {Pubkey} from "@cosmjs/amino/build/pubkeys";
+import {Buffer} from "buffer";
 const TEST_PRIVATE_KEY =
   "3fff4f4365485545348c2fb5dd85775058b16b7c5117d9f2c8824d9e9e28dcef";
 const TEST_MNEMONIC =
@@ -90,7 +92,8 @@ describe("sign string", () => {
         TEST_STRING,
         sign.pub_key.value
       );
-      expect(result).toBeTruthy();
+      console.log(sign.signature);
+      expect(result).toEqual(true);
     });
     test("should verify opposite string as falsy", async () => {
       const sign = await kyvePrivateKeySignerClient.signString(
@@ -101,30 +104,32 @@ describe("sign string", () => {
         TEST_STRING,
         sign.pub_key.value
       );
-      expect(result).toBeFalsy();
+      expect(result).toEqual(false);
     });
   });
 
   describe("from mnemonic", () => {
     test("should verify same string as truthy", async () => {
       const sign = await kyveMnemonicSignerClient.signString(TEST_STRING);
-      const result = KyveSDK.verifyString(
+      const result = await KyveSDK.verifyString(
         sign.signature,
         TEST_STRING,
         sign.pub_key.value
       );
-      expect(result).toBeTruthy();
+      console.log(sign.signature);
+      expect(result).toEqual(true);
     });
     test("should verify opposite string as falsy", async () => {
       const sign = await kyveMnemonicSignerClient.signString(
         TEST_STRING + Date.now()
       );
-      const result = KyveSDK.verifyString(
+
+      const result = await KyveSDK.verifyString(
         sign.signature,
         TEST_STRING,
         sign.pub_key.value
       );
-      expect(result).toBeTruthy();
+      expect(result).toEqual(false);
     });
   });
   describe("from keplr", () => {
@@ -152,13 +157,13 @@ describe("sign string", () => {
       const sign = await kyveKeplrSignerClient.signString(
         TEST_STRING + Date.now()
       );
-      const result = KyveSDK.verifyString(
+      const result = await KyveSDK.verifyString(
         sign.signature,
         TEST_STRING,
         sign.pub_key.value
       );
       verifyADR36Behavior();
-      expect(result).toBeTruthy();
+      expect(result).toEqual(false);
     });
   });
 });

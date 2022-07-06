@@ -32,10 +32,6 @@ export class KeplrAminoSigner implements OfflineAminoSigner {
     // support for https://docs.keplr.app/api/#request-signature-for-arbitrary-message
     // https://github.com/cosmos/cosmos-sdk/blob/main/docs/architecture/adr-036-arbitrary-signature.md
     if (signDoc.msgs[0].type === "sign/MsgSignData") {
-      signDoc.msgs[0].value.data = Buffer.from(
-        signDoc.msgs[0].value.data,
-        "base64"
-      ).toString("utf-8");
       return await this.keplr.signAmino(
         this.network.chainId,
         signerAddress,
