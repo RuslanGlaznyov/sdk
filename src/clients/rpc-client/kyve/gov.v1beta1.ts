@@ -6,6 +6,7 @@ import { TextProposal } from "@kyve/proto/dist/proto/cosmos/gov/v1beta1/gov";
 import { ParameterChangeProposal } from "@kyve/proto/dist/proto/cosmos/params/v1beta1/params";
 import {
   CancelPoolUpgradeProposal,
+  CreatePoolProposal,
   PausePoolProposal,
   ResetPoolProposal,
   SchedulePoolUpgradeProposal,
@@ -191,6 +192,26 @@ export default class KyveGovMsg {
     const content = {
       typeUrl: "/kyve.registry.v1beta1.ResetPoolProposal",
       value: ResetPoolProposal.encode(value).finish(),
+    };
+    const tx = this.createGovTx(amount, content, options?.isExpedited);
+    return new TxPromise(
+      this.nativeClient,
+      await signTx(this.nativeClient, this.account.address, tx, options)
+    );
+  }
+
+  public async createPoolProposal(
+    amount: string,
+    value: CreatePoolProposal,
+    options: {
+      isExpedited?: boolean;
+      fee?: StdFee | "auto" | number;
+      memo?: string;
+    }
+  ) {
+    const content = {
+      typeUrl: "/kyve.registry.v1beta1.CreatePoolProposal",
+      value: CreatePoolProposal.encode(value).finish(),
     };
     const tx = this.createGovTx(amount, content, options?.isExpedited);
     return new TxPromise(
