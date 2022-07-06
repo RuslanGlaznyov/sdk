@@ -307,4 +307,24 @@ describe("Gov methods", () => {
       expect(method.decoder.decode(tx.value.content.value)).toEqual(govParam);
     });
   });
+  it("`govVote`", async () => {
+    const testProposalNumber = "1";
+    const testVoteOptions = "Yes";
+    await kyveClient.kyve.v1beta1.gov.govVote(
+      testProposalNumber,
+      testVoteOptions
+    );
+    expect(mockSign).toHaveBeenCalledTimes(1);
+    const [[testAddress, [tx], fee]] = mockSign.mock.calls;
+    expect(testAddress).toEqual(mockAccountData.address);
+    expect(Object.keys(fee).sort()).toEqual(["amount", "gas"].sort());
+    expect(tx).toEqual({
+      typeUrl: "/cosmos.gov.v1beta1.MsgVote",
+      value: {
+        proposalId: testProposalNumber,
+        voter: mockAccountData.address,
+        option: 1,
+      },
+    });
+  });
 });

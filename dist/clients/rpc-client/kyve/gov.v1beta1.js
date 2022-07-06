@@ -42,6 +42,7 @@ var gov_1 = require("@kyve/proto/dist/proto/cosmos/gov/v1beta1/gov");
 var params_1 = require("@kyve/proto/dist/proto/cosmos/params/v1beta1/params");
 var gov_2 = require("@kyve/proto/dist/proto/kyve/registry/v1beta1/gov");
 var helper_1 = require("../../../utils/helper");
+var cosmos_1 = require("@keplr-wallet/cosmos");
 var KyveGovMsg = /** @class */ (function () {
     function KyveGovMsg(client, account) {
         this.account = account;
@@ -222,6 +223,43 @@ var KyveGovMsg = /** @class */ (function () {
                             value: gov_2.CreatePoolProposal.encode(value).finish()
                         };
                         tx = this.createGovTx(amount, content, options === null || options === void 0 ? void 0 : options.isExpedited);
+                        _a = helper_1.TxPromise.bind;
+                        _b = [void 0, this.nativeClient];
+                        return [4 /*yield*/, (0, helper_1.signTx)(this.nativeClient, this.account.address, tx, options)];
+                    case 1: return [2 /*return*/, new (_a.apply(helper_1.TxPromise, _b.concat([_c.sent()])))()];
+                }
+            });
+        });
+    };
+    KyveGovMsg.prototype.govVote = function (id, voteOption, options) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _option, tx, _a, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _option = cosmos_1.cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_UNSPECIFIED;
+                        switch (voteOption) {
+                            case "Yes":
+                                _option = cosmos_1.cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_YES;
+                                break;
+                            case "Abstain":
+                                _option = cosmos_1.cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_ABSTAIN;
+                                break;
+                            case "No":
+                                _option = cosmos_1.cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_NO;
+                                break;
+                            case "NoWithVeto":
+                                _option = cosmos_1.cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_NO_WITH_VETO;
+                                break;
+                        }
+                        tx = {
+                            typeUrl: "/cosmos.gov.v1beta1.MsgVote",
+                            value: {
+                                proposalId: id,
+                                voter: this.account.address,
+                                option: _option
+                            }
+                        };
                         _a = helper_1.TxPromise.bind;
                         _b = [void 0, this.nativeClient];
                         return [4 /*yield*/, (0, helper_1.signTx)(this.nativeClient, this.account.address, tx, options)];
