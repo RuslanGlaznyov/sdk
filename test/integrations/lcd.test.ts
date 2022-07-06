@@ -1,8 +1,7 @@
 import KyveSDK from "../../src";
 import { JsonSchemaGenerator } from "typescript-json-schema/typescript-json-schema";
-import { KyveLCDClientType } from "../../src/clients/lcd-client/client";
+import { KyveLCDClientType } from "../../src";
 import { createValidator } from "../helper";
-import { QueryAccountDelegationUnbondingsResponse } from "@kyve/proto/dist/proto/kyve/registry/v1beta1/query";
 const TEST_NETWORK = "korellia";
 const PATH_TO_QUERY_TYPES =
   "./node_modules/@kyve/proto/dist/proto/kyve/registry/v1beta1/query";

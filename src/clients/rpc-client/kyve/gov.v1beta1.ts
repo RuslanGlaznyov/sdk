@@ -14,6 +14,7 @@ import {
   UpdatePoolProposal,
 } from "@kyve/proto/dist/proto/kyve/registry/v1beta1/gov";
 import { signTx, TxPromise } from "../../../utils/helper";
+import { cosmos } from "@keplr-wallet/cosmos";
 
 export default class KyveGovMsg {
   private nativeClient: SigningStargateClient;
@@ -163,7 +164,7 @@ export default class KyveGovMsg {
   public async cancelPoolUpgradeProposal(
     amount: string,
     value: CancelPoolUpgradeProposal,
-    options: {
+    options?: {
       isExpedited?: boolean;
       fee?: StdFee | "auto" | number;
       memo?: string;
@@ -183,7 +184,7 @@ export default class KyveGovMsg {
   public async resetPoolProposal(
     amount: string,
     value: ResetPoolProposal,
-    options: {
+    options?: {
       isExpedited?: boolean;
       fee?: StdFee | "auto" | number;
       memo?: string;
@@ -214,6 +215,44 @@ export default class KyveGovMsg {
       value: CreatePoolProposal.encode(value).finish(),
     };
     const tx = this.createGovTx(amount, content, options?.isExpedited);
+    return new TxPromise(
+      this.nativeClient,
+      await signTx(this.nativeClient, this.account.address, tx, options)
+    );
+  }
+
+  async govVote(
+    id: string,
+    voteOption: "Yes" | "Abstain" | "No" | "NoWithVeto",
+    options?: {
+      fee?: StdFee | "auto" | number;
+      memo?: string;
+    }
+  ) {
+    let _option = cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_UNSPECIFIED;
+    switch (voteOption) {
+      case "Yes":
+        _option = cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_YES;
+        break;
+      case "Abstain":
+        _option = cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_ABSTAIN;
+        break;
+      case "No":
+        _option = cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_NO;
+        break;
+      case "NoWithVeto":
+        _option = cosmos.gov.v1beta1.VoteOption.VOTE_OPTION_NO_WITH_VETO;
+        break;
+    }
+    const tx = {
+      typeUrl: "/cosmos.gov.v1beta1.MsgVote",
+      value: {
+        proposalId: id,
+        voter: this.account.address,
+        option: _option,
+      },
+    };
+
     return new TxPromise(
       this.nativeClient,
       await signTx(this.nativeClient, this.account.address, tx, options)

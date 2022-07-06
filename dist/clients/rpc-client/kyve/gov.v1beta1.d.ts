@@ -40,18 +40,22 @@ export default class KyveGovMsg {
         fee?: StdFee | "auto" | number;
         memo?: string;
     }): Promise<TxPromise>;
-    cancelPoolUpgradeProposal(amount: string, value: CancelPoolUpgradeProposal, options: {
+    cancelPoolUpgradeProposal(amount: string, value: CancelPoolUpgradeProposal, options?: {
         isExpedited?: boolean;
         fee?: StdFee | "auto" | number;
         memo?: string;
     }): Promise<TxPromise>;
-    resetPoolProposal(amount: string, value: ResetPoolProposal, options: {
+    resetPoolProposal(amount: string, value: ResetPoolProposal, options?: {
         isExpedited?: boolean;
         fee?: StdFee | "auto" | number;
         memo?: string;
     }): Promise<TxPromise>;
     createPoolProposal(amount: string, value: CreatePoolProposal, options: {
         isExpedited?: boolean;
+        fee?: StdFee | "auto" | number;
+        memo?: string;
+    }): Promise<TxPromise>;
+    govVote(id: string, voteOption: "Yes" | "Abstain" | "No" | "NoWithVeto", options?: {
         fee?: StdFee | "auto" | number;
         memo?: string;
     }): Promise<TxPromise>;
