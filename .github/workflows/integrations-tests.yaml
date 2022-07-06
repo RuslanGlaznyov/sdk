@@ -64,7 +64,7 @@ jobs:
       - name: "version ignite"
         run: ignite version
       - name: "print git"
-        run: git status 
+        run: git pull 
         working-directory: ./chain
       - name: "start ignite"
         run: ignite chain serve -r -v 
