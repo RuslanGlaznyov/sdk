@@ -11,8 +11,6 @@ import { fromHex } from "@cosmjs/encoding";
 import { KeplrAminoSigner } from "../../src/utils/keplr-helper";
 import { Keplr } from "@keplr-wallet/types";
 import { Network } from "../../dist/constants";
-import { Pubkey } from "@cosmjs/amino/build/pubkeys";
-import { Buffer } from "buffer";
 const TEST_PRIVATE_KEY =
   "3fff4f4365485545348c2fb5dd85775058b16b7c5117d9f2c8824d9e9e28dcef";
 const TEST_MNEMONIC =
