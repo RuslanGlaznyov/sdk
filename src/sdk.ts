@@ -17,7 +17,10 @@ import {
   RequestAccountResponse,
   SignOptions,
 } from "@cosmostation/extension-client/types/message";
-import { cosmostationMethods, CosmostationSigner } from "./utils/cosmostation-helper";
+import {
+  cosmostationMethods,
+  CosmostationSigner,
+} from "./utils/cosmostation-helper";
 import { createKyveLCDClient } from "./clients/lcd-client/client";
 import { BigNumber } from "bignumber.js";
 // @ts-ignore
