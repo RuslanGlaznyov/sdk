@@ -61,7 +61,7 @@ var KyveClient = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         if (this.aminoSigner === null)
-                            throw new Error('Wallet doesn\'t support adr-036');
+                            throw new Error("Wallet doesn't support adr-036");
                         signDoc = (0, cosmos_1.makeADR36AminoSignDoc)(this.account.address, message);
                         return [4 /*yield*/, this.aminoSigner.signAmino(this.account.address, signDoc)];
                     case 1:

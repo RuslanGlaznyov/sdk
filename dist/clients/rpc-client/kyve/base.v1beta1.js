@@ -52,7 +52,7 @@ var tx_registry_1 = require("../../../registry/tx.registry");
 var bignumber_js_1 = require("bignumber.js");
 var constants_1 = require("../../../constants");
 var constants_2 = require("../../../constants");
-var utils_1 = require("../../../utils");
+var helper_1 = require("../../../utils/helper");
 var KyveBaseMsg = /** @class */ (function () {
     function KyveBaseMsg(client, account) {
         this.account = account;
@@ -65,10 +65,10 @@ var KyveBaseMsg = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         tx = tx_registry_1.withTypeUrl.fundPool(__assign(__assign({}, value), { creator: this.account.address }));
-                        _a = utils_1.TxPromise.bind;
+                        _a = helper_1.TxPromise.bind;
                         _b = [void 0, this.nativeClient];
-                        return [4 /*yield*/, (0, utils_1.signTx)(this.nativeClient, this.account.address, tx, options)];
-                    case 1: return [2 /*return*/, new (_a.apply(utils_1.TxPromise, _b.concat([_c.sent()])))()];
+                        return [4 /*yield*/, (0, helper_1.signTx)(this.nativeClient, this.account.address, tx, options)];
+                    case 1: return [2 /*return*/, new (_a.apply(helper_1.TxPromise, _b.concat([_c.sent()])))()];
                 }
             });
         });
@@ -80,10 +80,10 @@ var KyveBaseMsg = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         tx = tx_registry_1.withTypeUrl.defundPool(__assign(__assign({}, value), { creator: this.account.address }));
-                        _a = utils_1.TxPromise.bind;
+                        _a = helper_1.TxPromise.bind;
                         _b = [void 0, this.nativeClient];
-                        return [4 /*yield*/, (0, utils_1.signTx)(this.nativeClient, this.account.address, tx, options)];
-                    case 1: return [2 /*return*/, new (_a.apply(utils_1.TxPromise, _b.concat([_c.sent()])))()];
+                        return [4 /*yield*/, (0, helper_1.signTx)(this.nativeClient, this.account.address, tx, options)];
+                    case 1: return [2 /*return*/, new (_a.apply(helper_1.TxPromise, _b.concat([_c.sent()])))()];
                 }
             });
         });
@@ -95,10 +95,10 @@ var KyveBaseMsg = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         tx = tx_registry_1.withTypeUrl.stakePool(__assign(__assign({}, value), { creator: this.account.address }));
-                        _a = utils_1.TxPromise.bind;
+                        _a = helper_1.TxPromise.bind;
                         _b = [void 0, this.nativeClient];
-                        return [4 /*yield*/, (0, utils_1.signTx)(this.nativeClient, this.account.address, tx, options)];
-                    case 1: return [2 /*return*/, new (_a.apply(utils_1.TxPromise, _b.concat([_c.sent()])))()];
+                        return [4 /*yield*/, (0, helper_1.signTx)(this.nativeClient, this.account.address, tx, options)];
+                    case 1: return [2 /*return*/, new (_a.apply(helper_1.TxPromise, _b.concat([_c.sent()])))()];
                 }
             });
         });
@@ -110,10 +110,10 @@ var KyveBaseMsg = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         tx = tx_registry_1.withTypeUrl.unstakePool(__assign(__assign({}, value), { creator: this.account.address }));
-                        _a = utils_1.TxPromise.bind;
+                        _a = helper_1.TxPromise.bind;
                         _b = [void 0, this.nativeClient];
-                        return [4 /*yield*/, (0, utils_1.signTx)(this.nativeClient, this.account.address, tx, options)];
-                    case 1: return [2 /*return*/, new (_a.apply(utils_1.TxPromise, _b.concat([_c.sent()])))()];
+                        return [4 /*yield*/, (0, helper_1.signTx)(this.nativeClient, this.account.address, tx, options)];
+                    case 1: return [2 /*return*/, new (_a.apply(helper_1.TxPromise, _b.concat([_c.sent()])))()];
                 }
             });
         });
@@ -125,10 +125,10 @@ var KyveBaseMsg = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         tx = tx_registry_1.withTypeUrl.delegatePool(__assign(__assign({}, value), { creator: this.account.address }));
-                        _a = utils_1.TxPromise.bind;
+                        _a = helper_1.TxPromise.bind;
                         _b = [void 0, this.nativeClient];
-                        return [4 /*yield*/, (0, utils_1.signTx)(this.nativeClient, this.account.address, tx, options)];
-                    case 1: return [2 /*return*/, new (_a.apply(utils_1.TxPromise, _b.concat([_c.sent()])))()];
+                        return [4 /*yield*/, (0, helper_1.signTx)(this.nativeClient, this.account.address, tx, options)];
+                    case 1: return [2 /*return*/, new (_a.apply(helper_1.TxPromise, _b.concat([_c.sent()])))()];
                 }
             });
         });
@@ -140,10 +140,10 @@ var KyveBaseMsg = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         tx = tx_registry_1.withTypeUrl.withdrawPool(__assign(__assign({}, value), { creator: this.account.address }));
-                        _a = utils_1.TxPromise.bind;
+                        _a = helper_1.TxPromise.bind;
                         _b = [void 0, this.nativeClient];
-                        return [4 /*yield*/, (0, utils_1.signTx)(this.nativeClient, this.account.address, tx, options)];
-                    case 1: return [2 /*return*/, new (_a.apply(utils_1.TxPromise, _b.concat([_c.sent()])))()];
+                        return [4 /*yield*/, (0, helper_1.signTx)(this.nativeClient, this.account.address, tx, options)];
+                    case 1: return [2 /*return*/, new (_a.apply(helper_1.TxPromise, _b.concat([_c.sent()])))()];
                 }
             });
         });
@@ -155,10 +155,10 @@ var KyveBaseMsg = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         tx = tx_registry_1.withTypeUrl.undelegatePool(__assign(__assign({}, value), { creator: this.account.address }));
-                        _a = utils_1.TxPromise.bind;
+                        _a = helper_1.TxPromise.bind;
                         _b = [void 0, this.nativeClient];
-                        return [4 /*yield*/, (0, utils_1.signTx)(this.nativeClient, this.account.address, tx, options)];
-                    case 1: return [2 /*return*/, new (_a.apply(utils_1.TxPromise, _b.concat([_c.sent()])))()];
+                        return [4 /*yield*/, (0, helper_1.signTx)(this.nativeClient, this.account.address, tx, options)];
+                    case 1: return [2 /*return*/, new (_a.apply(helper_1.TxPromise, _b.concat([_c.sent()])))()];
                 }
             });
         });
@@ -170,10 +170,10 @@ var KyveBaseMsg = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         tx = tx_registry_1.withTypeUrl.submitBundleProposal(__assign(__assign({}, value), { creator: this.account.address }));
-                        _a = utils_1.TxPromise.bind;
+                        _a = helper_1.TxPromise.bind;
                         _b = [void 0, this.nativeClient];
-                        return [4 /*yield*/, (0, utils_1.signTx)(this.nativeClient, this.account.address, tx, options)];
-                    case 1: return [2 /*return*/, new (_a.apply(utils_1.TxPromise, _b.concat([_c.sent()])))()];
+                        return [4 /*yield*/, (0, helper_1.signTx)(this.nativeClient, this.account.address, tx, options)];
+                    case 1: return [2 /*return*/, new (_a.apply(helper_1.TxPromise, _b.concat([_c.sent()])))()];
                 }
             });
         });
@@ -185,10 +185,10 @@ var KyveBaseMsg = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         tx = tx_registry_1.withTypeUrl.voteProposal(__assign(__assign({}, value), { creator: this.account.address }));
-                        _a = utils_1.TxPromise.bind;
+                        _a = helper_1.TxPromise.bind;
                         _b = [void 0, this.nativeClient];
-                        return [4 /*yield*/, (0, utils_1.signTx)(this.nativeClient, this.account.address, tx, options)];
-                    case 1: return [2 /*return*/, new (_a.apply(utils_1.TxPromise, _b.concat([_c.sent()])))()];
+                        return [4 /*yield*/, (0, helper_1.signTx)(this.nativeClient, this.account.address, tx, options)];
+                    case 1: return [2 /*return*/, new (_a.apply(helper_1.TxPromise, _b.concat([_c.sent()])))()];
                 }
             });
         });
@@ -200,10 +200,10 @@ var KyveBaseMsg = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         tx = tx_registry_1.withTypeUrl.claimUploaderRole(__assign(__assign({}, value), { creator: this.account.address }));
-                        _a = utils_1.TxPromise.bind;
+                        _a = helper_1.TxPromise.bind;
                         _b = [void 0, this.nativeClient];
-                        return [4 /*yield*/, (0, utils_1.signTx)(this.nativeClient, this.account.address, tx, options)];
-                    case 1: return [2 /*return*/, new (_a.apply(utils_1.TxPromise, _b.concat([_c.sent()])))()];
+                        return [4 /*yield*/, (0, helper_1.signTx)(this.nativeClient, this.account.address, tx, options)];
+                    case 1: return [2 /*return*/, new (_a.apply(helper_1.TxPromise, _b.concat([_c.sent()])))()];
                 }
             });
         });
@@ -215,10 +215,10 @@ var KyveBaseMsg = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         tx = tx_registry_1.withTypeUrl.updateMetadata(__assign(__assign({}, value), { creator: this.account.address }));
-                        _a = utils_1.TxPromise.bind;
+                        _a = helper_1.TxPromise.bind;
                         _b = [void 0, this.nativeClient];
-                        return [4 /*yield*/, (0, utils_1.signTx)(this.nativeClient, this.account.address, tx, options)];
-                    case 1: return [2 /*return*/, new (_a.apply(utils_1.TxPromise, _b.concat([_c.sent()])))()];
+                        return [4 /*yield*/, (0, helper_1.signTx)(this.nativeClient, this.account.address, tx, options)];
+                    case 1: return [2 /*return*/, new (_a.apply(helper_1.TxPromise, _b.concat([_c.sent()])))()];
                 }
             });
         });

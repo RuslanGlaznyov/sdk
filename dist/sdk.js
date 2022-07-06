@@ -54,14 +54,14 @@ exports.KyveSDK = void 0;
 var constants_1 = require("./constants");
 var full_client_1 = require("./clients/full-client");
 var proto_signing_1 = require("@cosmjs/proto-signing");
-var cosmostation_helper_1 = require("./cosmostation-helper");
+var cosmostation_helper_1 = require("./utils/cosmostation-helper");
 var client_1 = require("./clients/lcd-client/client");
 var bignumber_js_1 = require("bignumber.js");
 // @ts-ignore
 var humanize_number_1 = __importDefault(require("humanize-number"));
 var encoding_1 = require("@cosmjs/encoding");
 var amino_1 = require("@cosmjs/amino");
-var keplr_helper_1 = require("./keplr-helper");
+var keplr_helper_1 = require("./utils/keplr-helper");
 var cosmos_1 = require("@keplr-wallet/cosmos");
 /** Class representing a KyveSDK. */
 var KyveSDK = /** @class */ (function () {
@@ -89,7 +89,7 @@ var KyveSDK = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, amino_1.Secp256k1HdWallet.fromMnemonic(mnemonic, {
-                            prefix: "kyve"
+                            prefix: constants_1.PREFIX
                         })];
                     case 1:
                         aminoSigner = _a.sent();

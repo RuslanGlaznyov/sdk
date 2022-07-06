@@ -2,7 +2,7 @@ import { MsgClaimUploaderRole, MsgDefundPool, MsgDelegatePool, MsgFundPool, MsgS
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { StdFee } from "@cosmjs/amino/build/signdoc";
 import { AccountData } from "@cosmjs/amino/build/signer";
-import { TxPromise } from "../../../utils";
+import { TxPromise } from "../../../utils/helper";
 export default class KyveBaseMsg {
     private nativeClient;
     readonly account: AccountData;

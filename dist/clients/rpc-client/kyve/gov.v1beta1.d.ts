@@ -3,8 +3,8 @@ import { StdFee } from "@cosmjs/amino/build/signdoc";
 import { AccountData } from "@cosmjs/amino/build/signer";
 import { TextProposal } from "@kyve/proto/dist/proto/cosmos/gov/v1beta1/gov";
 import { ParameterChangeProposal } from "@kyve/proto/dist/proto/cosmos/params/v1beta1/params";
-import { CancelPoolUpgradeProposal, PausePoolProposal, ResetPoolProposal, SchedulePoolUpgradeProposal, UnpausePoolProposal, UpdatePoolProposal } from "@kyve/proto/dist/proto/kyve/registry/v1beta1/gov";
-import { TxPromise } from "../../../utils";
+import { CancelPoolUpgradeProposal, PausePoolProposal, SchedulePoolUpgradeProposal, UnpausePoolProposal, UpdatePoolProposal } from "@kyve/proto/dist/proto/kyve/registry/v1beta1/gov";
+import { TxPromise } from "../../../utils/helper";
 export default class KyveGovMsg {
     private nativeClient;
     readonly account: AccountData;
@@ -41,11 +41,6 @@ export default class KyveGovMsg {
         memo?: string;
     }): Promise<TxPromise>;
     cancelPoolUpgradeProposal(amount: string, value: CancelPoolUpgradeProposal, options: {
-        isExpedited?: boolean;
-        fee?: StdFee | "auto" | number;
-        memo?: string;
-    }): Promise<TxPromise>;
-    resetPoolProposal(amount: string, value: ResetPoolProposal, options: {
         isExpedited?: boolean;
         fee?: StdFee | "auto" | number;
         memo?: string;

@@ -8,7 +8,7 @@ import {
   AccountData,
   OfflineDirectSigner,
 } from "@cosmjs/proto-signing/build/signer";
-import { Network } from "./constants";
+import { Network } from "../constants";
 import { makeSignDoc } from "@cosmjs/proto-signing";
 import { SignDoc } from "cosmjs-types/cosmos/tx/v1beta1/tx";
 import { StdSignDoc } from "@cosmjs/amino/build/signdoc";

@@ -18,7 +18,7 @@ import { AccountData } from "@cosmjs/amino/build/signer";
 import { BigNumber } from "bignumber.js";
 import { KYVE_DECIMALS } from "../../../constants";
 import { DENOM } from "../../../constants";
-import { signTx, TxPromise } from "../../../utils";
+import { signTx, TxPromise } from "../../../utils/helper";
 
 export default class KyveBaseMsg {
   private nativeClient: SigningStargateClient;

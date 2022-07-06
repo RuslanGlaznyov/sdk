@@ -12,7 +12,7 @@ import {
   UnpausePoolProposal,
   UpdatePoolProposal,
 } from "@kyve/proto/dist/proto/kyve/registry/v1beta1/gov";
-import { signTx, TxPromise } from "../../../utils";
+import { signTx, TxPromise } from "../../../utils/helper";
 
 export default class KyveGovMsg {
   private nativeClient: SigningStargateClient;

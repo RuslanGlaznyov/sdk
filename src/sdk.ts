@@ -17,7 +17,7 @@ import {
   RequestAccountResponse,
   SignOptions,
 } from "@cosmostation/extension-client/types/message";
-import { cosmostationMethods, CosmostationSigner } from "./cosmostation-helper";
+import { cosmostationMethods, CosmostationSigner } from "./utils/cosmostation-helper";
 import { createKyveLCDClient } from "./clients/lcd-client/client";
 import { BigNumber } from "bignumber.js";
 // @ts-ignore
@@ -30,7 +30,7 @@ import {
   Secp256k1HdWallet,
   Secp256k1Wallet,
 } from "@cosmjs/amino";
-import { KeplrAminoSigner } from "./keplr-helper";
+import { KeplrAminoSigner } from "./utils/keplr-helper";
 import { verifyADR36Amino } from "@keplr-wallet/cosmos";
 
 /** Class representing a KyveSDK. */
@@ -58,7 +58,7 @@ export class KyveSDK {
    */
   async fromMnemonic(mnemonic: string): Promise<KyveClient> {
     const aminoSigner = await Secp256k1HdWallet.fromMnemonic(mnemonic, {
-      prefix: "kyve",
+      prefix: PREFIX,
     });
     const signedClient = await DirectSecp256k1HdWallet.fromMnemonic(mnemonic, {
       prefix: PREFIX,
