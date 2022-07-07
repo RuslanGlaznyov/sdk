@@ -22,19 +22,15 @@ jobs:
           script: ls
       - name: "create folder"
         run: mkdir build
-      - name: download binary
-        uses: nicklasfrahm/scp-action@main
+      - name: downlaod file 
+        uses: appleboy/scp-action@master
         with:
-          direction: download
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          insecure_password: ${{secrets.PASSWORD}}
-          insecure_ignore_fingerprint: true
-          source: |
-            /root/chaind
-          target: build
-      - name: print folder 
-        run: ls       
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          source: "chaind"
+          target: "buid"
 #       - name: "checkout chain repo"
 #         uses: actions/checkout@v3
 #         with:
