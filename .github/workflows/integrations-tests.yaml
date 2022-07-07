@@ -11,6 +11,9 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-latest
+    env:
+      COSMOS_BINARY: "${{github.workspace}}/releases/integration-tests/chaind"
+      COSMOS_DATA: "${{github.workspace}}/releases/integration-tests/chain"
     steps:
       - name: clone build repo
         uses: actions/checkout@v3
@@ -21,8 +24,9 @@ jobs:
         run: ls
         working-directory: releases/integration-tests
       - name: run chain
-        run: ./chaind start --home=./chain
+        run: ${{env.COSMOS_BINARY}} start --home=${{env.COSMOS_DATA}}
         working-directory: releases/integration-tests
+
       #       - name: "checkout chain repo"
       #         uses: actions/checkout@v3
       #         with:
