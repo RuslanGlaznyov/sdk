@@ -26,6 +26,8 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           script: ls
+      - name: "create folder"
+        run: mkdir build
       - name: download binary
         uses: nicklasfrahm/scp-action@main
         with:
@@ -36,7 +38,7 @@ jobs:
           insecure_ignore_fingerprint: true
           source: |
             ~/chaind
-          target: chaind
+          target: build
       - name: print folder 
         run: ls       
 #       - name: "checkout chain repo"
