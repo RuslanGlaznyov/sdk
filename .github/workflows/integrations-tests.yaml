@@ -19,6 +19,7 @@ jobs:
           path: "releases"
       - name: print dir
         run: ls
+        working-directory: releases/integration-tests
       - name: run chain
         run: ./chain start home=./chain
         working-directory: releases/integration-tests
