@@ -40,7 +40,7 @@ jobs:
       - name: "create data folder"
         run: mkdir kyve-data    
       - name: "build chain"
-        run: ignite chain serve -r -v --home=./kyve-data
+        run: ignite chain serve -r -v --home=./kyve-data --path=.
         working-directory: ./chain
 #      - name: "run tests"
 #        run: yarn test
