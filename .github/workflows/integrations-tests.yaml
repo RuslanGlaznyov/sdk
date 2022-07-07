@@ -36,6 +36,7 @@ jobs:
           insecure_ignore_fingerprint: true
           source: |
             ~/chaind
+          target: chaind
       - name: print folder 
         run: ls       
 #       - name: "checkout chain repo"
