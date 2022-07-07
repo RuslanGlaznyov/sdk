@@ -22,7 +22,7 @@ jobs:
           script: ls
       - name: "create folder"
         run: mkdir build
-      - name: copy from remote
+#       - name: copy from remote
 #         run: |
 #           mkdir ~/.ssh
 #           echo “${{ secrets.RSA_KEY }}” > ~/.ssh/id_rsa
