@@ -34,9 +34,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           insecure_password: ${{secrets.PASSWORD}}
           insecure_ignore_fingerprint: true
-          source: |
-            /root/kyve-tests/chain/release/chaind
-            
+          source: /root/kyve-tests/chain/release/chaind
           target: .
       - name: print folder 
         run: ls       
