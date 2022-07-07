@@ -21,7 +21,7 @@ jobs:
         run: ls
         working-directory: releases/integration-tests
       - name: run chain
-        run: ./chain start home=./chain
+        run: ./chaind start home=./chain
         working-directory: releases/integration-tests
       #       - name: "checkout chain repo"
       #         uses: actions/checkout@v3
