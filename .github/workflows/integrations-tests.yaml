@@ -43,3 +43,4 @@ jobs:
         working-directory: ./chain/test
       - name: run tests
         run: yarn test
+        working-directory: ./chain/test
