@@ -18,7 +18,7 @@ jobs:
           repository: "ruslanglaznyov/test-releases"
           path: "releases"
       - name: run chain
-        run: chain start home=./chain
+        run: ./chain start home=./chain
         working-directory: releases/integration-tests
       #       - name: "checkout chain repo"
       #         uses: actions/checkout@v3
