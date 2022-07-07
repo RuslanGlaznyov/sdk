@@ -12,55 +12,41 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     steps:
-      - name: executing remote ssh commands using password
-        uses: appleboy/ssh-action@master
+      - name: clone build repo
+        uses: actions/checkout@v3
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.RSA }}
-          port: ${{ secrets.PORT }}
-          script: ls
-      - name: "create folder"
-        run: mkdir build
-      - name: "Download file via SSH"
-        uses: nicklasfrahm/scp-action@main
-        with:
-          direction: "download"
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-#           key: ${{ secrets.RSA }}
-          insecure_password: ${{ secrets.PASSWORD}}
-          source: | 
-            chaind
-          insecure_ignore_fingerprint: "true"
-          target: "build"
-#       - name: "checkout chain repo"
-#         uses: actions/checkout@v3
-#         with:
-#           repository: "KYVENetwork/chain"
-#           path: "chain"
-# #          #TODO checkout to the current realise branch
-#           ref: "feature/integration-tests"
-#       - name: "Show Working directory"
-#         run: ls
-#       - name: "Set up Go"
-#         uses: actions/setup-go@v2
-#         with:
-#             go-version: 1.18.3
-#       - name: "install ignite"
-#         run: curl https://get.ignite.com/cli@v0.22.2! | bash
-#         working-directory: ./chain
-#       - name: "print dir"
-#         run: ls
-#         working-directory: ./chain
-#       - name: "create data folder"
-#         run: mkdir kyve-data    
-#       - name: "build chain"
-#         run: ignite chain build --release --release.prefix kyve
-#         working-directory: ./chain
-#       - name: "print releasy"
-#         run: ls 
-#         working-directory: ./chain/release
-      
+          repository: "ruslanglaznyov/test-releases"
+          path: "releases"
+      - name: run chain
+        run: chain start home=./chain
+        working-directory: releases/integration-tests
+      #       - name: "checkout chain repo"
+      #         uses: actions/checkout@v3
+      #         with:
+      #           repository: "KYVENetwork/chain"
+      #           path: "chain"
+      # #          #TODO checkout to the current realise branch
+      #           ref: "feature/integration-tests"
+      #       - name: "Show Working directory"
+      #         run: ls
+      #       - name: "Set up Go"
+      #         uses: actions/setup-go@v2
+      #         with:
+      #             go-version: 1.18.3
+      #       - name: "install ignite"
+      #         run: curl https://get.ignite.com/cli@v0.22.2! | bash
+      #         working-directory: ./chain
+      #       - name: "print dir"
+      #         run: ls
+      #         working-directory: ./chain
+      #       - name: "create data folder"
+      #         run: mkdir kyve-data
+      #       - name: "build chain"
+      #         run: ignite chain build --release --release.prefix kyve
+      #         working-directory: ./chain
+      #       - name: "print releasy"
+      #         run: ls
+      #         working-directory: ./chain/release
+
 # #      - name: "run tests"
 # #        run: yarn test
