@@ -31,7 +31,7 @@ jobs:
           insecure_password: ${{secrets.PASSWORD}}
           insecure_ignore_fingerprint: true
           source: |
-            ~/chaind
+            /root/chaind
           target: build
       - name: print folder 
         run: ls       
