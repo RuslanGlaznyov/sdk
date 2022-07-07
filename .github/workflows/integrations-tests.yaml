@@ -11,12 +11,6 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./chain/test
-    strategy:
-      matrix:
-        node-version: [ 18.x ]
     steps:
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
