@@ -25,13 +25,14 @@ jobs:
       - name: "Download file via SSH"
         uses: nicklasfrahm/scp-action@main
         with:
-          direction: download
+          direction: "download"
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.RSA }}
-          source: chaind
-          insecure_ignore_fingerprint: true
-          target: build
+          source: | 
+            chaind
+          insecure_ignore_fingerprint: "true"
+          target: "build"
 #       - name: "checkout chain repo"
 #         uses: actions/checkout@v3
 #         with:
