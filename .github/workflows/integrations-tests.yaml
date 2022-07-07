@@ -25,7 +25,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          script: mkdir test-a-chain
+          script: ls
       - name: download binary
         uses: nicklasfrahm/scp-action@main
         with:
