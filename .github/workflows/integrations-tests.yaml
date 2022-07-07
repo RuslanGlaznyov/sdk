@@ -22,15 +22,12 @@ jobs:
           script: ls
       - name: "create folder"
         run: mkdir build
-      - name: downlaod file 
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          port: ${{ secrets.PORT }}
-          source: "chaind"
-          target: "buid"
+      - name: copy from remote
+#         run: |
+#           mkdir ~/.ssh
+#           echo “${{ secrets.RSA_KEY }}” > ~/.ssh/id_rsa
+#           chmod 700 ~/.ssh/id_rsa
+#           scp -r root@remote_server:/root/reports ${{ github.workspace }}/reports
 #       - name: "checkout chain repo"
 #         uses: actions/checkout@v3
 #         with:
