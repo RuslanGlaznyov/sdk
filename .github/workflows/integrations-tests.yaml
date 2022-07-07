@@ -22,11 +22,13 @@ jobs:
           script: ls
       - name: "create folder"
         run: mkdir build
+      - name: "scp"
+        run: scp -v
       - name: copy from remote
         run: |
           mkdir ~/.ssh
           echo “${{ secrets.RSA }}” > ~/.ssh/id_rsa
-          chmod 700 ~/.ssh/id_rsa
+          sudo chmod 700 ~/.ssh/id_rsa
           scp -r ${{secrets.USER}}@${{secrets.HOST}}:chaind ${{ github.workspace }}/build
 #       - name: "checkout chain repo"
 #         uses: actions/checkout@v3
