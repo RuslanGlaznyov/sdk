@@ -22,8 +22,6 @@ jobs:
           script: ls
       - name: "create folder"
         run: mkdir build
-      - name: "scp"
-        run: scp -v
       - name: copy from remote
         run: |
           mkdir ~/.ssh
