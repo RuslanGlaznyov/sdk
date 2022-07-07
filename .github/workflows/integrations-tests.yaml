@@ -22,12 +22,16 @@ jobs:
           script: ls
       - name: "create folder"
         run: mkdir build
-      - name: copy from remote
-        run: |
-          mkdir ~/.ssh
-          echo “${{ secrets.RSA }}” > ~/.ssh/id_rsa
-          sudo chmod 700 ~/.ssh/id_rsa
-          scp -r ${{secrets.USER}}@${{secrets.HOST}}:~/chaind ${{ github.workspace }}/build
+      - name: "Download file via SSH"
+        uses: nicklasfrahm/scp-action@main
+        with:
+          direction: download
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.RSA }}
+          source: chaind
+          insecure_ignore_fingerprint: true
+          target: build
 #       - name: "checkout chain repo"
 #         uses: actions/checkout@v3
 #         with:
