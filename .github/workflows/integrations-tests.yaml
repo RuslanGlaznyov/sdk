@@ -28,7 +28,8 @@ jobs:
           direction: "download"
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
-          key: ${{ secrets.RSA }}
+#           key: ${{ secrets.RSA }}
+          insecure_password: ${{ secrets.PASSWORD}}
           source: | 
             chaind
           insecure_ignore_fingerprint: "true"
