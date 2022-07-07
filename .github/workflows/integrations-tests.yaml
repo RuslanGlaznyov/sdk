@@ -26,34 +26,23 @@ jobs:
       - name: run chain
         run: ${{env.COSMOS_BINARY}} start --home=${{env.COSMOS_DATA}}
         working-directory: releases/integration-tests
-
-      #       - name: "checkout chain repo"
-      #         uses: actions/checkout@v3
-      #         with:
-      #           repository: "KYVENetwork/chain"
-      #           path: "chain"
-      # #          #TODO checkout to the current realise branch
-      #           ref: "feature/integration-tests"
-      #       - name: "Show Working directory"
-      #         run: ls
-      #       - name: "Set up Go"
-      #         uses: actions/setup-go@v2
-      #         with:
-      #             go-version: 1.18.3
-      #       - name: "install ignite"
-      #         run: curl https://get.ignite.com/cli@v0.22.2! | bash
-      #         working-directory: ./chain
-      #       - name: "print dir"
-      #         run: ls
-      #         working-directory: ./chain
-      #       - name: "create data folder"
-      #         run: mkdir kyve-data
-      #       - name: "build chain"
-      #         run: ignite chain build --release --release.prefix kyve
-      #         working-directory: ./chain
-      #       - name: "print releasy"
-      #         run: ls
-      #         working-directory: ./chain/release
-
-# #      - name: "run tests"
-# #        run: yarn test
+      - name: checkout chain repo
+        uses: actions/checkout@v3
+        with:
+          repository: "KYVENetwork/chain"
+          path: "chain"
+          #TODO checkout to the current realise branch
+          ref: "feature/integration-tests"
+#     -  name: "checkout repo"
+#        uses: actions/checkout@v3
+#        with:
+#          path: "sdk"
+      - name: install nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: install dependency
+        run: yarn install
+        working-directory: ./chain/test
+      - name: run tests
+        run: yarn test
