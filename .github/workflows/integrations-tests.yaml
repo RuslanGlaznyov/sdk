@@ -34,7 +34,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           insecure_password: ${{secrets.PASSWORD}}
           insecure_ignore_fingerprint: true
-          source: /${{secrets.USERNAME}}/kyve-tests/chain/release/chaind
+          source: ~/chaind
       - name: print folder 
         run: ls       
 #       - name: "checkout chain repo"
