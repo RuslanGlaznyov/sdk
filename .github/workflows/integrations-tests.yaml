@@ -34,7 +34,8 @@ jobs:
           username: ${{ secrets.USERNAME }}
           insecure_password: ${{secrets.PASSWORD}}
           insecure_ignore_fingerprint: true
-          source: ~/chaind
+          source: |
+            ~/chaind
       - name: print folder 
         run: ls       
 #       - name: "checkout chain repo"
