@@ -25,7 +25,7 @@ jobs:
         run: echo ${{env.TEST_WITH}}
       - name: "test with var"
         if: ${{env.TEST_WITH}} == ""
-        run: exit 1   
+        run: echo ${{env.TEST_WITH}}
 #       - name: clone build repo
 #         uses: actions/checkout@v3
 #         with:
