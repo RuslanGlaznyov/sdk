@@ -21,6 +21,8 @@ jobs:
         run: echo ${{github.event.pull_request.title}}
       - name: "get branch config" 
         run: echo "TEST_WITH=$(echo ${{github.event.pull_request.title}} | awk -F'[}{]' '{print $2}')" >> $GITHUB_ENV
+      - name: "print var"
+        run: echo ${{env.TEST_WITH}}
       - name: "test with var"
         if: ${{env.TEST_WITH}} == ""
         run: exit 1   
