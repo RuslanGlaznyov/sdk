@@ -20,7 +20,9 @@ jobs:
       - name: "print context"
         run: echo ${{github.event.pull_request.title}}
       - name: "get branch config" 
-        run: echo ${{github.event.pull_request.title}} | sed 's/.*{\([^]]*\)}.*/\1/g'  
+        run: echo "TEST_WITH=$(echo ${{github.event.pull_request.title}} | sed 's/.*{\([^]]*\)}.*/\1/g')" >> $GITHUB_ENV
+      - name: "test with var"
+        run: echo ${{env.TEST_WITH}}
       - name: fail
         run: exit 1  
 #       - name: clone build repo
