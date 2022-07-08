@@ -16,7 +16,7 @@ jobs:
       COSMOS_DATA: "${{github.workspace}}/releases/integration-tests/chain"
     steps:
       - name: "print context"
-        run: echo ${{github.event.pull_request.title}}
+        run: echo ${{github.event.pull_request.description}}
       - name: clone build repo
         uses: actions/checkout@v3
         with:
