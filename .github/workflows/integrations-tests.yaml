@@ -51,10 +51,12 @@ jobs:
         run: yarn install
         working-directory: ./chain/test
       - name: set branch name
-        id: vars
-        run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
+        run: |
+          echo "GIT_BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
+      - name: "print branch name"
+        run: echo ${{ env.GIT_BRANCH }}
       - name:  install current branch sdk as dependency for integration tests
-        run: yarn add https://github.com/${{ github.repository }}#${{ steps.vars.outputs.short_ref }}
+        run: yarn add https://github.com/${{ github.repository }}#${{ env.GIT_BRANCH }}
         working-directory: ./chain/test
       - name: check package.json
         run: cat package.json
