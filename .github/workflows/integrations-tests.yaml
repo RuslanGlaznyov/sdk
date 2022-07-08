@@ -36,6 +36,8 @@ jobs:
         uses: actions/setup-go@v3
         with:
           go-version: '1.16'
+      - name: "install ignite"
+        run: curl https://get.ignite.com/cli@v0.22.0! | bash
       - name: "build binary"
         run: go build -o chaind cmd/kyved/main.go
         working-directory: ./chain
