@@ -18,9 +18,9 @@ jobs:
       - name: "sed"
         run: sed --help
       - name: "print context"
-        run: echo ${{github.event.pull_request.body}}
+        run: echo ${{github.event.pull_request.title}}
       - name: "get branch config" 
-        run: echo ${{github.event.pull_request.body}} | sed 's/.*{\([^]]*\)}.*/\1/g'  
+        run: echo ${{github.event.pull_request.title}} | sed 's/.*{\([^]]*\)}.*/\1/g'  
       - name: fail
         run: exit 1  
 #       - name: clone build repo
