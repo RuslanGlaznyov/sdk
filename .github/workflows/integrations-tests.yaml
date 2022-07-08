@@ -39,7 +39,7 @@ jobs:
         with:
           repository: "KYVENetwork/chain"
           path: "chain"
-          ref: ${{TEST_WITH}}
+          ref: ${{env.TEST_WITH}}
       - name: "checkout"
         uses: actions/checkout@v3
         with:
