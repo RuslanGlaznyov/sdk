@@ -8,9 +8,6 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-latest
-    env:
-      COSMOS_BINARY: "${{github.workspace}}/releases/integration-tests/chaind"
-      COSMOS_DATA: "${{github.workspace}}/releases/integration-tests/chain"
     steps:
       - name: "print context"
         run: echo ${{github.event.pull_request.title}}
@@ -53,8 +50,11 @@ jobs:
       - name: install dependency
         run: yarn install
         working-directory: ./chain/test
+      - name: set branch name
+        id: vars
+        run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
       - name:  install current branch sdk as dependency for integration tests
-        run: yarn add https://github.com/${{github.repository}}#${{env.GITHUB_REF_NAME}}
+        run: yarn add https://github.com/${{ github.repository }}#${{ steps.vars.outputs.short_ref }}
         working-directory: ./chain/test
       - name: check package.json
         run: cat package.json
