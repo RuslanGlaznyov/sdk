@@ -44,6 +44,8 @@ jobs:
       - name: set chain path 
         run: |
           echo "COSMOS_BINARY=$(echo ${{github.workspace}}/chain/chaind)" >> $GITHUB_ENV
+      - name: Print COSMOS_BINARY
+        run: echo $COSMOS_BINARY
       - name: "checkout"
         uses: actions/checkout@v3
         with:
