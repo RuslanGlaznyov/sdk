@@ -8,37 +8,39 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-latest
+    env:
+      CHAIN_DATA: ${{github.workspace}}/chain-data/v1/chain 
     steps:
       - name: "print context"
         run: echo ${{github.event.pull_request.title}}
       - name: "get branch config"
         run: echo "TEST_WITH=$(echo ${{ github.event.pull_request.title }} | awk -F'[}{]' '{print $2}' | sed 's/ *$//g')" >> $GITHUB_ENV
-      - name: "print var"
+      - name: "print TEST_WITH"
         run: echo ${{env.TEST_WITH}}
       - name: "check TEST_WITH"
         if: ${{env.TEST_WITH == ''}}
         run: exit 1
-      - name: "copy releases"
+      - name: "copy chain test data"
         uses: actions/checkout@v3
         with:
           repository: "ruslanglaznyov/test-releases"
-          path: "releases"
+          path: "chain-data"
           lfs: true
-      - name: 'set cosmos vars '
-        run: |
-          echo "COSMOS_BINARY=$(echo ${{github.workspace}}/releases/${{env.TEST_WITH}}/chaind)" >> $GITHUB_ENV
-          echo "COSMOS_DATA=$(echo ${{github.workspace}}/releases/${{env.TEST_WITH}}/chain)" >> $GITHUB_ENV
-      - name: "Check file existence"
-        uses: andstor/file-existence-action@v1
-        with:
-          files: ${{env.COSMOS_BINARY}}
-          allow_failure: true
       - name: "clone chain repo"
         uses: actions/checkout@v3
         with:
           repository: "KYVENetwork/chain"
           path: "chain"
           ref: ${{env.TEST_WITH}}
+      - name: "install go"
+        uses: actions/setup-go@v3
+        with:
+          go-version: '1.16'
+      - name: "build binary"
+        run: go build -o chaind ${{github.workspace}}/chain/cmd/kyved/main.go
+      - name: set chain path 
+        run: |
+          echo "COSMOS_BINARY=$(echo ${{github.workspace}}/chaind)" >> $GITHUB_ENV
       - name: "checkout"
         uses: actions/checkout@v3
         with:
@@ -50,9 +52,6 @@ jobs:
       - name: install dependency
         run: yarn install
         working-directory: ./chain/test
-#      - name: set branch name
-#        run: |
-#          echo "GIT_BRANCH=${github.event.pull_request.head.ref##*/}" >> $GITHUB_ENV
       - name: "print branch name"
         run: echo ${{ github.event.pull_request.head.ref }}
       - name:  install current branch sdk as dependency for integration tests
