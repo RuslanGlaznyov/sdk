@@ -1,9 +1,9 @@
 name: integtaion-tests
 
 on:
-  push:
-    #TODO change it when release
-    branches: [ "feature/v2" ]
+#   push:
+#     #TODO change it when release
+#     branches: [ "feature/v2" ]
   pull_request:
     #TODO change it when release
     branches: [ "feature/v2" ]
