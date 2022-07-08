@@ -52,9 +52,9 @@ jobs:
         working-directory: ./chain/test
       - name: set branch name
         run: |
-          echo "GIT_BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
+          echo "GIT_BRANCH=${github.event.pull_request.head.ref##*/}" >> $GITHUB_ENV
       - name: "print branch name"
-        run: echo ${{ env.GIT_BRANCH }}
+        run: echo ${{ github.event.pull_request.head.ref }}
       - name:  install current branch sdk as dependency for integration tests
         run: yarn add https://github.com/${{ github.repository }}#${{ env.GIT_BRANCH }}
         working-directory: ./chain/test
