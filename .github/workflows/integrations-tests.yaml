@@ -43,16 +43,16 @@ jobs:
       - name: "checkout"
         uses: actions/checkout@v3
         with:
-           path: "sdk"
+          path: "sdk"
       - name: install nodejs
         uses: actions/setup-node@v3
         with:
-           node-version: 16
-     - name: install dependency
-       run: yarn install
-       working-directory: ./chain/test
-     - name: run tests
-       run: yarn test
-       working-directory: ./chain/test
+          node-version: 16
+      - name: install dependency
+        run: yarn install
+        working-directory: ./chain/test
+      - name: run tests
+        run: yarn test
+        working-directory: ./chain/test
 
 
