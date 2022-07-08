@@ -20,7 +20,7 @@ jobs:
       - name: "print context"
         run: echo ${{github.event.pull_request.title}}
       - name: "get branch config" 
-        run: echo "TEST_WITH=$(echo ${{github.event.pull_request.title}} | sed 's/.*{\([^]]*\)}.*/\1/g')" >> $GITHUB_ENV
+        run: echo "TEST_WITH=$(echo ${{github.event.pull_request.title}} | awk -F'[}{]' '{print $2}'" >> $GITHUB_ENV
       - name: "test with var"
         if: ${{env.TEST_WITH}} == ""
         run: exit 1   
