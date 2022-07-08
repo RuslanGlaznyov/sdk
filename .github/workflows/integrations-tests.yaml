@@ -24,9 +24,9 @@ jobs:
       - name: "print var"
         run: echo ${{env.TEST_WITH}}
       - name: "test with var"
+        if: ${{env.TEST_WITH == ''}}        
         run: echo ${{env.TEST_WITH}}
-        if: ${{env.TEST_WITH}} == 'asdasd'        
-#       - name: clone build repo
+#         - name: clone build repo
 #         uses: actions/checkout@v3
 #         with:
 #           repository: "ruslanglaznyov/test-releases"
