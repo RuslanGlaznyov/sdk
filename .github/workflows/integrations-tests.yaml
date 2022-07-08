@@ -20,6 +20,7 @@ jobs:
         with:
           repository: "ruslanglaznyov/test-releases"
           path: "releases"
+          lfs: true
       - name: print dir
         run: ls
         working-directory: releases/integration-tests
