@@ -9,7 +9,7 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     env:
-      CHAIN_DATA: ${{github.workspace}}/chain-data/v1/chain 
+      COSMOS_DATA: ${{github.workspace}}/chain-data/v1/chain
     steps:
       - name: "print context"
         run: echo ${{github.event.pull_request.title}}
