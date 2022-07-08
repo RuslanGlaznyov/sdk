@@ -16,35 +16,35 @@ jobs:
       COSMOS_DATA: "${{github.workspace}}/releases/integration-tests/chain"
     steps:
       - name: "print context"
-        run: echo ${{github.event.pull_request.description}}
-      - name: clone build repo
-        uses: actions/checkout@v3
-        with:
-          repository: "ruslanglaznyov/test-releases"
-          path: "releases"
-          lfs: true
-      - name: print dir
-        run: ls
-        working-directory: releases/integration-tests
-      - name: checkout chain repo
-        uses: actions/checkout@v3
-        with:
-          repository: "KYVENetwork/chain"
-          path: "chain"
-          #TODO checkout to the current realise branch
-          ref: "feature/integration-tests"
-#     -  name: "checkout repo"
-#        uses: actions/checkout@v3
-#        with:
-#          path: "sdk"
-      - name: install nodejs
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - name: install dependency
-        run: yarn install
-        working-directory: ./chain/test
-      - name: run tests
-        run: yarn test
-        working-directory: ./chain/test
+        run: echo ${{github.event.pull_request.body}}
+#       - name: clone build repo
+#         uses: actions/checkout@v3
+#         with:
+#           repository: "ruslanglaznyov/test-releases"
+#           path: "releases"
+#           lfs: true
+#       - name: print dir
+#         run: ls
+#         working-directory: releases/integration-tests
+#       - name: checkout chain repo
+#         uses: actions/checkout@v3
+#         with:
+#           repository: "KYVENetwork/chain"
+#           path: "chain"
+#           #TODO checkout to the current realise branch
+#           ref: "feature/integration-tests"
+# #     -  name: "checkout repo"
+# #        uses: actions/checkout@v3
+# #        with:
+# #          path: "sdk"
+#       - name: install nodejs
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 16
+#       - name: install dependency
+#         run: yarn install
+#         working-directory: ./chain/test
+#       - name: run tests
+#         run: yarn test
+#         working-directory: ./chain/test
 
