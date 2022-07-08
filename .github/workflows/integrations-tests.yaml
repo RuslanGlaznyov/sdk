@@ -50,13 +50,13 @@ jobs:
       - name: install dependency
         run: yarn install
         working-directory: ./chain/test
-      - name: set branch name
-        run: |
-          echo "GIT_BRANCH=${github.event.pull_request.head.ref##*/}" >> $GITHUB_ENV
+#      - name: set branch name
+#        run: |
+#          echo "GIT_BRANCH=${github.event.pull_request.head.ref##*/}" >> $GITHUB_ENV
       - name: "print branch name"
         run: echo ${{ github.event.pull_request.head.ref }}
       - name:  install current branch sdk as dependency for integration tests
-        run: yarn add https://github.com/${{ github.repository }}#${{ env.GIT_BRANCH }}
+        run: yarn add https://github.com/${{ github.repository }}#${{ github.event.pull_request.head.ref }}
         working-directory: ./chain/test
       - name: check package.json
         run: cat package.json
