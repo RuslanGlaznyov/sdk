@@ -31,6 +31,10 @@ jobs:
         run: |
           echo "COSMOS_BINARY=$(echo ${{github.workspace}}/releases/${{env.TEST_WITH}}/chaind)" >> $GITHUB_ENV
           echo "COSMOS_DATA=$(echo ${{github.workspace}}/releases/${{env.TEST_WITH}}/chain)" >> $GITHUB_ENV
+      - name: "ls file"
+        run: |
+          ls ${{env.COSMOS_BINARY}}
+          ls /home/runner/work/sdk/sdk/releases/feature/integration-tests
       - name: 'check if binary exists'
         if: hashFiles(${{env.COSMOS_BINARY}}) == ''
         run: exit 1
