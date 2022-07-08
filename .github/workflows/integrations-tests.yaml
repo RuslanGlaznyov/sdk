@@ -25,7 +25,10 @@ jobs:
         run: echo ${{env.TEST_WITH}}
       - name: "test with var"
         if: ${{env.TEST_WITH == ''}}        
-        run: echo ${{env.TEST_WITH}}
+        run: exit 0
+      - name: 'no exec'
+        run: ls 
+    
 #         - name: clone build repo
 #         uses: actions/checkout@v3
 #         with:
