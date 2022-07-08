@@ -37,10 +37,11 @@ jobs:
         with:
           go-version: '1.16'
       - name: "build binary"
-        run: go build -o chaind ${{github.workspace}}/chain/cmd/kyved/main.go
+        run: go build -o chaind cmd/kyved/main.go
+        working-directory: ./chain
       - name: set chain path 
         run: |
-          echo "COSMOS_BINARY=$(echo ${{github.workspace}}/chaind)" >> $GITHUB_ENV
+          echo "COSMOS_BINARY=$(echo ${{github.workspace}}/chain/chaind)" >> $GITHUB_ENV
       - name: "checkout"
         uses: actions/checkout@v3
         with:
