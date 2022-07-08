@@ -1,9 +1,6 @@
 name: integtaion-tests
 
 on:
-#   push:
-#     #TODO change it when release
-#     branches: [ "feature/v2" ]
   pull_request:
     #TODO change it when release
     branches: [ "feature/v2" ]
@@ -15,48 +12,47 @@ jobs:
       COSMOS_BINARY: "${{github.workspace}}/releases/integration-tests/chaind"
       COSMOS_DATA: "${{github.workspace}}/releases/integration-tests/chain"
     steps:
-      - name: "sed"
-        run: sed --help
       - name: "print context"
         run: echo ${{github.event.pull_request.title}}
-      - name: "get branch config" 
+      - name: "get branch config"
         run: echo "TEST_WITH=$(echo ${{ github.event.pull_request.title }} | awk -F'[}{]' '{print $2}' | sed 's/ *$//g')" >> $GITHUB_ENV
       - name: "print var"
         run: echo ${{env.TEST_WITH}}
-      - name: "test with var"
-        if: ${{env.TEST_WITH == ''}}        
+      - name: "check TEST_WITH"
+        if: ${{env.TEST_WITH == ''}}
         run: exit 1
-      - name: 'no exec'
-        run: ls 
-    
-#         - name: clone build repo
-#         uses: actions/checkout@v3
-#         with:
-#           repository: "ruslanglaznyov/test-releases"
-#           path: "releases"
-#           lfs: true
-#       - name: print dir
-#         run: ls
-#         working-directory: releases/integration-tests
-#       - name: checkout chain repo
-#         uses: actions/checkout@v3
-#         with:
-#           repository: "KYVENetwork/chain"
-#           path: "chain"
-#           #TODO checkout to the current realise branch
-#           ref: "feature/integration-tests"
-# #     -  name: "checkout repo"
-# #        uses: actions/checkout@v3
-# #        with:
-# #          path: "sdk"
-#       - name: install nodejs
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: 16
-#       - name: install dependency
-#         run: yarn install
-#         working-directory: ./chain/test
-#       - name: run tests
-#         run: yarn test
-#         working-directory: ./chain/test
+      - name: "copy releases"
+        uses: actions/checkout@v3
+        with:
+          repository: "ruslanglaznyov/test-releases"
+          path: "releases"
+          lfs: true
+      - name: 'set cosmos vars '
+        run: |
+          echo "COSMOS_BINARY=$(echo ${{github.workspace}}/releases/${{env.TEST_WITH}}/chaind)" >> $GITHUB_ENV
+          echo "COSMOS_DATA=$(echo ${{github.workspace}}/releases/${{env.TEST_WITH}}/chain)" >> $GITHUB_ENV
+      - name: 'check if binary exists'
+        if: hashFiles(${{env.COSMOS_BINARY}}) == ''
+        run: exit 1
+      - name: "clone chain repo"
+        uses: actions/checkout@v3
+        with:
+          repository: "KYVENetwork/chain"
+          path: "chain"
+          ref: ${{TEST_WITH}}
+      - name: "checkout"
+        uses: actions/checkout@v3
+        with:
+           path: "sdk"
+      - name: install nodejs
+        uses: actions/setup-node@v3
+        with:
+           node-version: 16
+     - name: install dependency
+       run: yarn install
+       working-directory: ./chain/test
+     - name: run tests
+       run: yarn test
+       working-directory: ./chain/test
+
 
