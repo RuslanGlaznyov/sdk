@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: "print context"
         run: echo ${{github.event.pull_request.body}}
+      - name: fail
+        run: exit 1  
 #       - name: clone build repo
 #         uses: actions/checkout@v3
 #         with:
