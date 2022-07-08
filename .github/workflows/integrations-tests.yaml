@@ -34,7 +34,7 @@ jobs:
       - name: "Check file existence"
         uses: andstor/file-existence-action@v1
         with:
-          files: "${{COSMOS_BINARY}}"
+          files: ${{env.COSMOS_BINARY}}
           allow_failure: true
       - name: "clone chain repo"
         uses: actions/checkout@v3
