@@ -31,14 +31,11 @@ jobs:
         run: |
           echo "COSMOS_BINARY=$(echo ${{github.workspace}}/releases/${{env.TEST_WITH}}/chaind)" >> $GITHUB_ENV
           echo "COSMOS_DATA=$(echo ${{github.workspace}}/releases/${{env.TEST_WITH}}/chain)" >> $GITHUB_ENV
-      - name: "setup: Check file existence"
-        id: check_files
+      - name: "Check file existence"
         uses: andstor/file-existence-action@v1
         with:
           files: ${{COSMOS_BINARY}}
-      - name: "Check file existence"
-        if: steps.check_files.outputs.files_exists == 'false'
-        run: exit 1
+          allow_failure: true
       - name: "clone chain repo"
         uses: actions/checkout@v3
         with:
