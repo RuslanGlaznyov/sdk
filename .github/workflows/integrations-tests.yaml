@@ -23,9 +23,8 @@ jobs:
       - name: "copy chain test data"
         uses: actions/checkout@v3
         with:
-          repository: "ruslanglaznyov/test-releases"
+          repository: "KYVENetwork/chain-test-data"
           path: "chain-data"
-          lfs: true
       - name: "clone chain repo"
         uses: actions/checkout@v3
         with:
