@@ -59,7 +59,7 @@ jobs:
         with:
           node-version: 16
       - name: install dependency
-        run: yarn install
+        run: yarn install --frozen-lockfile
         working-directory: ./chain/test
       - name: "print branch name"
         run: echo ${{ github.event.pull_request.head.ref }}
