@@ -2,6 +2,11 @@ name: integtaion-tests
 
 on:
   pull_request:
+    types: 
+      - opened
+      - reopened
+      - converted_to_draft
+      - edited
     #TODO change it when release
     branches: [ "feature/v2" ]
 
